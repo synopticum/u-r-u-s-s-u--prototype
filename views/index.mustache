@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+
+        <!-- leaflet js -->
+        <link rel="stylesheet" href="js/leaflet/leaflet.css">
+        <script src="js/leaflet/leaflet.js"></script>
+
+        <!-- socket.io -->
+        <script src="https://cdn.socket.io/socket.io-1.0.4.js"></script>
+
+        <script src="http://code.jquery.com/jquery.min.js"></script>
+    </head>
+    <body>
+    <div id="main">
+        <div id="wrap">
+            <div id="map"></div>
+        </div>
+
+        <div id="stat" style="z-index: 6666; position: fixed; left: 10px; bottom: 10px; background: #fff; padding: 10px;">
+            <button id="setMarker">Установить маркер</button>
+        </div>
+    </div>
+
+    <div id="clouds"><div id="preloader"></div></div>
+
+    <script src="js/static.js"></script>
+    <script src="js/init.js"></script>
+    </body>
+</html>
