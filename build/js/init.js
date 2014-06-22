@@ -13,12 +13,41 @@ var Dots = function (data) {
 
 // dot constructor
 Dot = function (item) {
-    this.getImage = function () {
+    $.extend(this, item);
+};
+
+Dot.prototype = {
+    imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
+    icons: {
+        red: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
+        blue: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
+        green: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
+    },
+    popupTemplate : function (context) {
+        var dot = context;
+
+        return '<div class="dot-view">'
+        + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
+        + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
+        + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
+        + '</div>'
+
+        + '<div class="dot-short-text">'
+        + '<div class="dot-title">' + dot.title + '</div>'
+
+        + dot.shortText
+
+        + '<table class="dot-contacts">'
+        + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
+        + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
+        + '</table>'
+        + '</div>'
+    },
+    getImage : function () {
         if (this.image) return this.image;
         else return this.imageDefault;
-    };
-
-    this.getIcon = function () {
+    },
+    getIcon : function () {
         switch (this.icon) {
             case "red" :
                 return this.icons.red;
@@ -33,18 +62,20 @@ Dot = function (item) {
                 return this.icons.red;
                 break;
         }
-    };
-
-    $.extend(this, item)
-};
-
-Dot.prototype = {
-    imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
-    iconsPath: 'js/leaflet/images/markers/',
-    icons: {
-        red: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
-        blue: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
-        green: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
+    },
+    validate : function () {
+        if (this.position) {
+            if (this.icon) {
+                if (this.title) {
+                    if (this.shortText) {
+                        if (this.image) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else return false;
     }
 };
 // final array
@@ -63,23 +94,7 @@ socket.on('news', function (data) {
         dot.icon = dot.getIcon();
         dot.image = dot.getImage();
 
-        var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(
-                '<div class="dot-view">'
-                + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
-                + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
-                + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
-                + '</div>'
-                + '<div class="dot-short-text">'
-                + '<div class="dot-title">' + dot.title + '</div>'
-
-                + dot.shortText
-
-                + '<table class="dot-contacts">'
-                + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
-                + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
-                + '</table>'
-                + '</div>'
-        );
+        var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(dot.popupTemplate(dot));
         dotsReady.push(marker);
     }
 
@@ -151,8 +166,15 @@ socket.on('news', function (data) {
             mobilePhone : that.mobilePhone
         });
 
+        if (dot.validate()) {
+            console.log('validation successful!');
+        }
+        else console.log('validation failed!');
+
         console.log(dot.position);
-        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup('This is Sparta.' + dot.title).addTo(map);
+        L.marker(dot.position, { icon: dot.getIcon() })
+            .bindPopup(dot.popupTemplate(dot))
+            .addTo(map);
 
         $.fancybox.close(that);
     });
