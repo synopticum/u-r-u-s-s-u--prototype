@@ -20,7 +20,7 @@ server.listen(opts.port, function () {
 });
 
 io.on('connection', function (socket) {
-    socket.emit('news', JSON.stringify(database.full));
+    socket.emit('news', JSON.stringify(database.dots));
 
     socket.on('my other event', function (data) {
         console.log(data);

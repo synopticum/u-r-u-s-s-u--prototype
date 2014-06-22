@@ -1,5 +1,5 @@
-var full = {
-    0 : {
+var dots = [
+    {
         id       : 17,
         icon     : "red",
         position : [42,30],
@@ -9,7 +9,7 @@ var full = {
         shortText  : "some description",
         image    : "http://site.com/image.jpg"
     },
-    1 : {
+    {
         id       : 98,
         icon     : "green",
         position : [70.5,1.2],
@@ -19,7 +19,7 @@ var full = {
         shortText  : "org some description",
         image    : "http://org.com/image.jpg"
     },
-    3 : {
+    {
         id       : 228,
         icon     : "blue",
         position : [73.5,4.2],
@@ -27,8 +27,8 @@ var full = {
         byUser   : true,
         title    : "Ultra House",
         shortText  : "org some description",
-        image    : "http://org.com/image.jpg"
+        image    : null
     }
-};
+];
 
-module.exports.full = full;
+module.exports.dots = dots;

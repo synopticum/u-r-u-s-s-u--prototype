@@ -1,63 +1,71 @@
 var map;
-var dots = []; // markers array
 var socket = io('http://localhost');
+
+/* marker icon settings */
+var LeafIcon = L.Icon.extend({
+    options: { iconSize:     [32, 32] }
+});
+
+// model constructor
+var Dots = function (data) {
+    this.records = JSON.parse(data);
+};
+
+// dot constructor
+Dot = function (obj) {
+    this.getImage = function () {
+        if (this.image) return this.image;
+        else return this.imageDefault;
+    };
+
+    this.getIcon = function () {
+        switch (this.icon) {
+            case "red" :
+                return this.icons.red;
+                break;
+            case "blue" :
+                return this.icons.blue;
+                break;
+            case "green" :
+                return this.icons.green;
+                break;
+            default :
+                return this.icons.red;
+                break;
+        }
+    }
+    $.extend(this, obj)
+};
+
+Dot.prototype = {
+    imageDefault : 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
+    iconsPath    : 'js/leaflet/images/markers/',
+    icons : {
+        red   : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
+        blue  : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
+        green : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
+    }
+};
+// final array
+var dotsReady = [];
 
 /* map loading bar */
 $(window).load(function(){
     $('#clouds').fadeOut(2000);
 });
 
-/* marker icon settings */
-var LeafIcon = L.Icon.extend({
-    options: {
-        iconSize:     [32, 32]
-    }
-});
-
-var pathToIcons = 'js/leaflet/images/markers/';
-
-var dotIcons = {
-    red   : new LeafIcon({iconUrl: pathToIcons + 'marker-icon-pink.png'}),
-    blue  : new LeafIcon({iconUrl: pathToIcons + 'marker-icon-blue.png'}),
-    green : new LeafIcon({iconUrl: pathToIcons + 'marker-icon-green.png'})
-};
-
-var getDotIcon = function (iconString) {
-    switch (iconString) {
-        case "red" :
-            return dotIcons.red;
-            break;
-        case "blue" :
-            return dotIcons.blue;
-            break;
-        case "green" :
-            return dotIcons.green;
-            break;
-        default :
-            return dotIcons.red;
-            break;
-    }
-};
-
-var imageDefault = "data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=";
-var getDotImage = function (imageUrl) {
-    if (imageUrl)
-        return imageUrl;
-    else
-        return imageDefault;
-};
-
 /* map initialize */
 socket.on('news', function (data) {
-    // creating markers array
-    data = JSON.parse(data);
-    for (var item in data) {
-        var dot = data[item];
+    // creating model
+    var dots = new Dots(data);
+
+    for (var item in dots.records) {
+        var dot = new Dot(dots.records[item]);
 
         dot.id     = Number(dot.id);
         dot.byUser = Boolean(dot.byUser);
-        dot.icon   = getDotIcon(dot.icon);
-        dot.image  = getDotImage(dot.image);
+        dot.icon   = dot.getIcon();
+        dot.image  = dot.getImage();
 
         var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(
                 '<img src="' + dot.image + '" class="dot-image">'
@@ -66,7 +74,7 @@ socket.on('news', function (data) {
                     + dot.shortText
                 + '</div>'
         );
-        dots.push(marker);
+        dotsReady.push(marker);
     }
 
     // append markers array to map
@@ -78,7 +86,7 @@ socket.on('news', function (data) {
 
         // add markers to map
         map = L.map('map', {
-            layers: dots
+            layers: dotsReady
         }).setView([70, 10], 5);
 
         // map draggable area
@@ -98,7 +106,7 @@ socket.on('news', function (data) {
     }
 
     // response
-    socket.emit('my other event', { my: 'data' });
+//    socket.emit('my other event', { my: 'data' });
 });
 
 
