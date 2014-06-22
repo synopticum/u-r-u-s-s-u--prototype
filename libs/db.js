@@ -7,7 +7,10 @@ var dots = [
         byUser   : false,
         title    : "White House",
         shortText  : "some description",
-        image    : "http://site.com/image.jpg"
+        image    : "images/tmp.jpg",
+        address  : "ул. Пушкина 32",
+        homePhone : "2-53-99",
+        mobilePhone : "937-326-79-12"
     },
     {
         id       : 98,
@@ -15,9 +18,12 @@ var dots = [
         position : [70.5,1.2],
         template : null,
         byUser   : true,
-        title    : "Black House",
-        shortText  : "org some description",
-        image    : "http://org.com/image.jpg"
+        title    : "Уруссинская центральная районная больница",
+        shortText  : "Государственное автономное учреждение здравоохранения Уруссинская центральная районная больница Ютазинского муниципального района Республики Татарстан",
+        image    : "images/tmp.jpg",
+        address  : "ул. Ленина 6",
+        homePhone : "2-15-56",
+        mobilePhone : "937-326-79-12"
     },
     {
         id       : 228,
@@ -27,7 +33,10 @@ var dots = [
         byUser   : true,
         title    : "Ultra House",
         shortText  : "org some description",
-        image    : null
+        image    : null,
+        address  : "ул. Сирина 88",
+        homePhone : "2-08-11",
+        mobilePhone : "777-342-12-75"
     }
 ];
 

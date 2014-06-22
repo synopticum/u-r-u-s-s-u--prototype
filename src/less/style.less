@@ -89,14 +89,26 @@ mark { background: none; }
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Noto Sans Italic';
+  src: url('../fonts/NotoSans-Italic-webfont.eot');
+  src: url('../fonts/NotoSans-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/NotoSans-Italic-webfont.woff') format('woff'),
+  url('../fonts/NotoSans-Italic-webfont.ttf') format('truetype'),
+  url('../fonts/NotoSans-Italic-webfont.svg#noto_sansitalic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 strong { font-weight: normal; font-family: 'Noto Sans Bold'; }
+em { font-style: normal; font-family: 'Noto Sans Italic'; }
 
 /* styles */
 html, body { height: 100% }
 
 body {
   background: #fff;
-  font-family: 'Noto Sans Regular';
+  font-family: 'Noto Sans Regular', Arial, sans-serif;
   font-size: 14px;
   color: #000;
 }
@@ -129,15 +141,28 @@ body {
 // popup design
 .dot-title {
   font-family: 'Noto Sans Bold';
-  font-size: 14px;
-  margin: 5px 0 10px 0;
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  line-height: 120%;
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
 }
 
-.dot-image {
+.dot-view {
   float: left;
   margin: 0 15px 0 0;
+  width: 80px;
+}
+
+.dot-chat {
+  float: right;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url("../images/chat.png") no-repeat;
+}
+
+.dot-image {
   width: 80px;
   height: 80px;
   padding: 1px;
@@ -146,8 +171,35 @@ body {
 
 .dot-short-text {
   overflow: hidden;
-  line-height: 120%;
+  font-family: 'Noto Sans Regular', Arial, sans-serif;
 }
+
+.dot-contacts {
+  margin: 5px 0 0 0;
+  width: 100%;
+}
+.dot-contacts td {
+  width: 50%;
+  border-bottom: 1px solid #eee;
+  padding: 3px 5px;
+  vertical-align: middle;
+  color: #666;
+  font-family: 'Noto Sans Italic';
+}
+.dot-contacts tr:last-child td {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.dot-contacts mark {
+  color: #000;
+  margin-left: 5px;
+}
+
+// fancybox
+.fancybox-skin {
+  padding: 0 !important;
+}
+.fancybox-image { border-radius: 5px; }
 
 // admin
 .cpanel {

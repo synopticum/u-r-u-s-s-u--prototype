@@ -3,7 +3,7 @@ var socket = io('http://localhost');
 
 /* marker icon settings */
 var LeafIcon = L.Icon.extend({
-    options: { iconSize:     [32, 32] }
+    options: { iconSize: [32, 32] }
 });
 
 // model constructor
@@ -12,7 +12,7 @@ var Dots = function (data) {
 };
 
 // dot constructor
-Dot = function (obj) {
+Dot = function (item) {
     this.getImage = function () {
         if (this.image) return this.image;
         else return this.imageDefault;
@@ -33,25 +33,27 @@ Dot = function (obj) {
                 return this.icons.red;
                 break;
         }
-    }
-    $.extend(this, obj)
+    };
+
+    $.extend(this, item)
 };
 
 Dot.prototype = {
-    imageDefault : 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
-    iconsPath    : 'js/leaflet/images/markers/',
-    icons : {
-        red   : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
-        blue  : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
-        green : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
+    imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
+    iconsPath: 'js/leaflet/images/markers/',
+    icons: {
+        red: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
+        blue: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
+        green: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
     }
 };
 // final array
 var dotsReady = [];
 
 /* map loading bar */
-$(window).load(function(){
+$(document).ready(function() {
     $('#clouds').fadeOut(2000);
+    $('.fancybox').fancybox();
 });
 
 /* map initialize */
@@ -62,16 +64,26 @@ socket.on('news', function (data) {
     for (var item in dots.records) {
         var dot = new Dot(dots.records[item]);
 
-        dot.id     = Number(dot.id);
+        dot.id = Number(dot.id);
         dot.byUser = Boolean(dot.byUser);
-        dot.icon   = dot.getIcon();
-        dot.image  = dot.getImage();
+        dot.icon = dot.getIcon();
+        dot.image = dot.getImage();
 
         var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(
-                '<img src="' + dot.image + '" class="dot-image">'
+                '<div class="dot-view">'
+                    + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
+                    + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
+                    + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
+                + '</div>'
                 + '<div class="dot-short-text">'
                     + '<div class="dot-title">' + dot.title + '</div>'
+
                     + dot.shortText
+
+                    + '<table class="dot-contacts">'
+                    + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
+                    + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
+                    + '</table>'
                 + '</div>'
         );
         dotsReady.push(marker);
@@ -90,7 +102,10 @@ socket.on('news', function (data) {
         }).setView([70, 10], 5);
 
         // map draggable area
-        map.setMaxBounds([[5, -180], [122, 100]]);
+        map.setMaxBounds([
+            [5, -180],
+            [122, 100]
+        ]);
 
         // map size
         var mapBounds = new L.LatLngBounds(
@@ -108,7 +123,6 @@ socket.on('news', function (data) {
     // response
 //    socket.emit('my other event', { my: 'data' });
 });
-
 
 
 // add marker
