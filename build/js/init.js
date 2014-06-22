@@ -10,33 +10,41 @@ $(window).load(function(){
 /* marker icon settings */
 var LeafIcon = L.Icon.extend({
     options: {
-        iconSize:     [39, 48]
+        iconSize:     [32, 32]
     }
 });
 
 var pathToIcons = 'js/leaflet/images/markers/';
 
 var dotIcons = {
-    red   : new LeafIcon({iconUrl: pathToIcons + 'marker-icon.png'}),
-    blue  : new LeafIcon({iconUrl: pathToIcons + 'marker-icon.png'}),
-    green : new LeafIcon({iconUrl: pathToIcons + 'marker-icon.png'})
+    red   : new LeafIcon({iconUrl: pathToIcons + 'marker-icon-pink.png'}),
+    blue  : new LeafIcon({iconUrl: pathToIcons + 'marker-icon-blue.png'}),
+    green : new LeafIcon({iconUrl: pathToIcons + 'marker-icon-green.png'})
 };
 
-var getDotIcon = function(iconString) {
+var getDotIcon = function (iconString) {
     switch (iconString) {
-    case "red" :
-        return dotIcons.red;
-        break;
-    case "blue" :
-        return dotIcons.blue;
-        break;
-    case "green" :
-        return dotIcons.green;
-        break;
-    default :
-        return dotIcons.red;
-        break;
+        case "red" :
+            return dotIcons.red;
+            break;
+        case "blue" :
+            return dotIcons.blue;
+            break;
+        case "green" :
+            return dotIcons.green;
+            break;
+        default :
+            return dotIcons.red;
+            break;
     }
+};
+
+var imageDefault = "data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=";
+var getDotImage = function (imageUrl) {
+    if (imageUrl)
+        return imageUrl;
+    else
+        return imageDefault;
 };
 
 /* map initialize */
@@ -44,18 +52,24 @@ socket.on('news', function (data) {
     // creating markers array
     data = JSON.parse(data);
     for (var item in data) {
-        var dot = data[item];
+        if (data.item)
+            var dot = data[item];
+        else
+            throw Error('JSON parse error!');
 
-        dot.id = Number(dot.id);
+        dot.id     = Number(dot.id);
         dot.byUser = Boolean(dot.byUser);
-        dot.icon = getDotIcon(dot.icon);
-        console.log(dot.id);
+        dot.icon   = getDotIcon(dot.icon);
+        dot.image  = getDotImage(dot.image);
 
-        var realDot = L.marker(dot.position, { icon: dot.icon }).bindPopup(
-                '<div class="dot-title">' + dot.title + '</div>' +
-                '<div class="dot-short-text">' + dot.shortText + '</div>'
+        var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(
+                '<img src="' + dot.image + '" class="dot-image">'
+                + '<div class="dot-short-text">'
+                    + '<div class="dot-title">' + dot.title + '</div>'
+                    + dot.shortText
+                + '</div>'
         );
-        dots.push(realDot);
+        dots.push(marker);
     }
 
     // append markers array to map

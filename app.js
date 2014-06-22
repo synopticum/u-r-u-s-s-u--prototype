@@ -16,7 +16,7 @@ var database = require(__dirname + '/libs/db.js');
 // Start the server
 server.listen(opts.port, function () {
     console.log("Express server listening on port %d in %s mode",
-                opts.port, app.settings.env);
+        opts.port, app.settings.env);
 });
 
 io.on('connection', function (socket) {
