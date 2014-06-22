@@ -52,10 +52,7 @@ socket.on('news', function (data) {
     // creating markers array
     data = JSON.parse(data);
     for (var item in data) {
-        if (data.item)
-            var dot = data[item];
-        else
-            throw Error('JSON parse error!');
+        var dot = data[item];
 
         dot.id     = Number(dot.id);
         dot.byUser = Boolean(dot.byUser);
