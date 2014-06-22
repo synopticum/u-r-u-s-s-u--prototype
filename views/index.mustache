@@ -14,6 +14,10 @@
 
     <script type="text/javascript" src="js/fancybox/jquery.fancybox.js"></script>
     <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css" media="screen" />
+
+    <!-- custom selectbox -->
+    <link rel="stylesheet" href="js/selectbox/jquery.selectbox.css">
+    <script src="js/selectbox/jquery.selectbox-0.2.min.js"></script>
 </head>
 <body>
 <div id="main">
@@ -21,8 +25,38 @@
         <div id="map"></div>
     </div>
 
-    <div id="stat" style="display: none; z-index: 6666; position: fixed; left: 10px; bottom: 10px; background: #fff; padding: 10px;">
-        <button id="setMarker">Установить маркер</button>
+    <div class="popup" id="placeDot">
+        <form action="" method="post">
+            <div class="popup-line">
+                <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+            </div>
+            <div class="popup-line">
+                <textarea class="input-address popup-textarea" placeholder="Краткое описание"></textarea>
+            </div>
+            <div class="popup-line">
+                <input type="text" class="input-image popup-textbox" placeholder="Ссылка на изображение"/>
+            </div>
+            <div class="popup-line">
+                <select class="input-icon selectbox" tabindex="">
+                    <option value="red">Цвет маркера</option>
+                    <option value="red">Красный</option>
+                    <option value="green">Зелёный</option>
+                    <option value="blue">Синий</option>
+                </select>
+            </div>
+            <div class="popup-line">
+                <input type="text" class="input-address popup-textbox"  placeholder="Адрес"/>
+            </div>
+            <div class="popup-line">
+                <input type="text" class="input-home-phone popup-textbox" placeholder="Рабочий телефон"/>
+            </div>
+            <div class="popup-line">
+                <input type="text" class="input-mobile-phone popup-textbox" placeholder="Мобильный телефон"/>
+            </div>
+            <div class="popup-line">
+                <button id="placeDotNow" class="popup-button">Добавить метку</button>
+            </div>
+        </form>
     </div>
 </div>
 

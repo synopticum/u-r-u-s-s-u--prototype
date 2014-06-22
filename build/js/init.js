@@ -50,12 +50,6 @@ Dot.prototype = {
 // final array
 var dotsReady = [];
 
-/* map loading bar */
-$(document).ready(function() {
-    $('#clouds').fadeOut(2000);
-    $('.fancybox').fancybox();
-});
-
 /* map initialize */
 socket.on('news', function (data) {
     // creating model
@@ -71,19 +65,19 @@ socket.on('news', function (data) {
 
         var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(
                 '<div class="dot-view">'
-                    + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
-                    + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
-                    + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
+                + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
+                + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
+                + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
                 + '</div>'
                 + '<div class="dot-short-text">'
-                    + '<div class="dot-title">' + dot.title + '</div>'
+                + '<div class="dot-title">' + dot.title + '</div>'
 
-                    + dot.shortText
+                + dot.shortText
 
-                    + '<table class="dot-contacts">'
-                    + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
-                    + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
-                    + '</table>'
+                + '<table class="dot-contacts">'
+                + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
+                + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
+                + '</table>'
                 + '</div>'
         );
         dotsReady.push(marker);
@@ -120,26 +114,56 @@ socket.on('news', function (data) {
         }).addTo(map);
     }
 
+    // add dot
+    map.addEventListener('click', function (e) {
+        that = $('#placeDot');
+        $.fancybox.open(that);
+        $('.input-position', that).val([e.latlng.lat, e.latlng.lng]).attr('disabled', 'disabled');
+    });
+
+    $('#placeDot form').on('submit', function () {
+        return false;
+    });
+
+    $('#placeDotNow').on('click', function () {
+        that = $('#placeDot');
+
+        that.position    = $(".input-position", that).val().split(',');
+        that.title       = $(".input-title", that).val();
+        that.shortText   = $(".input-short-text", that).val();
+        that.image       = $(".input-image", that).val();
+        that.icon        = $(".input-icon", that).val();
+        that.address     = $(".input-address", that).val();
+        that.homePhone   = $(".input-home-phone", that).val();
+        that.mobilePhone = $(".input-mobile-phone", that).val();
+
+        var dot = new Dot({
+            id          : null,
+            template    : null,
+            byUser      : null,
+            position    : that.position,
+            title       : that.title,
+            shortText   : that.shortText,
+            image       : that.image,
+            icon        : that.icon,
+            address     : that.address,
+            homePhone   : that.homePhone,
+            mobilePhone : that.mobilePhone
+        });
+
+        console.log(dot.position);
+        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup('This is Sparta.' + dot.title).addTo(map);
+
+        $.fancybox.close(that);
+    });
+
     // response
 //    socket.emit('my other event', { my: 'data' });
 });
 
-
-// add marker
-//var setMarkerButton = document.querySelector("#setMarker");
-//var setMarkerStatus = true;
-//
-//setMarkerButton.addEventListener("click", function(e) {
-//	this.setAttribute("disabled", "disabled");
-//	setMarkerStatus = false;
-//	console.log("please set the marker");
-//});
-//
-//map.addEventListener("click", function(e) {
-//	if (!setMarkerStatus) {
-//		L.marker([e.latlng.lat, e.latlng.lng]).bindPopup('This is Sparta.').addTo(map);
-//		setMarkerStatus = true;
-//		setMarkerButton.removeAttribute("disabled");
-//		console.log("okay. marker has been setted");
-//	}
-//});
+/* ready */
+$(document).ready(function () {
+    $('#clouds').fadeOut(2000);
+    $('.fancybox').fancybox();
+    $(".selectbox").selectbox();
+});
