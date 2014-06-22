@@ -8,7 +8,7 @@ var LeafIcon = L.Icon.extend({
 
 // model constructor
 var Dots = function (data) {
-    this.records = JSON.parse(data);
+    this.records = data;
 };
 
 // dot constructor
@@ -19,35 +19,35 @@ Dot = function (item) {
 Dot.prototype = {
     imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
     icons: {
-        red: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
-        blue: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
+        red  : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
+        blue : new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
         green: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
     },
-    popupTemplate : function (context) {
+    popupTemplate: function (context) {
         var dot = context;
 
         return '<div class="dot-view">'
-        + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
-        + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
-        + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
-        + '</div>'
+            + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.image + '" class="dot-image"></a>'
+            + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
+            + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
+            + '</div>'
 
-        + '<div class="dot-short-text">'
-        + '<div class="dot-title">' + dot.title + '</div>'
+            + '<div class="dot-short-text">'
+            + '<div class="dot-title">' + dot.title + '</div>'
 
-        + dot.shortText
+            + dot.shortText
 
-        + '<table class="dot-contacts">'
-        + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
-        + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
-        + '</table>'
-        + '</div>'
+            + '<table class="dot-contacts">'
+            + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
+            + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
+            + '</table>'
+            + '</div>'
     },
-    getImage : function () {
+    getImage: function () {
         if (this.image) return this.image;
         else return this.imageDefault;
     },
-    getIcon : function () {
+    getIcon: function () {
         switch (this.icon) {
             case "red" :
                 return this.icons.red;
@@ -62,79 +62,80 @@ Dot.prototype = {
                 return this.icons.red;
                 break;
         }
-    },
-    validate : function () {
-        if (this.position) {
-            if (this.icon) {
-                if (this.title) {
-                    if (this.shortText) {
-                        if (this.image) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        else return false;
     }
 };
-// final array
-var dotsReady = [];
 
 /* map initialize */
-socket.on('news', function (data) {
-    // creating model
-    var dots = new Dots(data);
+var dots = {};
+var dotsReady = [];
 
-    for (var item in dots.records) {
-        var dot = new Dot(dots.records[item]);
+$.ajax({
+    type: "GET",
+    url: "/dots",
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+        dots = new Dots(JSON.parse(data));
 
-        dot.id = Number(dot.id);
-        dot.byUser = Boolean(dot.byUser);
-        dot.icon = dot.getIcon();
-        dot.image = dot.getImage();
+        for (var item in dots.records) {
+            var dot = new Dot(dots.records[item]);
 
-        var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(dot.popupTemplate(dot));
-        dotsReady.push(marker);
+            dot.id = Number(dot.id);
+            dot.byUser = Boolean(dot.byUser);
+            dot.icon = dot.getIcon();
+            dot.image = dot.getImage();
+
+            var marker = L.marker(dot.position, { icon: dot.icon }).bindPopup(dot.popupTemplate(dot));
+            dotsReady.push(marker);
+        }
+
+        initialize();
+    },
+    error: function (data) {
+        console.log("ajax error");
+        console.log(data);
     }
+});
 
-    // append markers array to map
-    initialize();
+function initialize() {
+    var mapMinZoom = 4;
+    var mapMaxZoom = 5;
 
-    function initialize() {
-        var mapMinZoom = 4;
-        var mapMaxZoom = 5;
+    // add markers to map
+    map = L.map('map', {
+        layers: dotsReady
+    }).setView([70, 10], 5);
 
-        // add markers to map
-        map = L.map('map', {
-            layers: dotsReady
-        }).setView([70, 10], 5);
+    // map draggable area
+    map.setMaxBounds([[5, -180], [122, 100]]);
 
-        // map draggable area
-        map.setMaxBounds([
-            [5, -180],
-            [122, 100]
-        ]);
+    // map size
+    var mapBounds = new L.LatLngBounds(
+        map.unproject([0, 4000], mapMaxZoom),
+        map.unproject([6400, 0], mapMaxZoom)
+    );
 
-        // map size
-        var mapBounds = new L.LatLngBounds(
-            map.unproject([0, 4000], mapMaxZoom),
-            map.unproject([6400, 0], mapMaxZoom));
+    L.tileLayer('tiles/{z}/{x}/{y}.png', {
+        minZoom: mapMinZoom,
+        maxZoom: mapMaxZoom,
+        bounds: mapBounds,
+        noWrap: true
+    }).addTo(map);
 
-        L.tileLayer('tiles/{z}/{x}/{y}.png', {
-            minZoom: mapMinZoom,
-            maxZoom: mapMaxZoom,
-            bounds: mapBounds,
-            noWrap: true
-        }).addTo(map);
-    }
-
-    // add dot
+    // add marker on map click
     map.addEventListener('click', function (e) {
         that = $('#placeDot');
         $.fancybox.open(that);
         $('.input-position', that).val([e.latlng.lat, e.latlng.lng]).attr('disabled', 'disabled');
     });
+}
+
+// add dot
+
+/* ready */
+$(document).ready(function () {
+    $('#clouds').fadeOut(2000);
+    $('.fancybox').fancybox();
+    $(".selectbox").selectbox();
 
     $('#placeDot form').on('submit', function () {
         return false;
@@ -166,26 +167,8 @@ socket.on('news', function (data) {
             mobilePhone : that.mobilePhone
         });
 
-        if (dot.validate()) {
-            console.log('validation successful!');
-        }
-        else console.log('validation failed!');
-
-        console.log(dot.position);
-        L.marker(dot.position, { icon: dot.getIcon() })
-            .bindPopup(dot.popupTemplate(dot))
-            .addTo(map);
+        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot)).addTo(map);
 
         $.fancybox.close(that);
     });
-
-    // response
-//    socket.emit('my other event', { my: 'data' });
-});
-
-/* ready */
-$(document).ready(function () {
-    $('#clouds').fadeOut(2000);
-    $('.fancybox').fancybox();
-    $(".selectbox").selectbox();
 });
