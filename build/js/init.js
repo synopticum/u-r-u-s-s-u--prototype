@@ -1,39 +1,80 @@
 var map;
 var socket = io('http://localhost');
 
+$.ajax({
+    type: "GET",
+    url: "/dots",
+    contentType: "application/json; charset=utf-8",
+    success: function (data) {
+        Model.getRecords(data);
+        initialize();
+    },
+    error: function (data) {
+        console.log("ajax error");
+        console.log(data);
+    }
+});
+
 /* marker icon settings */
 var LeafIcon = L.Icon.extend({
     options: { iconSize: [32, 32] }
 });
 
-// model constructor
-var Dots = function (data) {
-    this.records = {};
-    for (var item in data) {
-        this.records[item] = new Dot(data[item]);
-    }
-};
-
-// dot constructor
-Dot = function (item) {
-    $.extend(this, item);
-};
-
-Dot.prototype = {
+// model
+var Model = {
+    records : {},
+    markers : [],
+    getRecords : function (data) {
+        //get records object
+        data = JSON.parse(data);
+        for (var item in data) {
+            Model.records[item] = new Dot(data[item]);
+        }
+        // get markers array
+        for (var item in Model.records) {
+            var dot = Model.records[item];
+            console.log(dot);
+            var marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+            Model.markers.push(marker);
+        }
+    },
     newRecord : true,
     create: function () {
         this.newRecord = false;
-        dots.records[this.id] = this;
+        Model.records[this.id] = this;
     },
     update: function () {
-        dots.records[this.id] = this;
+        Model.records[this.id] = this;
     },
     save: function () {
         this.newRecord ? this.create() : this.update();
     },
     destroy: function () {
-        delete dots.records[this.id];
+        delete Model.records[this.id];
     },
+    find: function (id) {
+        var record = this.records[id];
+        if (!record) throw('Unknown record id');
+        return record.dup();
+    },
+    dup: function () {
+        return $.extend(true, {}, this);
+    },
+    init: function () {
+        var instance = Object.create(this.prototype);
+        instance.parent = this;
+        instance.init.apply(instance, arguments);
+        return instance;
+    }
+};
+
+// Dot constructor
+Dot = function (item) {
+    $.extend(this, item);
+};
+Dot.prototype = Object.create(Model);
+
+$.extend(Dot.prototype, {
     imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
     icons: {
         red: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
@@ -80,41 +121,6 @@ Dot.prototype = {
                 break;
         }
     }
-};
-
-// id generator
-Math.guid = function () {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
-
-    function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    }).toUpperCase()
-};
-
-/* map initialization */
-var dots = {};      // model
-var dotsReady = []; // leaflet.js markers array
-
-$.ajax({
-    type: "GET",
-    url: "/dots",
-    contentType: "application/json; charset=utf-8",
-    success: function (data) {
-        dots = new Dots(JSON.parse(data));
-
-        for (var item in dots.records) {
-            var dot = dots.records[item];
-            var marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
-            dotsReady.push(marker);
-        }
-
-        initialize();
-    },
-    error: function (data) {
-        console.log("ajax error");
-        console.log(data);
-    }
 });
 
 function initialize() {
@@ -122,15 +128,10 @@ function initialize() {
     var mapMaxZoom = 5;
 
     // add markers to map
-    map = L.map('map', {
-        layers: dotsReady
-    }).setView([70, 10], 5);
+    map = L.map('map', { layers: Model.markers }).setView([70, 10], 5);
 
     // map draggable area
-    map.setMaxBounds([
-        [5, -180],
-        [122, 100]
-    ]);
+    map.setMaxBounds([ [5, -180], [122, 100] ]);
 
     // map size
     var mapBounds = new L.LatLngBounds(
@@ -152,3 +153,12 @@ function initialize() {
         $('.input-position', that).val([e.latlng.lat, e.latlng.lng]).attr('disabled', 'disabled');
     });
 }
+
+// id generator
+Math.guid = function () {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+        function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        }).toUpperCase();
+};

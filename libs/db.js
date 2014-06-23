@@ -1,6 +1,6 @@
-var dots = [
-    {
-        id       : 17,
+var dots = {
+    "92F51845-3779-4EE5-AD14-FD0144504236" : {
+        id       : "92F51845-3779-4EE5-AD14-FD0144504236",
         icon     : "red",
         position : [42,30],
         template : null,
@@ -12,8 +12,8 @@ var dots = [
         homePhone : "2-53-99",
         mobilePhone : "937-326-79-12"
     },
-    {
-        id       : 98,
+    "C296E19D-E084-4344-8EBD-DDF2209BDB37" : {
+        id       : "C296E19D-E084-4344-8EBD-DDF2209BDB37",
         icon     : "green",
         position : [70.5,1.2],
         template : null,
@@ -25,8 +25,8 @@ var dots = [
         homePhone : "2-15-56",
         mobilePhone : "937-326-79-12"
     },
-    {
-        id       : 228,
+    "EDCE943E-2203-4545-8060-DF01FDBAFD0B" : {
+        id       : "EDCE943E-2203-4545-8060-DF01FDBAFD0B",
         icon     : "blue",
         position : [73.5,4.2],
         template : null,
@@ -38,6 +38,6 @@ var dots = [
         homePhone : "2-08-11",
         mobilePhone : "777-342-12-75"
     }
-];
+};
 
 module.exports.dots = dots;
