@@ -7,6 +7,7 @@ $.ajax({
     contentType: "application/json; charset=utf-8",
     success: function (data) {
         Model.getRecords(data);
+        Model.getLayers();
         initialize();
     },
     error: function (data) {
@@ -24,6 +25,7 @@ var LeafIcon = L.Icon.extend({
 var Model = {
     records : {},
     markers : [],
+    layers  : {},
     getRecords : function (data) {
         //get records object
         data = JSON.parse(data);
@@ -33,9 +35,32 @@ var Model = {
         // get markers array
         for (var item in Model.records) {
             var dot = Model.records[item];
-            console.log(dot);
             var marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
             Model.markers.push(marker);
+        }
+    },
+    getLayers: function () {
+        var layers = [];
+        // get all item layers
+        for (var item in Model.records) {
+            layers.push(Model.records[item].layer)
+        }
+        // remove duplicates
+        layers = layers.filter(function(elem, pos) {
+            return layers.indexOf(elem) == pos;
+        });
+        // create layers in Model
+        for (var i = 0; i < layers.length; i++) {
+            Model.layers[layers[i]] = [];
+        }
+        // create sorted Model.layers
+        for (var item in Model.records) {
+            var layerName = Model.records[item].layer;
+            if (layerName in Model.layers) {
+                var dot = Model.records[item];
+                var marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+                Model.layers[layerName].push(marker);
+            }
         }
     },
     newRecord : true,
@@ -77,8 +102,8 @@ Dot.prototype = Object.create(Model);
 $.extend(Dot.prototype, {
     imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
     icons: {
-        red: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
-        blue: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
+        red:   new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
+        blue:  new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
         green: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
     },
     popupTemplate: function (context) {
@@ -127,10 +152,23 @@ function initialize() {
     var mapMinZoom = 4;
     var mapMaxZoom = 5;
 
-    // add markers to map
-    map = L.map('map', { layers: Model.markers }).setView([70, 10], 5);
+    var xxx = [L.marker([50.5, 30.5]), L.marker([45.5, 25.5]), L.marker([40.5, 20.5])];
+    var cities = L.layerGroup(xxx);
+    var models = L.layerGroup(Model.markers);
 
-    // map draggable area
+    var staticLayer = {
+        "Models": models
+    };
+
+    var dynamicLayer = {
+        "Cities": cities
+    };
+
+
+    map = L.map('map', { layers: [cities, models] });
+
+    // map default view & draggable area
+    map.setView([70, 10], 5);
     map.setMaxBounds([ [5, -180], [122, 100] ]);
 
     // map size
@@ -139,6 +177,7 @@ function initialize() {
         map.unproject([6400, 0], mapMaxZoom)
     );
 
+    // add markers to map
     L.tileLayer('tiles/{z}/{x}/{y}.png', {
         minZoom: mapMinZoom,
         maxZoom: mapMaxZoom,
@@ -146,9 +185,12 @@ function initialize() {
         noWrap: true
     }).addTo(map);
 
+    // add layers control (top right page corner)
+    L.control.layers(staticLayer, dynamicLayer).addTo(map);
+
     // add marker on map click
     map.addEventListener('click', function (e) {
-        that = $('#placeDot');
+        var that = $('#placeDot');
         $.fancybox.open(that);
         $('.input-position', that).val([e.latlng.lat, e.latlng.lng]).attr('disabled', 'disabled');
     });
