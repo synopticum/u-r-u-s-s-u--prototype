@@ -56,7 +56,6 @@ var Model = {
     },
     newRecord : true,
     create: function (url, callback) {
-        // create on client
         this.newRecord = false;
         Model.records[this.id] = this;
         // create on server
@@ -64,10 +63,9 @@ var Model = {
         console.log('dot created ' + this.id);
     },
     update: function (url, callback) {
-        // create on client
         Model.records[this.id] = this;
         // update on server
-        $.post(url, JSON.stringify(this), callback);
+        $.post(url, { please: "update marker" }, callback);
         console.log('dot updated ' + this.id);
     },
     save: function (url, callback) {
@@ -75,9 +73,10 @@ var Model = {
         console.log('dot saved ' + this.id);
     },
     destroy: function (url, callback) {
+        map.removeLayer(Model.records[this.id].marker);
         delete Model.records[this.id];
         // remove from server
-        $.post(url, JSON.stringify(this), callback);
+        $.post(url, { please: "delete marker" }, callback);
         console.log('dot destroyed ' + this.id);
     },
     find: function (id) {

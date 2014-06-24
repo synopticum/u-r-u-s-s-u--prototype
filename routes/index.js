@@ -4,7 +4,7 @@ module.exports = function (app) {
     app.get('/', index);
     app.get('/admin', admin);
     app.get('/dots', sendDots);
-    app.post('/dot/add', addDot);
+    app.post('/dot', addDot);
 };
 
 var index = function (req, res) {
@@ -22,7 +22,7 @@ var sendDots = function (req, res) {
 var addDot = function (req, res) {
     req.on("data", function (data) {
         var obj = data.toString();
-        console.log(JSON.parse(obj));
+        console.log(obj);
     });
     res.end("JSON accepted by server");
 };
