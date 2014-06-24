@@ -15,18 +15,19 @@ var LeafIcon = L.Icon.extend({
 // model
 var Model = {
     records : {},
-    markers : [],
     layers  : {},
     getRecords : function (data) {
-        //get records object
+        // get records
         for (var item in data) {
             Model.records[item] = new Dot(data[item]);
+            var dot = Model.records[item];
+            dot.marker = L.marker(dot.position, { icon: dot.getIcon() })
+                .bindPopup(Dot.prototype.popupTemplate.call(dot, dot));
         }
-        // get markers array
+        // set markers
         for (var item in Model.records) {
             var dot = Model.records[item];
-            var marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
-            Model.markers.push(marker);
+            L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
         }
     },
     getLayers: function () {
@@ -48,29 +49,41 @@ var Model = {
             var layerName = Model.records[item].layer;
             if (layerName in Model.layers) {
                 var dot = Model.records[item];
-                var marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+                var marker = Model.records[item].marker;
                 Model.layers[layerName].push(marker);
             }
         }
     },
     newRecord : true,
-    create: function () {
+    create: function (url, callback) {
+        // create on client
         this.newRecord = false;
         Model.records[this.id] = this;
+        // create on server
+        $.post(url, JSON.stringify(this), callback);
+        console.log('dot created ' + this.id);
     },
-    update: function () {
+    update: function (url, callback) {
+        // create on client
         Model.records[this.id] = this;
+        // update on server
+        $.post(url, JSON.stringify(this), callback);
+        console.log('dot updated ' + this.id);
     },
-    save: function () {
+    save: function (url, callback) {
         this.newRecord ? this.create() : this.update();
+        console.log('dot saved ' + this.id);
     },
-    destroy: function () {
+    destroy: function (url, callback) {
         delete Model.records[this.id];
+        // remove from server
+        $.post(url, JSON.stringify(this), callback);
+        console.log('dot destroyed ' + this.id);
     },
     find: function (id) {
         var record = this.records[id];
         if (!record) throw('Unknown record id');
-        return record.dup();
+        return record;
     },
     dup: function () {
         return $.extend(true, {}, this);

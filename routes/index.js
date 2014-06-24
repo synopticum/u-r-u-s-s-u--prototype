@@ -22,8 +22,7 @@ var sendDots = function (req, res) {
 var addDot = function (req, res) {
     req.on("data", function (data) {
         var obj = data.toString();
-        obj = JSON.parse(obj);
-        console.log(obj);
+        console.log(JSON.parse(obj));
     });
     res.end("JSON accepted by server");
 };
