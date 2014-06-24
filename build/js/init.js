@@ -1,19 +1,10 @@
 var map;
 var socket = io('http://localhost');
 
-$.ajax({
-    type: "GET",
-    url: "/dots",
-    contentType: "application/json; charset=utf-8",
-    success: function (data) {
-        Model.getRecords(data);
-        Model.getLayers();
-        initialize();
-    },
-    error: function (data) {
-        console.log("ajax error");
-        console.log(data);
-    }
+$.getJSON("/dots", function (data) {
+    Model.getRecords(data);
+    Model.getLayers();
+    initialize();
 });
 
 /* marker icon settings */
@@ -28,7 +19,6 @@ var Model = {
     layers  : {},
     getRecords : function (data) {
         //get records object
-        data = JSON.parse(data);
         for (var item in data) {
             Model.records[item] = new Dot(data[item]);
         }
@@ -41,7 +31,7 @@ var Model = {
     },
     getLayers: function () {
         var layers = [];
-        // get all item layers
+        // get array of layer value's for each item
         for (var item in Model.records) {
             layers.push(Model.records[item].layer)
         }
@@ -49,11 +39,11 @@ var Model = {
         layers = layers.filter(function(elem, pos) {
             return layers.indexOf(elem) == pos;
         });
-        // create layers in Model
+        // apply array to Model.layers
         for (var i = 0; i < layers.length; i++) {
             Model.layers[layers[i]] = [];
         }
-        // create sorted Model.layers
+        // fill Model.layers
         for (var item in Model.records) {
             var layerName = Model.records[item].layer;
             if (layerName in Model.layers) {
@@ -152,20 +142,18 @@ function initialize() {
     var mapMinZoom = 4;
     var mapMaxZoom = 5;
 
-    var xxx = [L.marker([50.5, 30.5]), L.marker([45.5, 25.5]), L.marker([40.5, 20.5])];
-    var cities = L.layerGroup(xxx);
-    var models = L.layerGroup(Model.markers);
+    var mainLayer   = L.layerGroup(Model.layers.main);
+    var secondLayer = L.layerGroup(Model.layers.second);
 
-    var staticLayer = {
-        "Models": models
+    var staticLayers = {
+        "Models": mainLayer
     };
 
-    var dynamicLayer = {
-        "Cities": cities
+    var dynamicLayers = {
+        "Second Layer": secondLayer
     };
 
-
-    map = L.map('map', { layers: [cities, models] });
+    map = L.map('map', { layers: [mainLayer, secondLayer] });
 
     // map default view & draggable area
     map.setView([70, 10], 5);
@@ -186,7 +174,7 @@ function initialize() {
     }).addTo(map);
 
     // add layers control (top right page corner)
-    L.control.layers(staticLayer, dynamicLayer).addTo(map);
+    L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
     // add marker on map click
     map.addEventListener('click', function (e) {
