@@ -1,107 +1,101 @@
 var map;
 var socket = io('http://localhost');
+var LeafIcon = L.Icon.extend({ options: { iconSize: [32, 32] } });
 
 $.getJSON("/dots", function (data) {
-    Model.getRecords(data);
-    Model.getLayers();
+    getRecords(data, Dots);
+    getLayers(Dots);
     initialize();
 });
 
-/* marker icon settings */
-var LeafIcon = L.Icon.extend({
-    options: { iconSize: [32, 32] }
-});
-
-// model
 var Model = {
-    records : {},
-    layers  : {},
-    getRecords : function (data) {
-        // get records
-        for (var item in data) {
-            Model.records[item] = new Dot(data[item]);
-            var dot = Model.records[item];
-            dot.marker = L.marker(dot.position, { icon: dot.getIcon() })
-                .bindPopup(Dot.prototype.popupTemplate.call(dot, dot));
-        }
-        // set markers
-        for (var item in Model.records) {
-            var dot = Model.records[item];
-            L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
-        }
+    inherited: function () {},
+    created: function () {
+        this.records = {};
     },
-    getLayers: function () {
-        var layers = [];
-        // get array of layer value's for each item
-        for (var item in Model.records) {
-            layers.push(Model.records[item].layer)
-        }
-        // remove duplicates
-        layers = layers.filter(function(elem, pos) {
-            return layers.indexOf(elem) == pos;
-        });
-        // apply array to Model.layers
-        for (var i = 0; i < layers.length; i++) {
-            Model.layers[layers[i]] = [];
-        }
-        // fill Model.layers
-        for (var item in Model.records) {
-            var layerName = Model.records[item].layer;
-            if (layerName in Model.layers) {
-                var dot = Model.records[item];
-                var marker = Model.records[item].marker;
-                Model.layers[layerName].push(marker);
+
+    prototype: {
+        init: function (atts) {
+            if (atts) this.load(atts);
+        },
+        load: function (attributes) {
+            for (var name in attributes) {
+                this[name] = attributes[name];
             }
         }
     },
-    newRecord : true,
-    create: function (url, callback) {
-        this.newRecord = false;
-        Model.records[this.id] = this;
-        // create on server
-        $.post(url, JSON.stringify(this), callback);
-        console.log('dot created ' + this.id);
+
+    // create from Model(copy Model)
+    create: function () {
+        var object = Object.create(this);
+        object.parent = this;
+        object.prototype = object.fn = Object.create(this.prototype);
+
+        object.created();
+        this.inherited(object);
+        return object;
     },
-    update: function (url, callback) {
-        Model.records[this.id] = this;
-        // update on server
-        $.post(url, { please: "update marker" }, callback);
-        console.log('dot updated ' + this.id);
-    },
-    save: function (url, callback) {
-        this.newRecord ? this.create() : this.update();
-        console.log('dot saved ' + this.id);
-    },
-    destroy: function (url, callback) {
-        map.removeLayer(Model.records[this.id].marker);
-        delete Model.records[this.id];
-        // remove from server
-        $.post(url, { please: "delete marker" }, callback);
-        console.log('dot destroyed ' + this.id);
-    },
-    find: function (id) {
-        var record = this.records[id];
-        if (!record) throw('Unknown record id');
-        return record;
-    },
-    dup: function () {
-        return $.extend(true, {}, this);
-    },
+
+    // create from Model.prototype
     init: function () {
         var instance = Object.create(this.prototype);
         instance.parent = this;
         instance.init.apply(instance, arguments);
         return instance;
+    },
+
+    extend: function (o) {
+        var extended = o.extended;
+        $.extend(this, o);
+        if (extended) extended(this);
+    },
+
+    include: function (o) {
+        var included = o.included;
+        $.extend(this.prototype, o);
+        if (included) included(this);
+    },
+    records: {}
+};
+
+// extend Model
+Model.extend({
+    find: function (id) {
+        var record = this.records[id];
+        if (!record) throw Error('Unknown ID');
+        return record.dup();
     }
-};
+});
 
-// Dot constructor
-Dot = function (item) {
-    $.extend(this, item);
-};
-Dot.prototype = Object.create(Model);
+// extend Model.prototype
+Model.include({
+    newRecord: true,
+    create: function () {
+        if (!this.id) this.id = Math.guid();
+        this.newRecord = false;
+        this.parent.records[this.id] = this.dup();
+        console.log('Created: ' + this.id);
+    },
+    destroy: function () {
+        delete this.parent.records[this.id];
+    },
+    update: function () {
+        this.parent.records[this.id] = this.dup();
+    },
+    save: function () {
+        this.newRecord ? this.create() : this.update();
+    },
+    dup: function () {
+        return $.extend(true, {}, this);
+    }
+});
 
-$.extend(Dot.prototype, {
+// Dots Model
+var Dots = Model.create();
+
+Dots.extend({ layers : {} });
+
+Dots.include({
     imageDefault: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
     icons: {
         red:   new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'}),
@@ -123,7 +117,7 @@ $.extend(Dot.prototype, {
             + dot.shortText
 
             + '<table class="dot-contacts">'
-            + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + '</mark></td></tr>'
+            + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + " " + dot.street + " " + dot.house + '</mark></td></tr>'
             + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
             + '</table>'
             + '</div>'
@@ -154,8 +148,8 @@ function initialize() {
     var mapMinZoom = 4;
     var mapMaxZoom = 5;
 
-    var mainLayer   = L.layerGroup(Model.layers.main);
-    var secondLayer = L.layerGroup(Model.layers.second);
+    var mainLayer   = L.layerGroup(Dots.layers.main);
+    var secondLayer = L.layerGroup(Dots.layers.second);
 
     var staticLayers = {
         "Models": mainLayer
@@ -192,7 +186,7 @@ function initialize() {
     map.addEventListener('click', function (e) {
         var that = $('#placeDot');
         $.fancybox.open(that);
-        $('.input-position', that).val([e.latlng.lat, e.latlng.lng]).attr('disabled', 'disabled');
+        $('.input-position', that).val([e.latlng.lat+0.15, e.latlng.lng+0.1]).attr('disabled', 'disabled');
     });
 }
 
@@ -203,4 +197,46 @@ Math.guid = function () {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         }).toUpperCase();
+};
+
+// get records from JSON to Dots model
+getRecords = function (data, model) {
+    // get records
+    for (var item in data) {
+        model.records[item] = Dots.init(data[item]);
+        var dot = model.records[item];
+        dot.title = model.records[item].title || "ne zadano";
+        dot.marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+    }
+    // set markers
+    for (var item in model.records) {
+        var dot = model.records[item];
+        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+    }
+};
+
+// get layers from records of Dots model
+getLayers = function (model) {
+    var layers = [];
+    // get array of layer value's for each item
+    for (var item in model.records) {
+        layers.push(model.records[item].layer)
+    }
+    // remove duplicates
+    layers = layers.filter(function(elem, pos) {
+        return layers.indexOf(elem) == pos;
+    });
+    // apply array to Dots.layers
+    for (var i = 0; i < layers.length; i++) {
+        model.layers[layers[i]] = [];
+    }
+    // fill Dots.layers
+    for (var item in model.records) {
+        var layerName = model.records[item].layer;
+        if (layerName in model.layers) {
+            var dot = model.records[item];
+            var marker = model.records[item].marker;
+            model.layers[layerName].push(marker);
+        }
+    }
 };

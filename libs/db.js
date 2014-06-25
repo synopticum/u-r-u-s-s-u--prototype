@@ -9,9 +9,16 @@ var dots = {
         title    : "White House",
         shortText  : "some description",
         image    : "images/tmp.jpg",
-        address  : "ул. Пушкина 32",
+        address  : "ул.",
+        street   : "Пушкина",
+        house    : "32",
         homePhone : "2-53-99",
-        mobilePhone : "937-326-79-12"
+        mobilePhone : "937-326-79-12",
+        gallery  : [
+            "http://images.com/image.jpg",
+            "http://images.com/image2.jpg",
+            "http://images.com/image3.jpg"
+        ]
     },
     "C296E19D-E084-4344-8EBD-DDF2209BDB37" : {
         id       : "C296E19D-E084-4344-8EBD-DDF2209BDB37",
@@ -23,9 +30,16 @@ var dots = {
         title    : "Уруссинская центральная районная больница",
         shortText  : "Государственное автономное учреждение здравоохранения Уруссинская центральная районная больница Ютазинского муниципального района Республики Татарстан",
         image    : "images/tmp.jpg",
-        address  : "ул. Ленина 6",
+        address  : "ул.",
+        street   : "Ленина",
+        house    : "6",
         homePhone : "2-15-56",
-        mobilePhone : "937-326-79-12"
+        mobilePhone : "937-326-79-12",
+        gallery  : [
+            "http://images.com/image.jpg",
+            "http://images.com/image2.jpg",
+            "http://images.com/image3.jpg"
+        ]
     },
     "EDCE943E-2203-4545-8060-DF01FDBAFD0B" : {
         id       : "EDCE943E-2203-4545-8060-DF01FDBAFD0B",
@@ -37,9 +51,16 @@ var dots = {
         title    : "Ultra House",
         shortText  : "org some description",
         image    : null,
-        address  : "ул. Сирина 88",
+        address  : "ул.",
+        street   : "Сирина",
+        house    : "88",
         homePhone : "2-08-11",
-        mobilePhone : "777-342-12-75"
+        mobilePhone : "777-342-12-75",
+        gallery  : [
+            "http://images.com/image.jpg",
+            "http://images.com/image2.jpg",
+            "http://images.com/image3.jpg"
+        ]
     },
     "20B7A558-2415-407F-AE6C-B77202E4952A" : {
         id       : "20B7A558-2415-407F-AE6C-B77202E4952A",
@@ -51,9 +72,16 @@ var dots = {
         title    : "Error Me",
         shortText  : "hit my domination",
         image    : null,
-        address  : "ул. Кувыкина 14",
+        address  : "ул.",
+        street   : "Кувыкина",
+        house    : "14",
         homePhone : "2-08-11",
-        mobilePhone : "777-342-12-75"
+        mobilePhone : "777-342-12-75",
+        gallery  : [
+            "http://images.com/image.jpg",
+            "http://images.com/image2.jpg",
+            "http://images.com/image3.jpg"
+        ]
     }
 };
 
