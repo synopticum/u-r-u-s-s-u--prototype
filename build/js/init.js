@@ -8,6 +8,7 @@ $.getJSON("/dots", function (data) {
     initialize();
 });
 
+// base Model
 var Model = {
     inherited: function () {},
     created: function () {
@@ -144,51 +145,49 @@ Dots.include({
     }
 });
 
-function initialize() {
-    var mapMinZoom = 4;
-    var mapMaxZoom = 5;
+if (Dots.records && Dots.layers) {
+    function initialize() {
+        var mapMinZoom = 4;
+        var mapMaxZoom = 5;
 
-    var mainLayer   = L.layerGroup(Dots.layers.main);
-    var secondLayer = L.layerGroup(Dots.layers.second);
+        var mainLayer   = L.layerGroup(Dots.layers.main);
+        var secondLayer = L.layerGroup(Dots.layers.second);
 
-    var staticLayers = {
-        "Models": mainLayer
-    };
+        var staticLayers = {
+            "Models": mainLayer
+        };
 
-    var dynamicLayers = {
-        "Second Layer": secondLayer
-    };
+        var dynamicLayers = {
+            "Second Layer": secondLayer
+        };
 
-    map = L.map('map', { layers: [mainLayer, secondLayer] });
+        map = L.map('map', { layers: [mainLayer, secondLayer] });
 
-    // map default view & draggable area
-    map.setView([70, 10], 5);
-    map.setMaxBounds([ [5, -180], [122, 100] ]);
+        // map default view & draggable area
+        map.setView([70, 10], 5);
+        map.setMaxBounds([ [5, -180], [122, 100] ]);
 
-    // map size
-    var mapBounds = new L.LatLngBounds(
-        map.unproject([0, 4000], mapMaxZoom),
-        map.unproject([6400, 0], mapMaxZoom)
-    );
+        // map size
+        var mapBounds = new L.LatLngBounds(
+            map.unproject([0, 4000], mapMaxZoom),
+            map.unproject([6400, 0], mapMaxZoom)
+        );
 
-    // add markers to map
-    L.tileLayer('tiles/{z}/{x}/{y}.png', {
-        minZoom: mapMinZoom,
-        maxZoom: mapMaxZoom,
-        bounds: mapBounds,
-        noWrap: true
-    }).addTo(map);
+        // add markers to map
+        L.tileLayer('tiles/{z}/{x}/{y}.png', {
+            minZoom: mapMinZoom,
+            maxZoom: mapMaxZoom,
+            bounds: mapBounds,
+            noWrap: true
+        }).addTo(map);
 
-    // add layers control (top right page corner)
-    L.control.layers(staticLayers, dynamicLayers).addTo(map);
+        // add layers control (top right page corner)
+        L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
-    // add marker on map click
-    map.addEventListener('click', function (e) {
-        var that = $('#placeDot');
-        $.fancybox.open(that);
-        $('.input-position', that).val([e.latlng.lat+0.15, e.latlng.lng+0.1]).attr('disabled', 'disabled');
-    });
+        map.on('click', setMarker);
+    }
 }
+else throw Error('Initialization error : records or layers not found');
 
 // id generator
 Math.guid = function () {
