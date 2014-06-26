@@ -14,7 +14,6 @@ var Model = {
     created: function () {
         this.records = {};
     },
-
     prototype: {
         init: function (atts) {
             if (atts) this.load(atts);
@@ -25,7 +24,6 @@ var Model = {
             }
         }
     },
-
     // create from Model(copy Model)
     create: function () {
         var object = Object.create(this);
@@ -36,7 +34,6 @@ var Model = {
         this.inherited(object);
         return object;
     },
-
     // create from Model.prototype
     init: function () {
         var instance = Object.create(this.prototype);
@@ -44,13 +41,11 @@ var Model = {
         instance.init.apply(instance, arguments);
         return instance;
     },
-
     extend: function (o) {
         var extended = o.extended;
         $.extend(this, o);
         if (extended) extended(this);
     },
-
     include: function (o) {
         var included = o.included;
         $.extend(this.prototype, o);
@@ -103,26 +98,6 @@ Dots.include({
         blue:  new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'}),
         green: new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'})
     },
-    popupTemplate: function (context) {
-        var dot = context;
-
-        return '<div class="dot-view">'
-            + '<a href="gallery/' + dot.id + '/1.jpg" class="fancybox" data-fancybox-group="gallery' + dot.id + '"><img src="' + dot.getImage() + '" class="dot-image"></a>'
-            + '<a href="gallery/98/2.jpg" class="fancybox" data-fancybox-group="gallery98" style="display:none;"></a>'
-            + '<a href="feeds/' + dot.id + '" class="dot-chat"></a>'
-            + '</div>'
-
-            + '<div class="dot-short-text">'
-            + '<div class="dot-title">' + dot.title + '</div>'
-
-            + dot.shortText
-
-            + '<table class="dot-contacts">'
-            + '<tr><td colspan="2" class="dot-address">Адрес: <mark>' + dot.address + " " + dot.street + " " + dot.house + '</mark></td></tr>'
-            + '<tr><td class="dot-home-phone">тел.: <mark>' + dot.homePhone + '</mark></td>' + '<td class="dot-mobile-phone">моб.: <mark>' + dot.mobilePhone + '</mark></td></tr>'
-            + '</table>'
-            + '</div>'
-    },
     getImage: function () {
         if (this.image) return this.image;
         else return this.imageDefault;
@@ -145,8 +120,10 @@ Dots.include({
     }
 });
 
+// Controller init
 if (Dots.records && Dots.layers) {
     function initialize() {
+
         var mapMinZoom = 4;
         var mapMaxZoom = 5;
 
@@ -184,19 +161,11 @@ if (Dots.records && Dots.layers) {
         // add layers control (top right page corner)
         L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
-        map.on('click', setMarker);
+        // add listeners
+        Controller.addEvents();
     }
 }
 else throw Error('Initialization error : records or layers not found');
-
-// id generator
-Math.guid = function () {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
-        function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        }).toUpperCase();
-};
 
 // get records from JSON to Dots model
 getRecords = function (data, model) {
@@ -205,12 +174,12 @@ getRecords = function (data, model) {
         model.records[item] = Dots.init(data[item]);
         var dot = model.records[item];
         dot.title = model.records[item].title || "ne zadano";
-        dot.marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+        dot.marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dotView(dot));
     }
     // set markers
     for (var item in model.records) {
         var dot = model.records[item];
-        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dot.popupTemplate(dot));
+        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dotView(dot));
     }
 };
 
@@ -238,4 +207,13 @@ getLayers = function (model) {
             model.layers[layerName].push(marker);
         }
     }
+};
+
+// id generator
+Math.guid = function () {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+        function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        }).toUpperCase();
 };

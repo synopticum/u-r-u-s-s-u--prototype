@@ -1,129 +1,37 @@
-@size: 14px;
-@color: #00B7FF;
+@import "main";
+@import "fonts";
+@import "popup";
 
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+#map { position: fixed; left: 0; top: 0; width: 100%; height: 100%; }
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+#view {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  background: red;
+  z-index: 999;
 }
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-  display: block;
-}
-body {
-  line-height: 1.2;
-}
-ol, ul {
-  list-style: none;
-}
-blockquote, q {
-  quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
+#view.over { background: blue; }
 
-.clearfix:before,
-.clearfix:after {
-  content: " ";
-  display: table;
-}
-
-.clearfix:after {
-  clear: both;
-}
-
-.clearfix {
-  *zoom: 1;
-}
-
-input, textarea, select { margin: 0; outline: none; }
-mark { background: none; }
-
-@font-face {
-  font-family: 'Noto Sans Regular';
-  src: url('../fonts/NotoSans-Regular-webfont.eot');
-  src: url('../fonts/NotoSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/NotoSans-Regular-webfont.woff') format('woff'),
-  url('../fonts/NotoSans-Regular-webfont.ttf') format('truetype'),
-  url('../fonts/NotoSans-Regular-webfont.svg#noto_sansregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto Sans Bold';
-  src: url('../fonts/NotoSans-Bold-webfont.eot');
-  src: url('../fonts/NotoSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/NotoSans-Bold-webfont.woff') format('woff'),
-  url('../fonts/NotoSans-Bold-webfont.ttf') format('truetype'),
-  url('../fonts/NotoSans-Bold-webfont.svg#noto_sansbold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Noto Sans Italic';
-  src: url('../fonts/NotoSans-Italic-webfont.eot');
-  src: url('../fonts/NotoSans-Italic-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/NotoSans-Italic-webfont.woff') format('woff'),
-  url('../fonts/NotoSans-Italic-webfont.ttf') format('truetype'),
-  url('../fonts/NotoSans-Italic-webfont.svg#noto_sansitalic') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-strong { font-weight: normal; font-family: 'Noto Sans Bold'; }
-em { font-style: normal; font-family: 'Noto Sans Italic'; }
-
-/* styles */
-html, body { height: 100% }
-
-body {
-  background: #fff;
-  font-family: 'Noto Sans Regular', Arial, sans-serif;
-  font-size: 14px;
-  color: #000;
-}
-
-#main {
-  position: relative;
+// load screen
+#clouds {
+  cursor: default;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 555;
+  width: 100%;
+  height: 100%;
   min-height: 100%;
+  background: url(../images/clouds.png);
 }
 
-#wrap {
-  margin: 0 auto;
-  padding: 0 0 100px 0;
-}
-
-#clouds { cursor: default; position: fixed; left: 0; top: 0; z-index: 555; width: 100%; height: 100%; min-height: 100%; background: url(../images/clouds.png); }
 #preloader {
   position: absolute;
   left: 50%;
@@ -135,9 +43,6 @@ body {
   background: url("../images/preloader.gif") no-repeat;
 }
 
-/* content */
-#map { position: fixed; left: 0; top: 0; width: 100%; height: 100%; }
-
 // popup design
 .dot-title {
   font-family: 'Noto Sans Bold';
@@ -146,6 +51,36 @@ body {
   line-height: 120%;
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
+}
+
+.dot-description {
+  overflow: hidden;
+  font-family: @regular;
+}
+
+.dot-text {
+
+}
+
+.dot-contacts {
+  margin: 5px 0 0 0;
+  width: 100%;
+}
+.dot-contacts td {
+  width: 50%;
+  border-bottom: 1px solid #eee;
+  padding: 3px 5px;
+  vertical-align: middle;
+  color: #666;
+  font-family: @italic;
+}
+.dot-contacts tr:last-child td {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.dot-contacts mark {
+  color: #000;
+  margin-left: 5px;
 }
 
 .dot-view {
@@ -167,124 +102,4 @@ body {
   height: 80px;
   padding: 1px;
   border: 1px solid #ccc;
-}
-
-.dot-short-text {
-  overflow: hidden;
-  font-family: 'Noto Sans Regular', Arial, sans-serif;
-}
-
-.dot-contacts {
-  margin: 5px 0 0 0;
-  width: 100%;
-}
-.dot-contacts td {
-  width: 50%;
-  border-bottom: 1px solid #eee;
-  padding: 3px 5px;
-  vertical-align: middle;
-  color: #666;
-  font-family: 'Noto Sans Italic';
-}
-.dot-contacts tr:last-child td {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-.dot-contacts mark {
-  color: #000;
-  margin-left: 5px;
-}
-
-// fancybox
-.fancybox-skin {
-  padding: 0 !important;
-  border: 2px solid #6B9B2A !important;
-}
-
-.popup {
-  display: none;
-  width: 500px;
-  padding: 20px;
-}
-
-.popup-line {
-  margin: 10px 0;
-}
-
-.popup-button {
-  cursor: pointer;
-  display: inline-block;
-  vertical-align: top;
-  border: 1px solid #CCC !important;
-  background: #FFF;
-  font-family: 'Noto Sans Regular', Arial, sans-serif;
-  font-weight: normal;
-  font-size: 14px;
-  padding: 8px 25px;
-  border-radius: 5px;
-  margin: 0;
-  outline: none;
-}
-.popup-button:hover {
-  background: #EBEBEB;
-}
-.popup-button:active {
-  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
-  background: #EBEBEB;
-}
-
-.popup-textbox, .popup-textarea {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  padding: 10px;
-  font-family: 'Noto Sans Regular';
-  font-size: 14px;
-  color: #000000;
-  background: #fff;
-}
-.popup-textarea {
-  resize: none;
-  height: 200px;
-}
-.popup-textbox:focus, .popup-textarea:focus {
-  border-color: #aaa;
-}
-
-// admin
-.cpanel {
-  width: 1000px;
-  margin: 0 auto;
-}
-
-.cpanel-box {
-  margin: 20px 0;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 0 20px 20px 20px;
-}
-
-.cpanel-box-title {
-  position: relative;
-  top: -10px;
-  display: inline-block;
-  vertical-align: top;
-  background: #fff;
-  margin: 0 0 0 10px;
-  padding: 0 10px;
-  font-size: 16px;
-}
-
-.cpanel-box table {
-  width: 100%;
-}
-
-.cpanel-box td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-.cpanel-box td:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
 }
