@@ -7,6 +7,7 @@
     <!-- vendor -->
     <script src="js/vendor/socket.io-1.0.4.js"></script>
     <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/vendor/jquery.loadTemplate-1.4.4.min.js"></script>
 
     <!-- leaflet js -->
     <link rel="stylesheet" href="js/leaflet/leaflet.css">
@@ -25,6 +26,33 @@
         <div id="map"></div>
     </div>
 
+    <!-- template's -->
+    <div class="templates">
+        <script type="text/html" id="dot-template">
+            <div id="dot-container">
+                <div class="dot-nav">
+                    <a href="" class="fancybox"><img src="" width="80" height="80" alt="" class="dot-image" data-src="image"/></a>
+                </div>
+
+                <div class="dot-description">
+                    <div class="dot-title" data-content="title"></div>
+                    <div class="dot-text" data-content="text"></div>
+
+                    <table class="dot-contacts">
+                        <tr>
+                            <td colspan="2" data-content="address"></td>
+                        </tr>
+                        <tr>
+                            <td data-content="home-phone"></td>
+                            <td data-content="mobile-phone"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </script>
+    </div>
+
+    <!-- popup's -->
     <div class="popup" id="placeDot">
         <form action="" method="post">
             <div class="popup-line">
