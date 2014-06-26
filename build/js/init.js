@@ -169,18 +169,19 @@ else throw Error('Initialization error : records or layers not found');
 
 // get records from JSON to Dots model
 getRecords = function (data, model) {
-    // get records
-    for (var item in data) {
-        model.records[item] = Dots.init(data[item]);
-        var dot = model.records[item];
-        dot.title = model.records[item].title || "ne zadano";
-        dot.marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dotView(dot));
+    if (data && model) {
+        // get records
+        for (var item in data) {
+            var dot = model.records[item] = Dots.init(data[item]);
+            dot.marker = L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(View.dot(dot));
+        }
+        // set markers
+        for (var record in model.records) {
+            var marker = model.records[record];
+            L.marker(marker.position, { icon: marker.getIcon() }).bindPopup(View.dot(marker));
+        }
     }
-    // set markers
-    for (var item in model.records) {
-        var dot = model.records[item];
-        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(dotView(dot));
-    }
+    else throw Error('Data or Model error');
 };
 
 // get layers from records of Dots model
@@ -199,11 +200,10 @@ getLayers = function (model) {
         model.layers[layers[i]] = [];
     }
     // fill Dots.layers
-    for (var item in model.records) {
-        var layerName = model.records[item].layer;
+    for (var record in model.records) {
+        var layerName = model.records[record].layer;
         if (layerName in model.layers) {
-            var dot = model.records[item];
-            var marker = model.records[item].marker;
+            var marker = model.records[record].marker;
             model.layers[layerName].push(marker);
         }
     }

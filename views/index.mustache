@@ -40,13 +40,15 @@
 
                     <table class="dot-contacts">
                         <tr>
-                            <td colspan="2" data-content="address"></td>
+                            <td colspan="2" data-content-append="address"><mark>Адрес:</mark> </td>
                         </tr>
                         <tr>
-                            <td data-content="home-phone"></td>
-                            <td data-content="mobile-phone"></td>
+                            <td data-content-append="home-phone"><mark>Тел.:</mark></td>
+                            <td data-content-append="mobile-phone"><mark>Моб.:</mark></td>
                         </tr>
                     </table>
+
+                    <div class="gallery" data-content="gallery"></div>
                 </div>
             </div>
         </script>
@@ -94,7 +96,7 @@
 <!--<div id="view"></div>-->
 <div id="clouds"><div id="preloader"></div></div>
 
-<script src="js/view.js"></script>
+<script src="js/views.js"></script>
 <script src="js/init.js"></script>
 <script src="js/controller.js"></script>
 <script src="js/ready.js"></script>
