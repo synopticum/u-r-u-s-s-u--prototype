@@ -15,9 +15,8 @@ var dots = {
         homePhone : "2-53-99",
         mobilePhone : "937-326-79-12",
         gallery  : [
-            { "gallery-item" : "http://images.com/image.jpg" },
-            { "gallery-item" : "http://images.com/image2.jpg" },
-            { "gallery-item" : "http://images.com/image3.jpg" }
+            "1.jpg",
+            "2.jpg"
         ]
     },
     "C296E19D-E084-4344-8EBD-DDF2209BDB37" : {
@@ -36,8 +35,8 @@ var dots = {
         homePhone : "2-15-56",
         mobilePhone : "937-326-79-12",
         gallery  : [
-            { "gallery-item" : "/gallery/98/1.jpg" },
-            { "gallery-item" : "/gallery/98/2.jpg" }
+            "1.jpg",
+            "2.jpg"
         ]
     },
     "EDCE943E-2203-4545-8060-DF01FDBAFD0B" : {
@@ -56,9 +55,8 @@ var dots = {
         homePhone : "2-08-11",
         mobilePhone : "777-342-12-75",
         gallery  : [
-            { "gallery-item" : "http://images.com/image.jpg" },
-            { "gallery-item" : "http://images.com/image2.jpg" },
-            { "gallery-item" : "http://images.com/image3.jpg" }
+            "1.jpg",
+            "2.jpg"
         ]
     },
     "20B7A558-2415-407F-AE6C-B77202E4952A" : {
@@ -77,9 +75,8 @@ var dots = {
         homePhone : "2-08-11",
         mobilePhone : "777-342-12-75",
         gallery  : [
-            { "gallery-item" : "http://images.com/image.jpg" },
-            { "gallery-item" : "http://images.com/image2.jpg" },
-            { "gallery-item" : "http://images.com/image3.jpg" }
+            "1.jpg",
+            "2.jpg"
         ]
     }
 };

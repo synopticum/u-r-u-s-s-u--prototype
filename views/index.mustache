@@ -9,7 +9,6 @@
     <script src="js/vendor/jquery.min.js"></script>
     <script src="js/vendor/underscore-min.js"></script>
     <script src="js/vendor/backbone-min.js"></script>
-    <script src="js/vendor/jquery.loadTemplate-1.4.4.min.js"></script>
 
     <!-- leaflet js -->
     <link rel="stylesheet" href="js/leaflet/leaflet.css">
@@ -26,36 +25,6 @@
 <div id="main">
     <div id="wrap">
         <div id="map"></div>
-    </div>
-
-    <!-- template's -->
-    <div class="templates">
-        <script type="text/html" id="dot-template">
-            <div id="dot-container">
-                <div class="dot-nav">
-                    <a href="" class="fancybox" data-href="gallery-link"><img src="" width="80" height="80" alt="" class="dot-image" data-src="image"/></a>
-                </div>
-
-                <div class="dot-description">
-                    <div class="dot-title" data-content="title"></div>
-                    <div class="dot-text" data-content="text"></div>
-
-                    <table class="dot-contacts">
-                        <tr>
-                            <td colspan="2" data-content-append="address"><mark>Адрес:</mark> </td>
-                        </tr>
-                        <tr>
-                            <td data-content-append="home-phone"><mark>Тел.:</mark></td>
-                            <td data-content-append="mobile-phone"><mark>Моб.:</mark></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </script>
-
-        <script type="text/html" id="gallery-links-template">
-            <a data-href="gallery-item" class="fancybox">xxx</a>
-        </script>
     </div>
 
     <!-- popup's -->
@@ -97,13 +66,41 @@
     </div>
 </div>
 
-<!--<div id="view"></div>-->
 <div id="clouds"><div id="preloader"></div></div>
+
+<!-- template's -->
+<div class="templates">
+    <script type="text/html" id="dot-popup-template">
+        <div id="dot-container" id="<%= id %>">
+            <div class="dot-nav">
+                <a href="/gallery/<%= id %>/1.jpg" class="fancybox" data-fancybox-group="<%= id %>"><img src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
+            </div>
+
+            <div class="dot-description">
+                <div class="dot-title"><%= title %></div>
+                <div class="dot-text"><%= text %></div>
+
+                <table class="dot-contacts">
+                    <tr>
+                        <td colspan="2"><mark>Адрес:</mark> <%= address %> <%= street %> <%= house %></td>
+                    </tr>
+                    <tr>
+                        <td><mark>Тел.:</mark> <%= homePhone %></td>
+                        <td><mark>Моб.:</mark> <%= mobilePhone %></td>
+                    </tr>
+                </table>
+
+                <div class="dot-gallery">
+                    <% if (gallery) { _.each(gallery, function (imageURL) { %> <a href="/gallery/<%= id %>/<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a> <% }); } %>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>
 
 <script src="js/views.js"></script>
 <script src="js/helpers.js"></script>
-<script src="js/binit.js"></script>
-<!--<script src="js/init.js"></script>-->
+<script src="js/init.js"></script>
 <script src="js/controller.js"></script>
 </body>
 </html>

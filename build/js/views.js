@@ -1,23 +1,18 @@
-var View = {
-    dot : function (dot) {
-        var dotResult = $('<div/>');
-        var gallery = $('<div class="dot-gallery"/>');
-
-        $(dotResult).loadTemplate($("#dot-template"),
-            {
-                'id'           : dot.attributes.id,
-                'image'        : dot.getImage(),
-                'gallery-link' : '/gallery/' + dot.attributes.id + '/1.jpg',
-                'title'        : dot.attributes.title,
-                'text'         : dot.attributes.text,
-                'address'      : dot.attributes.address + ' ' + dot.attributes.street + ' ' + dot.attributes.house,
-                'home-phone'   : dot.attributes.homePhone,
-                'mobile-phone' : dot.attributes.mobilePhone
-            });
-
-        $(gallery).loadTemplate($("#gallery-links-template"), dot.attributes.gallery);
-        $(dotResult).append(gallery);
-
-        return dotResult.get(0);
+var UserView = Backbone.View.extend({
+    template: _.template($('#dot-popup-template').html()),
+    render: function() {
+        this.$el.html(this.template(this.model.attributes));
+        return this;
+    },
+    events: {
+        "click"                : "open",
+        "click .icon.doc"         : "select",
+        "contextmenu .icon.doc"   : "showMenu",
+        "click .show_notes"       : "toggleNotes",
+        "click .title .lock"      : "editAccessLevel",
+        "mouseover .title .date"  : "showTooltip"
+    },
+    open: function() {
+        window.open(this.model.get("viewer_url"));
     }
-};
+});

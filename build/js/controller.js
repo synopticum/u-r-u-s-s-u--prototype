@@ -55,7 +55,7 @@ var exports = this;
             byUser      : null,
             position    : that.position,
             title       : that.title || "default title",
-            shortText   : that.shortText || "default description",
+            text        : that.shortText || "default description",
             image       : that.image || new BDot().defaultImage,
             icon        : that.icon,
             address     : that.address || "dst.",
@@ -69,7 +69,8 @@ var exports = this;
         }
         else throw Error('BDots.records dont exist');
 
-        L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(View.dot(dot)).addTo(map);
+        var view = new UserView();
+        L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
 
         $.fancybox.close(that);
     });
