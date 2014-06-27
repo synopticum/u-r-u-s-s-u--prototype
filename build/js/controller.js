@@ -49,22 +49,27 @@ var exports = this;
         that.homePhone   = $(".input-home-phone", that).val();
         that.mobilePhone = $(".input-mobile-phone", that).val();
 
-        var dot = Dots.init();
-        dot.id          = helper.guid();
-        dot.template    = null;
-        dot.byUser      = null;
-        dot.position    = that.position;
-        dot.title       = that.title;
-        dot.shortText   = that.shortText;
-        dot.image       = that.image;
-        dot.icon        = that.icon;
-        dot.address     = that.address;
-        dot.homePhone   = that.homePhone;
-        dot.mobilePhone = that.mobilePhone;
+        var dot = new BDot({
+            id          : helper.guid(),
+            template    : null,
+            byUser      : null,
+            position    : that.position,
+            title       : that.title || "default title",
+            shortText   : that.shortText || "default description",
+            image       : that.image || new BDot().defaultImage,
+            icon        : that.icon,
+            address     : that.address || "dst.",
+            street      : that.address || "Defeult Street",
+            house       : that.address || "666",
+            homePhone   : that.homePhone || "default phone",
+            mobilePhone : that.mobilePhone || "default mobile"
+        });
+        if (BDots.records) {
+            BDots.records.add(dot);
+        }
+        else throw Error('BDots.records dont exist');
 
-        dot.create();
-
-        L.marker(dot.position, { icon: dot.getIcon() }).bindPopup(View.dot(dot)).addTo(map);
+        L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(View.dot(dot)).addTo(map);
 
         $.fancybox.close(that);
     });

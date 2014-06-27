@@ -7,6 +7,8 @@
     <!-- vendor -->
     <script src="js/vendor/socket.io-1.0.4.js"></script>
     <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/vendor/underscore-min.js"></script>
+    <script src="js/vendor/backbone-min.js"></script>
     <script src="js/vendor/jquery.loadTemplate-1.4.4.min.js"></script>
 
     <!-- leaflet js -->
@@ -31,7 +33,7 @@
         <script type="text/html" id="dot-template">
             <div id="dot-container">
                 <div class="dot-nav">
-                    <a href="" class="fancybox"><img src="" width="80" height="80" alt="" class="dot-image" data-src="image"/></a>
+                    <a href="" class="fancybox" data-href="gallery-link"><img src="" width="80" height="80" alt="" class="dot-image" data-src="image"/></a>
                 </div>
 
                 <div class="dot-description">
@@ -47,10 +49,12 @@
                             <td data-content-append="mobile-phone"><mark>Моб.:</mark></td>
                         </tr>
                     </table>
-
-                    <div class="gallery" data-content="gallery"></div>
                 </div>
             </div>
+        </script>
+
+        <script type="text/html" id="gallery-links-template">
+            <a data-href="gallery-item" class="fancybox">xxx</a>
         </script>
     </div>
 
@@ -98,8 +102,8 @@
 
 <script src="js/views.js"></script>
 <script src="js/helpers.js"></script>
-<script src="js/init.js"></script>
+<script src="js/binit.js"></script>
+<!--<script src="js/init.js"></script>-->
 <script src="js/controller.js"></script>
-<script src="js/ready.js"></script>
 </body>
 </html>
