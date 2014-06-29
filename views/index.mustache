@@ -31,66 +31,6 @@
     <div id="wrap">
         <div id="map"></div>
     </div>
-
-    <!-- popup's -->
-    <div class="popup" id="placeDot">
-        <table>
-            <tr>
-                <td colspan="3">
-                    <input type="hidden" class="input-position popup-textbox" placeholder="Заголовок метки"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="input-layer selectbox">
-                        <option value="main">Основной слой</option>
-                        <option value="second">Второстепенный слой</option>
-                    </select>
-                </td>
-                <td colspan="2">
-                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="input-address selectbox">
-                        <option value="">?</option>
-                        <option value="ул.">ул.</option>
-                        <option value="пер.">пер.</option>
-                    </select>
-                </td>
-                <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
-                <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
-            </tr>
-            <tr>
-                <td><input type="text" class="input-home-phone popup-textbox" placeholder="Рабочий телефон"/></td>
-                <td><input type="text" class="input-mobile-phone popup-textbox" placeholder="Мобильный телефон"/></td>
-                <td><input type="text" class="popup-textbox" id="selectMarker" value="Цвет маркера" /></td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="file" name="" class="input-image" placeholder="" />
-                </td>
-                <td colspan="2"><button class="popup-button input-submit">Добавить метку</button></td>
-            </tr>
-        </table>
-
-        <div id="selectMarkerPopup">
-            <div class="markerset">
-                <input type="radio" id="radio1" name="markerset" value="red"><label for="radio1"><img src="js/leaflet/images/markers/marker-icon-pink.png" alt=""/></label>
-                <input type="radio" id="radio2" name="markerset" value="green" checked="checked"><label for="radio2"><img src="js/leaflet/images/markers/marker-icon-green.png" alt=""/></label>
-                <input type="radio" id="radio3" name="markerset" value="blue"><label for="radio3"><img src="js/leaflet/images/markers/marker-icon-blue.png" alt=""/></label>
-                <input type="radio" id="radio4" name="markerset" value="grayred"><label for="radio4"><img src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
-                <input type="radio" id="radio5" name="markerset" value="graygreen"><label for="radio5"><img src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
-                <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div id="clouds">
@@ -99,6 +39,7 @@
 
 <!-- template's -->
 <div class="templates">
+    <!-- dot popup template -->
     <script type="text/html" id="dot-popup-template">
         <div class="dot-container" id="<%= id %>">
             <div class="dot-nav">
@@ -137,11 +78,78 @@
             </div>
         </div>
     </script>
+
+    <!-- add dot popup template -->
+    <script type="text/html" id="adddot-popup-template">
+        <table>
+            <tr>
+                <td>
+                    <select class="input-layer selectbox">
+                        <option value="main">Основной слой</option>
+                        <option value="second">Второстепенный слой</option>
+                    </select>
+                </td>
+                <td colspan="2">
+                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select class="input-address selectbox">
+                        <option value="">?</option>
+                        <option value="ул.">ул.</option>
+                        <option value="пер.">пер.</option>
+                    </select>
+                </td>
+                <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
+                <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="input-home-phone popup-textbox" placeholder="Рабочий телефон"/></td>
+                <td><input type="text" class="input-mobile-phone popup-textbox" placeholder="Мобильный телефон"/></td>
+                <td><input type="text" class="input-marker popup-textbox" value="Цвет маркера"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="file" name="" class="input-image" placeholder=""/>
+                </td>
+                <td colspan="2">
+                    <button class="popup-button input-submit">Добавить метку</button>
+                </td>
+            </tr>
+        </table>
+
+        <div id="selectMarkerPopup">
+            <div class="markerset">
+                <input type="radio" id="radio1" name="markerset" value="red"><label for="radio1"><img
+                    src="js/leaflet/images/markers/marker-icon-pink.png" alt=""/></label>
+
+                <input type="radio" id="radio2" name="markerset" value="green" checked="checked"><label
+                    for="radio2"><img src="js/leaflet/images/markers/marker-icon-green.png" alt=""/></label>
+
+                <input type="radio" id="radio3" name="markerset" value="blue"><label for="radio3"><img
+                    src="js/leaflet/images/markers/marker-icon-blue.png" alt=""/></label>
+
+                <input type="radio" id="radio4" name="markerset" value="grayred"><label for="radio4"><img
+                    src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
+
+                <input type="radio" id="radio5" name="markerset" value="graygreen"><label for="radio5"><img
+                    src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
+
+                <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
+                    src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
+            </div>
+        </div>
+    </script>
 </div>
 
-<script src="js/views.js"></script>
 <script src="js/helpers.js"></script>
-<script src="js/controller.js"></script>
 <script src="js/init.js"></script>
+<script src="js/views.js"></script>
 </body>
 </html>

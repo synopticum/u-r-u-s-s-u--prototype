@@ -45,7 +45,7 @@ var BModel = Backbone.Model.extend({
         /* create dots records */
         for (var jsonItem in data) {
             var model = new BDot(data[jsonItem]);
-            var view = new UserView();
+            var view = new View.showDot();
 
             model.attributes.marker = L.marker(model.attributes.position, { icon: model.getIcon() })
                 .bindPopup(view.template(model.attributes));
@@ -138,5 +138,9 @@ function initialize() {
     L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
     // add listeners
-    Controller.addMapEvents();
+    View.map.init();
+
+    // plugins
+    $(".selectbox").selectbox();
+    $(".markerset").buttonset();
 }
