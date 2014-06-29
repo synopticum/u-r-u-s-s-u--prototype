@@ -59,7 +59,7 @@ var dots = {
             "2.jpg"
         ]
     },
-    "20B7A558-2415-407F-AE6C-B77202E4952A" : {
+    "20B7A558-ZZZZ-407F-AE6C-B77202E4952A" : {
         id       : "20B7A558-2415-407F-AE6C-B77202E4952A",
         icon     : "green",
         position : [43.5,1.2],

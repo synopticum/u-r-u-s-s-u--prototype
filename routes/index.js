@@ -4,7 +4,8 @@ module.exports = function (app) {
     app.get('/', index);
     app.get('/admin', admin);
     app.get('/dots', sendDots);
-    app.post('/dot', addDot);
+
+    app.put('/dot', addDot);
 };
 
 var index = function (req, res) {
@@ -17,12 +18,15 @@ var admin = function (req, res) {
 
 var sendDots = function (req, res) {
     res.end(JSON.stringify(database.dots));
+    console.log('dots sended');
 };
 
 var addDot = function (req, res) {
     req.on("data", function (data) {
-        var dot = data.toString();
-        console.log(dot);
+        var z = JSON.parse(data);
+        console.log('Incoming record: ');
+        console.log(z);
     });
-    res.end("JSON accepted by server");
+    res.send(200, "JSON accepted by server");
+    res.end();
 };
