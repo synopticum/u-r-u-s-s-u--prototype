@@ -59,10 +59,20 @@ var View = {
                 var popupId = $(this._popup._wrapper).find('.dot-container').attr('id');
 
                 $(this._popup._wrapper).find('.dot-edit').click(function () {
-                    var view = new View.editDot({ editId: popupId });
+                    var view = new View.editDot({ dotId: popupId });
                     $.fancybox.open(view.render());
                     $(".selectbox").selectbox();
                     $(".markerset").buttonset();
+                })
+            });
+
+            // destroy dot
+            map.on('popupopen', function (e) {
+                var popupId = $(this._popup._wrapper).find('.dot-container').attr('id');
+
+                $(this._popup._wrapper).find('.dot-destroy').click(function () {
+                    var view = new View.removeDot({ dotId: popupId });
+                    $.fancybox.open(view.render());
                 })
             });
         },
@@ -82,19 +92,115 @@ var View = {
         }
     }),
 
+    removeDot: Backbone.View.extend({
+        dot: null,
+        dotId: null,
+        initialize: function (obj) {
+            this.dotId = obj.dotId;
+            this.dot = BDots.records.get(this.dotId).attributes;
+        },
+        id: 'destroydot-popup',
+        className: 'popup',
+        template: _.template($('#destroydot-popup-template').html()),
+        render: function() {
+            return this.$el.html(this.template(this.dot));
+        },
+        events: {
+            'click .input-submit': 'submit'
+        },
+        'submit': function() {
+            var _this = $(this.$el);
+
+            if (BDots.records) {
+                var record = BDots.records.get(this.dot.id);
+                record.destroy(null, {
+                    success: function(response){
+                        console.log('dot ' + this.dot.id + ' removed from server!!');
+                        console.log(response);
+                    },
+                    error: function(response){
+                        console.log('dot ' + this.dot.id + ' remove server error!');
+                        console.log(response);
+                    }
+                });
+            }
+            else throw Error('BDots.records don t exist');
+
+            $.fancybox.close(_this);
+        }
+    }),
+
     editDot: Backbone.View.extend({
         dot: null,
-        editId: null,
-        initialize: function (id) {
-            this.dot = BDots.records.get(id.editId).attributes;
-            this.editId = id.editId;
+        dotId: null,
+        initialize: function (obj) {
+            this.dotId = obj.dotId;
+            this.dot = BDots.records.get(this.dotId).attributes;
         },
         id: 'editdot-popup',
         className: 'popup',
         template: _.template($('#editdot-popup-template').html()),
         render: function() {
-            console.log(this.dot);
             return this.$el.html(this.template(this.dot));
+        },
+        events: {
+            'click .input-submit': 'submit'
+        },
+        'submit': function() {
+            var _this = $(this.$el);
+
+            _this.id          = this.dotId;
+            _this.position    = this.dot.position;
+            _this.layer       = $(".input-layer", _this).val();
+            _this.title       = $(".input-title", _this).val();
+            _this.text        = $(".input-short-text", _this).val();
+            _this.image       = $(".input-image", _this).val();
+            _this.icon        = $("input[name='markerset']:checked", _this).val();
+            _this.address     = $(".input-address", _this).val();
+            _this.street      = $(".input-street", _this).val();
+            _this.house       = $(".input-house", _this).val();
+            _this.homePhone   = $(".input-home-phone", _this).val();
+            _this.mobilePhone = $(".input-mobile-phone", _this).val();
+
+            var dot = new BDot({
+                id          : _this.id,
+                template    : null,
+                byUser      : null,
+                layer       : _this.layer,
+                position    : _this.position,
+                title       : _this.title || "default title",
+                text        : _this.text || "default description",
+                image       : _this.image || new BDot().defaultImage,
+                icon        : _this.icon,
+                address     : _this.address || "dst.",
+                street      : _this.street || "Default Street",
+                house       : _this.house || "666",
+                homePhone   : _this.homePhone || "default phone",
+                mobilePhone : _this.mobilePhone || "default mobile",
+                gallery     : [] || null
+            });
+
+            if (BDots.records) {
+                var record = BDots.records.get(this.dot.id);
+                record.set(dot.attributes);
+
+                dot.save(null, {
+                    success: function(model, response){
+                        console.log('dot ' + dot.id + ' updated on server!!');
+                        console.log(response);
+                    },
+                    error: function(model, response){
+                        console.log('dot ' + dot.id + ' creation server error!');
+//                        console.log(response);
+                    }
+                });
+            }
+            else throw Error('BDots.records don t exist');
+
+            var view = new View.showDot(dot.attributes);
+            L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
+
+            $.fancybox.close(_this);
         }
     }),
 
@@ -164,7 +270,8 @@ var View = {
                     error: function(model, response){
                         console.log('creation server error!');
 //                        console.log(response);
-                    }});
+                    }
+                });
             }
             else throw Error('BDots.records don t exist');
 
