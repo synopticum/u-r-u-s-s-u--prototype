@@ -42,6 +42,7 @@
     <!-- dot popup template -->
     <script type="text/html" id="dot-popup-template">
         <div class="dot-container" id="<%= id %>">
+            <span class="dot-edit"></span>
             <div class="dot-nav">
                 <a href="/gallery/<%= id %>/1.jpg" class="fancybox" data-fancybox-group="<%= id %>"><img
                         src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
@@ -145,6 +146,52 @@
                     src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
             </div>
         </div>
+    </script>
+
+    <!-- edit dot popup template -->
+    <script type="text/html" id="editdot-popup-template">
+        <table>
+            <tr>
+                <td>
+                    <select class="input-layer selectbox">
+                        <option value="main">Основной слой</option>
+                        <option value="second">Второстепенный слой</option>
+                    </select>
+                </td>
+                <td colspan="2">
+                    <input type="text" class="input-title popup-textbox" value="<%= title %>"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <textarea class="input-short-text popup-textarea"><%= text %></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select class="input-address selectbox">
+                        <option value="">?</option>
+                        <option value="ул.">ул.</option>
+                        <option value="пер.">пер.</option>
+                    </select>
+                </td>
+                <td><input type="text" class="input-street popup-textbox" value="<%= street %>"/></td>
+                <td><input type="text" class="input-house popup-textbox" value="<%= house %>"/></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="input-home-phone popup-textbox" value="<%= homePhone %>"/></td>
+                <td><input type="text" class="input-mobile-phone popup-textbox" value="<%= mobilePhone %>"/></td>
+                <td><input type="text" class="input-marker popup-textbox" value="Цвет маркера"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="file" name="" class="input-image" placeholder=""/>
+                </td>
+                <td colspan="2">
+                    <button class="popup-button input-submit">Обновить метку</button>
+                </td>
+            </tr>
+        </table>
     </script>
 </div>
 

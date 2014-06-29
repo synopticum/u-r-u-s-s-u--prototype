@@ -45,26 +45,33 @@ var View = {
             L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
             map.on('load', View.map.hideLoadScreen);
-            map.on('click', View.map.setMarker);
+
+            // set dot
+            map.on('click', function (position) {
+                var view = new View.addDot();
+                $.fancybox.open(view.render(position));
+                $(".selectbox").selectbox();
+                $(".markerset").buttonset();
+            });
+
+            // edit dot
             map.on('popupopen', function (e) {
-                console.log($(this));
-                $(this._popup._wrapper).find('.dot-title').click(function () {
-                    alert('clicked');
+                var popupId = $(this._popup._wrapper).find('.dot-container').attr('id');
+
+                $(this._popup._wrapper).find('.dot-edit').click(function () {
+                    var view = new View.editDot({ editId: popupId });
+                    $.fancybox.open(view.render());
+                    $(".selectbox").selectbox();
+                    $(".markerset").buttonset();
                 })
             });
-        },
-        setMarker : function (position) {
-            var view = new View.addDot();
-            $.fancybox.open(view.render(position));
-            $(".selectbox").selectbox();
-            $(".markerset").buttonset();
         },
         hideLoadScreen : $('#clouds').fadeOut(2000)
     },
 
     showDot : Backbone.View.extend({
         initialize: function () {
-//        console.log('init')
+//            console.log(model)
         },
         template: _.template($('#dot-popup-template').html()),
         events: {
@@ -75,7 +82,23 @@ var View = {
         }
     }),
 
-    addDot : Backbone.View.extend({
+    editDot: Backbone.View.extend({
+        dot: null,
+        editId: null,
+        initialize: function (id) {
+            this.dot = BDots.records.get(id.editId).attributes;
+            this.editId = id.editId;
+        },
+        id: 'editdot-popup',
+        className: 'popup',
+        template: _.template($('#editdot-popup-template').html()),
+        render: function() {
+            console.log(this.dot);
+            return this.$el.html(this.template(this.dot));
+        }
+    }),
+
+    addDot: Backbone.View.extend({
         id: 'adddot-popup',
         className: 'popup',
         position: [],
@@ -100,35 +123,35 @@ var View = {
             $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
-            var that = $(this.$el);
+            var _this = $(this.$el);
 
-            that.position    = this.position;
-            that.layer       = $(".input-layer", that).val();
-            that.title       = $(".input-title", that).val();
-            that.text        = $(".input-short-text", that).val();
-            that.image       = $(".input-image", that).val();
-            that.icon        = $("input[name='markerset']:checked", that).val();
-            that.address     = $(".input-address", that).val();
-            that.street      = $(".input-street", that).val();
-            that.house       = $(".input-house", that).val();
-            that.homePhone   = $(".input-home-phone", that).val();
-            that.mobilePhone = $(".input-mobile-phone", that).val();
+            _this.position    = this.position;
+            _this.layer       = $(".input-layer", _this).val();
+            _this.title       = $(".input-title", _this).val();
+            _this.text        = $(".input-short-text", _this).val();
+            _this.image       = $(".input-image", _this).val();
+            _this.icon        = $("input[name='markerset']:checked", _this).val();
+            _this.address     = $(".input-address", _this).val();
+            _this.street      = $(".input-street", _this).val();
+            _this.house       = $(".input-house", _this).val();
+            _this.homePhone   = $(".input-home-phone", _this).val();
+            _this.mobilePhone = $(".input-mobile-phone", _this).val();
 
             var dot = new BDot({
                 id          : helper.guid(),
                 template    : null,
                 byUser      : null,
-                layer       : that.layer,
-                position    : that.position,
-                title       : that.title || "default title",
-                text        : that.text || "default description",
-                image       : that.image || new BDot().defaultImage,
-                icon        : that.icon,
-                address     : that.address || "dst.",
-                street      : that.street || "Default Street",
-                house       : that.house || "666",
-                homePhone   : that.homePhone || "default phone",
-                mobilePhone : that.mobilePhone || "default mobile",
+                layer       : _this.layer,
+                position    : _this.position,
+                title       : _this.title || "default title",
+                text        : _this.text || "default description",
+                image       : _this.image || new BDot().defaultImage,
+                icon        : _this.icon,
+                address     : _this.address || "dst.",
+                street      : _this.street || "Default Street",
+                house       : _this.house || "666",
+                homePhone   : _this.homePhone || "default phone",
+                mobilePhone : _this.mobilePhone || "default mobile",
                 gallery     : [] || null
             });
             if (BDots.records) {
@@ -140,15 +163,15 @@ var View = {
                     },
                     error: function(model, response){
                         console.log('creation server error!');
-                        console.log(response);
+//                        console.log(response);
                     }});
             }
             else throw Error('BDots.records don t exist');
 
-            var view = new View.showDot();
+            var view = new View.showDot(dot.attributes);
             L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
 
-            $.fancybox.close(that);
+            $.fancybox.close(_this);
         }
     })
 };
