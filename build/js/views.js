@@ -63,17 +63,12 @@ var View = {
                     $.fancybox.open(view.render());
                     $(".selectbox").selectbox();
                     $(".markerset").buttonset();
-                })
-            });
-
-            // destroy dot
-            map.on('popupopen', function (e) {
-                var popupId = $(this._popup._wrapper).find('.dot-container').attr('id');
+                });
 
                 $(this._popup._wrapper).find('.dot-destroy').click(function () {
                     var view = new View.removeDot({ dotId: popupId });
                     $.fancybox.open(view.render());
-                })
+                });
             });
         },
         hideLoadScreen : $('#clouds').fadeOut(2000)
@@ -113,12 +108,12 @@ var View = {
 
             if (BDots.records) {
                 var record = BDots.records.get(this.dot.id);
-                record.destroy(null, {
-                    success: function(response){
+                record.destroy({asdsdasd:'czczcnjksjg'}, {
+                    success: function(model, response){
                         console.log('dot ' + this.dot.id + ' removed from server!!');
                         console.log(response);
                     },
-                    error: function(response){
+                    error: function(model, response){
                         console.log('dot ' + this.dot.id + ' remove server error!');
                         console.log(response);
                     }
@@ -127,6 +122,7 @@ var View = {
             else throw Error('BDots.records don t exist');
 
             $.fancybox.close(_this);
+            map.removeLayer(this.dot.marker);
         }
     }),
 
@@ -258,7 +254,8 @@ var View = {
                 house       : _this.house || "666",
                 homePhone   : _this.homePhone || "default phone",
                 mobilePhone : _this.mobilePhone || "default mobile",
-                gallery     : [] || null
+                gallery     : [] || null,
+                marker      : L.marker(_this.position)
             });
             if (BDots.records) {
                 BDots.records.add(dot);

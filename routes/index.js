@@ -37,6 +37,6 @@ var destroyDot = function (req, res) {
         console.log('Incoming record: ');
         console.log(z);
     });
-    console.log('del!');
+    console.log('delete method!');
     res.end("JSON accepted by server");
 };
