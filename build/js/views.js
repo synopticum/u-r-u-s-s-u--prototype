@@ -1,6 +1,49 @@
+var map;
+var LeafIcon = L.Icon.extend({ options: { iconSize: [32, 32] } });
+
 var View = {
     map: {
         init: function () {
+            var mapMinZoom = 4;
+            var mapMaxZoom = 5;
+
+            var mainLayer = L.layerGroup(BDots.layers.main);
+            var secondLayer = L.layerGroup(BDots.layers.second);
+
+            var staticLayers = {
+                "Models": mainLayer
+            };
+
+            var dynamicLayers = {
+                "Second Layer": secondLayer
+            };
+
+            map = L.map('map', { layers: [mainLayer, secondLayer] });
+
+            // map default view & draggable area
+            map.setView([70, 10], 5);
+            map.setMaxBounds([
+                [5, -180],
+                [122, 100]
+            ]);
+
+            // map size
+            var mapBounds = new L.LatLngBounds(
+                map.unproject([0, 4000], mapMaxZoom),
+                map.unproject([6400, 0], mapMaxZoom)
+            );
+
+            // add markers to map
+            L.tileLayer('tiles/{z}/{x}/{y}.png', {
+                minZoom: mapMinZoom,
+                maxZoom: mapMaxZoom,
+                bounds: mapBounds,
+                noWrap: true
+            }).addTo(map);
+
+            // add layers control (top right page corner)
+            L.control.layers(staticLayers, dynamicLayers).addTo(map);
+
             map.on('load', View.map.hideLoadScreen);
             map.on('click', View.map.setMarker);
             map.on('popupopen', function (e) {
@@ -13,9 +56,12 @@ var View = {
         setMarker : function (position) {
             var view = new View.addDot();
             $.fancybox.open(view.render(position));
+            $(".selectbox").selectbox();
+            $(".markerset").buttonset();
         },
         hideLoadScreen : $('#clouds').fadeOut(2000)
     },
+
     showDot : Backbone.View.extend({
         initialize: function () {
 //        console.log('init')
@@ -47,16 +93,14 @@ var View = {
             'click #selectMarkerPopup input': 'select-marker-close'
         },
         'select-marker-open': function (e) {
-            console.log('selectmarker open');
             $('#selectMarkerPopup').fadeIn('fast');
             e.preventDefault();
         },
         'select-marker-close': function () {
-            console.log('selectmarker close');
             $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
-            var that = $(this);
+            var that = $(this.$el);
 
             that.position    = this.position;
             that.layer       = $(".input-layer", that).val();
@@ -88,7 +132,6 @@ var View = {
                 gallery     : [] || null
             });
             if (BDots.records) {
-                console.log(that.layer);
                 BDots.records.add(dot);
                 dot.save(null, {
                     success: function(model, response){
