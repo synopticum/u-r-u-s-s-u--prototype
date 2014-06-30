@@ -5,7 +5,6 @@ module.exports = function (app) {
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
-    app.post('/dot', saveDot);
     app.put('/dot/*', saveDot);
     app.delete('/dot/*', destroyDot);
 };
@@ -27,18 +26,31 @@ var sendDots = function (req, res) {
 
 var saveDot = function (req, res) {
     req.on("data", function (data) {
-        var dotId = req.route;
-        var dot = new Dot(JSON.parse(data));
-        console.log(dotId);
+        var dotId = req.route.params[0];
+        var dotNew = new Dot(JSON.parse(data));
 
-        dot.save(function (err, dot, affected) {
-            console.log(arguments);
-            if (err) throw err;
+        Dot.findOne({id: dotId}, function (err, dot) {
+            if (err) return handleError(err);
+
+            else if (dot !== null) {
+                Dot.update({id: dotId}, JSON.parse(data), function (err) {
+                    if (err) throw err;
+                });
+
+                console.log("Dot already exist");
+                res.end("Dot already exist");
+            }
+
+            else {
+                dotNew.save(function (err, dot, affected) {
+                    if (err) throw err;
+                });
+                console.log("Dot added on server");
+                res.end("Dot added on server");
+            }
         });
     });
 
-    console.log("Dot added on server");
-    res.end("Dot added on server");
 };
 
 var destroyDot = function (req, res) {

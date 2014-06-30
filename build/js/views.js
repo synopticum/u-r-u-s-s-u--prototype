@@ -169,6 +169,7 @@ var View = {
             _this.mobilePhone = $(".input-mobile-phone", _this).val();
 
             var dot = new BDot({
+                id          : _this.id,
                 template    : null,
                 byUser      : null,
                 layer       : _this.layer,
@@ -185,8 +186,6 @@ var View = {
                 gallery     : [] || null
             });
 
-            console.log(dot.image);
-
             if (BDots.records) {
                 var record = BDots.records.get(_this.id);
                 record.set(dot.attributes);
@@ -194,11 +193,11 @@ var View = {
                 dot.save(null, {
                     success: function(model, response){
                         console.log('dot ' + _this.id + ' updated on server!!');
-                        console.log(response);
+                        console.log(response.responseText);
                     },
                     error: function(model, response){
                         console.log('dot ' + _this.id + ' creation server error!');
-//                        console.log(response);
+                        console.log(response.responseText);
                     }
                 });
             }

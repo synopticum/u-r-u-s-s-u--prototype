@@ -45,6 +45,9 @@ var BModel = Backbone.Model.extend({
             model.attributes.marker = L.marker(model.attributes.position, { icon: model.getIcon() })
                 .bindPopup(view.template(model.attributes));
 
+            delete model.attributes._id;
+            delete model.attributes.__v;
+
             this.records.add(model);
 
             L.marker(model.attributes.position, { icon: model.getIcon() })
