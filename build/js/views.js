@@ -141,7 +141,16 @@ var View = {
             return this.$el.html(this.template(this.dot));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'click .input-marker': 'select-marker-open',
+            'click #selectMarkerPopup input': 'select-marker-close'
+        },
+        'select-marker-open': function (e) {
+            $('#selectMarkerPopup').fadeIn('fast');
+            e.preventDefault();
+        },
+        'select-marker-close': function () {
+            $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
             var _this = $(this.$el);
@@ -160,7 +169,6 @@ var View = {
             _this.mobilePhone = $(".input-mobile-phone", _this).val();
 
             var dot = new BDot({
-                id          : _this.id,
                 template    : null,
                 byUser      : null,
                 layer       : _this.layer,
@@ -180,16 +188,16 @@ var View = {
             console.log(dot.image);
 
             if (BDots.records) {
-                var record = BDots.records.get(this.dot.id);
+                var record = BDots.records.get(_this.id);
                 record.set(dot.attributes);
 
                 dot.save(null, {
                     success: function(model, response){
-                        console.log('dot ' + dot.id + ' updated on server!!');
+                        console.log('dot ' + _this.id + ' updated on server!!');
                         console.log(response);
                     },
                     error: function(model, response){
-                        console.log('dot ' + dot.id + ' creation server error!');
+                        console.log('dot ' + _this.id + ' creation server error!');
 //                        console.log(response);
                     }
                 });

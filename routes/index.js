@@ -5,7 +5,8 @@ module.exports = function (app) {
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
-    app.put('/dot/*', addDot);
+    app.post('/dot', saveDot);
+    app.put('/dot/*', saveDot);
     app.delete('/dot/*', destroyDot);
 };
 
@@ -24,11 +25,11 @@ var sendDots = function (req, res) {
     });
 };
 
-var addDot = function (req, res) {
-    console.log(req.url);
-
+var saveDot = function (req, res) {
     req.on("data", function (data) {
+        var dotId = req.route;
         var dot = new Dot(JSON.parse(data));
+        console.log(dotId);
 
         dot.save(function (err, dot, affected) {
             console.log(arguments);
