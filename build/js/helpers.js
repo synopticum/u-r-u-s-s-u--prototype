@@ -6,5 +6,9 @@ var helper = {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         }).toUpperCase();
+    },
+    status: function (text) {
+        $('#status').find('span').text(text);
+        $('#status').fadeIn('slow').fadeOut('slow');
     }
 };

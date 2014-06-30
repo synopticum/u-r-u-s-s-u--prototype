@@ -1,12 +1,12 @@
-var database = require('../libs/db.js');
+var Dot = require('../models/dot').Dot;
 
 module.exports = function (app) {
     app.get('/', index);
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
-    app.put('/dot', addDot);
-    app.delete('/dot', destroyDot);
+    app.put('/dot/*', addDot);
+    app.delete('/dot/*', destroyDot);
 };
 
 var index = function (req, res) {
@@ -18,25 +18,35 @@ var admin = function (req, res) {
 };
 
 var sendDots = function (req, res) {
-    res.end(JSON.stringify(database.dots));
-    console.log('dots sended');
+    Dot.find(function (err, person) {
+        if (err) return handleError(err);
+        res.end(JSON.stringify(person));
+    });
 };
 
 var addDot = function (req, res) {
+    console.log(req.url);
+
     req.on("data", function (data) {
-        var z = JSON.parse(data);
-        console.log(z);
+        var dot = new Dot(JSON.parse(data));
+
+        dot.save(function (err, dot, affected) {
+            console.log(arguments);
+            if (err) throw err;
+        });
     });
-    console.log('added!');
-    res.end("JSON accepted by server");
+
+    console.log("Dot added on server");
+    res.end("Dot added on server");
 };
 
 var destroyDot = function (req, res) {
+    console.log(req.url);
+
     req.on("data", function (data) {
-        var z = JSON.parse(data);
-        console.log('Incoming record: ');
-        console.log(z);
+        console.log('delete me')
     });
-    console.log('delete method!');
-    res.end("JSON accepted by server");
+
+    console.log("Dot removed from server");
+    res.end("Dot removed from server");
 };

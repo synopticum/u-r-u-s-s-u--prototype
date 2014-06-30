@@ -107,14 +107,14 @@ var View = {
             var _this = $(this.$el);
 
             if (BDots.records) {
-                var record = BDots.records.get(this.dot.id);
-                record.destroy({asdsdasd:'czczcnjksjg'}, {
+                var record = BDots.records.get(this.dotId);
+                record.destroy({
                     success: function(model, response){
-                        console.log('dot ' + this.dot.id + ' removed from server!!');
+                        console.log('dot removed from server!!');
                         console.log(response);
                     },
                     error: function(model, response){
-                        console.log('dot ' + this.dot.id + ' remove server error!');
+                        console.log('dot remove server error!');
                         console.log(response);
                     }
                 });
@@ -123,6 +123,7 @@ var View = {
 
             $.fancybox.close(_this);
             map.removeLayer(this.dot.marker);
+            helper.status('Точка удалена');
         }
     }),
 
@@ -176,6 +177,8 @@ var View = {
                 gallery     : [] || null
             });
 
+            console.log(dot.image);
+
             if (BDots.records) {
                 var record = BDots.records.get(this.dot.id);
                 record.set(dot.attributes);
@@ -197,6 +200,7 @@ var View = {
             L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
 
             $.fancybox.close(_this);
+            helper.status('Точка изменена');
         }
     }),
 
@@ -209,7 +213,7 @@ var View = {
         },
         template: _.template($('#adddot-popup-template').html()),
         render: function(position) {
-            this.position = [position.latlng.lat, position.latlng.lng];
+            this.position = [position.latlng.lat+0.21, position.latlng.lng];
             return this.$el.html(this.template());
         },
         events: {
@@ -227,6 +231,7 @@ var View = {
         'submit': function() {
             var _this = $(this.$el);
 
+            _this.id          = helper.guid();
             _this.position    = this.position;
             _this.layer       = $(".input-layer", _this).val();
             _this.title       = $(".input-title", _this).val();
@@ -240,7 +245,7 @@ var View = {
             _this.mobilePhone = $(".input-mobile-phone", _this).val();
 
             var dot = new BDot({
-                id          : helper.guid(),
+                id          : _this.id,
                 template    : null,
                 byUser      : null,
                 layer       : _this.layer,
@@ -262,11 +267,11 @@ var View = {
                 dot.save(null, {
                     success: function(model, response){
                         console.log('dot created on server!!');
-                        console.log(response);
+                        console.log(response.responseText);
                     },
                     error: function(model, response){
                         console.log('creation server error!');
-//                        console.log(response);
+                        console.log(response.responseText);
                     }
                 });
             }
@@ -276,6 +281,7 @@ var View = {
             L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
 
             $.fancybox.close(_this);
+            helper.status('Точка добавлена');
         }
     })
 };
