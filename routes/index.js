@@ -41,10 +41,10 @@ var addDot = function (req, res) {
 };
 
 var destroyDot = function (req, res) {
-    console.log(req.url);
+    var dotId = req.route.params[0];
 
-    req.on("data", function (data) {
-        console.log('delete me')
+    Dot.remove({ id: dotId }, function (err) {
+        if (err) throw err;
     });
 
     console.log("Dot removed from server");
