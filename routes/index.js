@@ -45,10 +45,11 @@ var addDot = function (req, res) {
 
 var saveDot = function (req, res) {
     req.on("data", function (data) {
-        var dotId = req.route.params[0];
         var dot = JSON.parse(data);
 
-        Dot.update({id: dotId}, dot, function (err) {
+        delete dot.position;
+
+        Dot.update({id: dot.id}, dot, function (err) {
             if (err) throw err;
             res.end(JSON.stringify(dot));
         });

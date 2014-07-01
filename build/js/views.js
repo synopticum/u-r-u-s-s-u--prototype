@@ -155,6 +155,7 @@ var View = {
         'submit': function() {
             var _this = $(this.$el);
 
+            _this.marker      = this.dot.marker;
             _this.id          = this.dotId;
             _this.position    = this.dot.position;
             _this.layer       = $(".input-layer", _this).val();
@@ -174,26 +175,30 @@ var View = {
                 byUser      : null,
                 layer       : _this.layer,
                 position    : _this.position,
-                title       : _this.title || "default title",
-                text        : _this.text || "default description",
-                image       : _this.image || new BDot().defaultImage,
+                title       : _this.title || "Уруссинское отделение полиции",
+                text        : _this.text || "Нет у вас методов против Кости Сапрыкина.",
+                image       : _this.image || BDot.defaultImage,
                 icon        : _this.icon,
-                address     : _this.address || "dst.",
-                street      : _this.street || "Default Street",
-                house       : _this.house || "666",
-                homePhone   : _this.homePhone || "default phone",
-                mobilePhone : _this.mobilePhone || "default mobile",
+                address     : _this.address || "пр.",
+                street      : _this.street || "имени Китайской Революции",
+                house       : _this.house || "19",
+                homePhone   : _this.homePhone || "2-12-48",
+                mobilePhone : _this.mobilePhone || "(937) 460-78-74",
                 gallery     : [] || null
             });
 
             if (BDots.records) {
-                var record = BDots.records.get(_this.id);
-                record.set(dot.attributes);
-
                 dot.save(null, {
                     success: function(model, response){
+                        var record = BDots.records.get(response.id);
+                        record.set(response);
+
+                        map.removeLayer(_this.marker);
+
+                        var view = new View.showDot(record.attributes);
+                        L.marker(record.attributes.position, { icon: record.getIcon() }).bindPopup(view.template(record.attributes)).addTo(map);
+
                         console.log('Dot updated on server');
-                        console.log(response);
                     },
                     error: function(model, response){
                         console.log('Dot update server error!');
@@ -202,11 +207,6 @@ var View = {
                 });
             }
             else throw Error('BDots.records don t exist');
-
-            map.removeLayer(this.dot.marker);
-
-            var view = new View.showDot(dot.attributes);
-            L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
 
             $.fancybox.close(_this);
             helper.status('Точка изменена');
@@ -252,25 +252,25 @@ var View = {
             _this.homePhone   = $(".input-home-phone", _this).val();
             _this.mobilePhone = $(".input-mobile-phone", _this).val();
 
-            var dot = new BDot({
-                template    : null,
-                byUser      : null,
-                layer       : _this.layer,
-                position    : _this.position,
-                title       : _this.title || "default title",
-                text        : _this.text || "default description",
-                image       : _this.image || new BDot().defaultImage,
-                icon        : _this.icon,
-                address     : _this.address || "dst.",
-                street      : _this.street || "Default Street",
-                house       : _this.house || "666",
-                homePhone   : _this.homePhone || "default phone",
-                mobilePhone : _this.mobilePhone || "default mobile",
-                gallery     : [] || null,
-                marker      : L.marker(_this.position)
-            });
-
             if (BDots.records) {
+                var dot = new BDot({
+                    template    : null,
+                    byUser      : null,
+                    layer       : _this.layer,
+                    position    : _this.position,
+                    title       : _this.title || "Уруссинское отделение полиции",
+                    text        : _this.text || "Нет у вас методов против Кости Сапрыкина.",
+                    image       : _this.image || new BDot().defaultImage,
+                    icon        : _this.icon,
+                    address     : _this.address || "пр.",
+                    street      : _this.street || "имени Китайской Революции",
+                    house       : _this.house || "19",
+                    homePhone   : _this.homePhone || "2-12-48",
+                    mobilePhone : _this.mobilePhone || "(937) 460-78-74",
+                    gallery     : [] || null,
+                    marker      : L.marker(_this.position)
+                });
+
                 dot.save(null, {
                     success: function(model, response){
                         console.log('Dot created on server');
@@ -281,8 +281,8 @@ var View = {
 
                         BDots.records.add(dotValid);
 
-                        var view = new View.showDot(dotValid.attributes);
-                        L.marker(dotValid.attributes.position, { icon: dotValid.getIcon() }).bindPopup(view.template(dotValid.attributes)).addTo(map);
+                        var view = new View.showDot(dot.attributes);
+                        L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
                     },
                     error: function(model, response){
                         console.log('Dot creation server error!');
