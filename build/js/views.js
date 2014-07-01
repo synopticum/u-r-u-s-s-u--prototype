@@ -115,7 +115,7 @@ var View = {
                     },
                     error: function(model, response){
                         console.log('dot remove server error!');
-                        console.log(response);
+                        console.log(response.responseText);
                     }
                 });
             }
@@ -202,6 +202,8 @@ var View = {
                 });
             }
             else throw Error('BDots.records don t exist');
+
+            map.removeLayer(this.dot.marker);
 
             var view = new View.showDot(dot.attributes);
             L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);

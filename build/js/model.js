@@ -3,7 +3,7 @@ var BDot = Backbone.Model.extend({
     defaultImage: 'data:image/gif;base64,R0lGODlhUABQALMAAAAAAGtra/T09JycnKqqqtHR0SYmJunp6bi4uI2NjX19fcXFxUJCQlhYWN3d3f///yH5BAAAAAAALAAAAABQAFAAAATG8MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0KhQgBgEAgrCQVpJAL7g70DAlTDC6ET5QQgsyIJFA1wokysCg3h9GXwDfBYEf4EVAV8EhRMFYFuKAnMAaooPCl8Gd4VeX3WKC2AIlA9nAAOiCF8MmYWWpaIPhwCdlLGzilYBDq+7vBUHBKGiB3qulIOXoscABqKQX8GiBY691NXW19jZ2tvc3d7f4OHi4+Tl5ufo6UARADs=',
     getIcon: function () {
         switch (this.attributes.icon) {
-            case "red" :
+            case "pink" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'});
                 break;
             case "blue" :
@@ -12,7 +12,7 @@ var BDot = Backbone.Model.extend({
             case "green" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'});
                 break;
-            case "grayred" :
+            case "graypink" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-g-pink.png'});
                 break;
             case "grayblue" :
@@ -20,6 +20,33 @@ var BDot = Backbone.Model.extend({
                 break;
             case "graygreen" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-g-green.png'});
+                break;
+            case "vertical-pink" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-pink.png'});
+                break;
+            case "vertical-blue" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-blue.png'});
+                break;
+            case "vertical-green" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-green.png'});
+                break;
+            case "message-pink" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-pink.png'});
+                break;
+            case "message-blue" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-blue.png'});
+                break;
+            case "flag-green" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-green.png'});
+                break;
+            case "flag-pink" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-pink.png'});
+                break;
+            case "flag-blue" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-blue.png'});
+                break;
+            case "message-green" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-green.png'});
                 break;
             default :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'});

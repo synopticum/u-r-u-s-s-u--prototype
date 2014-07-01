@@ -63,8 +63,8 @@ var destroyDot = function (req, res) {
 
     Dot.remove({ id: dotId }, function (err) {
         if (err) throw err;
+        res.end("Dot removed from server");
     });
 
     console.log("Dot removed from server");
-    res.end("Dot removed from server");
 };
