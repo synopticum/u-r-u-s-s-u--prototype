@@ -192,11 +192,11 @@ var View = {
 
                 dot.save(null, {
                     success: function(model, response){
-                        console.log('dot ' + _this.id + ' updated on server!!');
-                        console.log(response.responseText);
+                        console.log('Dot updated on server');
+                        console.log(response);
                     },
                     error: function(model, response){
-                        console.log('dot ' + _this.id + ' creation server error!');
+                        console.log('Dot update server error!');
                         console.log(response.responseText);
                     }
                 });
@@ -238,7 +238,6 @@ var View = {
         'submit': function() {
             var _this = $(this.$el);
 
-            _this.id          = helper.guid();
             _this.position    = this.position;
             _this.layer       = $(".input-layer", _this).val();
             _this.title       = $(".input-title", _this).val();
@@ -252,7 +251,6 @@ var View = {
             _this.mobilePhone = $(".input-mobile-phone", _this).val();
 
             var dot = new BDot({
-                id          : _this.id,
                 template    : null,
                 byUser      : null,
                 layer       : _this.layer,
@@ -269,23 +267,28 @@ var View = {
                 gallery     : [] || null,
                 marker      : L.marker(_this.position)
             });
+
             if (BDots.records) {
-                BDots.records.add(dot);
                 dot.save(null, {
                     success: function(model, response){
-                        console.log('dot created on server!!');
-                        console.log(response.responseText);
+                        console.log('Dot created on server');
+
+                        delete response.__v;
+                        delete response._id;
+                        var dotValid = new BDot(response);
+
+                        BDots.records.add(dotValid);
+
+                        var view = new View.showDot(dotValid.attributes);
+                        L.marker(dotValid.attributes.position, { icon: dotValid.getIcon() }).bindPopup(view.template(dotValid.attributes)).addTo(map);
                     },
                     error: function(model, response){
-                        console.log('creation server error!');
+                        console.log('Dot creation server error!');
                         console.log(response.responseText);
                     }
                 });
             }
             else throw Error('BDots.records don t exist');
-
-            var view = new View.showDot(dot.attributes);
-            L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
 
             $.fancybox.close(_this);
             helper.status('Точка добавлена');

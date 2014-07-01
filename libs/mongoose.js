@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/mongomapdb');
+mongoose.connect('mongodb://localhost:27017/mongomapdb', function (err) {
+    if (err) throw err;
+});
 
 module.exports = mongoose;

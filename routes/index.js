@@ -1,3 +1,4 @@
+var utils = require('../libs/util.js');
 var Dot = require('../models/dot').Dot;
 
 module.exports = function (app) {
@@ -5,6 +6,7 @@ module.exports = function (app) {
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
+    app.post('/dot', addDot);
     app.put('/dot/*', saveDot);
     app.delete('/dot/*', destroyDot);
 };
@@ -24,31 +26,34 @@ var sendDots = function (req, res) {
     });
 };
 
+var addDot = function (req, res) {
+    req.on("data", function (data) {
+        var dot = JSON.parse(data);
+        dot.id = utils.guid();
+
+        var dotValid = new Dot(dot);
+
+        dotValid.save(function (err, dot, affected) {
+            if (err) throw err;
+            res.end(JSON.stringify(dot));
+        });
+
+        console.log("Dot added on server");
+    });
+
+};
+
 var saveDot = function (req, res) {
     req.on("data", function (data) {
         var dotId = req.route.params[0];
-        var dotNew = new Dot(JSON.parse(data));
+        var dot = JSON.parse(data);
 
-        Dot.findOne({id: dotId}, function (err, dot) {
-            if (err) return handleError(err);
-
-            else if (dot !== null) {
-                Dot.update({id: dotId}, JSON.parse(data), function (err) {
-                    if (err) throw err;
-                });
-
-                console.log("Dot already exist");
-                res.end("Dot already exist");
-            }
-
-            else {
-                dotNew.save(function (err, dot, affected) {
-                    if (err) throw err;
-                });
-                console.log("Dot added on server");
-                res.end("Dot added on server");
-            }
+        Dot.update({id: dotId}, dot, function (err) {
+            if (err) throw err;
+            res.end(JSON.stringify(dot));
         });
+
+        console.log("Dot updated on server");
     });
 
 };
