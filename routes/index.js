@@ -1,3 +1,7 @@
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+var fs = require('fs');
+
 var utils = require('../libs/util.js');
 var Dot = require('../models/dot').Dot;
 
@@ -6,6 +10,10 @@ module.exports = function (app) {
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
+    app.post('/upload', multipartMiddleware, function (req, res, next) {
+        console.log(req.files);
+        res.end('File accepted by server');
+    });
     app.post('/dot', addDot);
     app.put('/dot/*', saveDot);
     app.delete('/dot/*', destroyDot);

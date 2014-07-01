@@ -226,6 +226,15 @@ var View = {
             return this.$el.html(this.template());
         },
         events: {
+            'submit form': function (e) {
+                var formElement = document.querySelector(".input-image");
+
+                $.post("upload", new FormData(formElement.append('asd', 'zcczcx')), function( data ) {
+                    alert('sended')
+                });
+
+                e.preventDefault();
+            },
             'click .input-submit': 'submit',
             'click .input-marker': 'select-marker-open',
             'click #selectMarkerPopup input': 'select-marker-close'
