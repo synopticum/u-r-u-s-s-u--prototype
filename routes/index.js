@@ -1,10 +1,6 @@
 var multipart = require('connect-multiparty');
 var fs = require('fs');
-var multipartMiddleware = multipart(
-    {
-        uploadDir: 'public/tmp'
-    }
-);
+var multipartMiddleware = multipart( { uploadDir: 'public/tmp' });
 
 var utils = require('../libs/util.js');
 var Dot = require('../models/dot').Dot;
@@ -14,24 +10,10 @@ module.exports = function (app) {
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
-    app.post('/uploadimage', multipartMiddleware, function (req, res, next) {
-//        for (var file in req.files) {
-//            console.log(req.files[file]);
-//        }
-        console.log(req.files.markerimage);
 
-        var tmpFilePath = req.files.markerimage.ws.path;
-        var tmpFile = fs.readFileSync(tmpFilePath);
-
-        fs.writeFileSync('public/marker-images/imagetest.png', tmpFile);
-        fs.unlinkSync(tmpFilePath);
-
-        res.end('File accepted by server');
-    });
     app.post('/dot', multipartMiddleware, addDot);
-
-    app.put('/dot/*', saveDot);
-    app.delete('/dot/*', destroyDot);
+    app.put('/dot', multipartMiddleware, editDot);
+    app.delete('/dot', removeDot);
 };
 
 var index = function (req, res) {
@@ -53,9 +35,18 @@ var addDot = function (req, res) {
     var dotValues = JSON.parse(req.body.json);
     dotValues.id = utils.guid();
 
-    console.log(dotValues);
+    // create image
+    if (!utils.isEmpty(req.files)) {
+        var tmpFilePath = req.files.file_0.ws.path;
+        var tmpFile = fs.readFileSync(tmpFilePath);
 
+        fs.writeFileSync('public/marker-images/' + dotValues.id + '.png', tmpFile);
+        fs.unlinkSync(tmpFilePath);
+    }
+
+    // save in db
     var dotValid = new Dot(dotValues);
+    dotValid.image = 'marker-images/' + dotValues.id + '.png';
 
     dotValid.save(function (err, dot, affected) {
         if (err) throw err;
@@ -68,28 +59,41 @@ var addDot = function (req, res) {
     });
 };
 
-var saveDot = function (req, res) {
-    req.on("data", function (data) {
-        var dot = JSON.parse(data);
+var editDot = function (req, res) {
+    var dotValues = JSON.parse(req.body.json);
 
-        delete dot.position;
+    if (!utils.isEmpty(req.files)) {
+        var tmpFilePath = req.files.file_0.ws.path;
+        var tmpFile = fs.readFileSync(tmpFilePath);
 
-        Dot.update({id: dot.id}, dot, function (err) {
-            if (err) throw err;
-            res.end(JSON.stringify(dot));
-        });
+        fs.writeFileSync('public/marker-images/' + dotValues.id + '.png', tmpFile);
+        fs.unlinkSync(tmpFilePath);
 
-        console.log("Dot updated on server");
+        console.log('image updated');
+    }
+
+    // save in db
+    dotValues.image = 'marker-images/' + dotValues.id + '.png';
+
+    Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {
+        if (err) throw err;
+        res.end(JSON.stringify(dotValues));
     });
 
+    console.log("Dot updated on server");
+
+    req.on("data", function (data) {
+    });
 };
 
-var destroyDot = function (req, res) {
-    var dotId = req.route.params[0];
+var removeDot = function (req, res) {
+    req.on("data", function (data) {
+        dotId = data.toString();
 
-    Dot.remove({ id: dotId }, function (err) {
-        if (err) throw err;
-        res.end("Dot removed from server");
+        Dot.remove({ id: dotId }, function (err) {
+            if (err) throw err;
+            res.end("Dot removed from server");
+        });
     });
 
     console.log("Dot removed from server");
