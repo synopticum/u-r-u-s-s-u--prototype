@@ -238,21 +238,25 @@ var View = {
             $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
+            // ajax send file - FormData Multipart
             var data, xhr;
             var inputImageFiles = document.querySelector('.input-image').files;
 
             data = new FormData();
 
-            for(var i = 0; i < inputImageFiles.length; i++){
-                data.append("file_"+ i, inputImageFiles[i]);
-            }
+//            for(var i = 0; i < inputImageFiles.length; i++){
+//                data.append("file_"+ i, inputImageFiles[i]);
+//            }
+
+            data.append("image_", inputImageFiles[0]);
 
             xhr = new XMLHttpRequest();
 
             xhr.open( 'POST', '/upload', true );
-            xhr.onreadystatechange = function ( response ) {};
-            xhr.send( data );
+            xhr.onreadystatechange = function (response) {};
+            xhr.send(data);
 
+            // send json
             var _this = $(this.$el);
 
             _this.position    = this.position;
