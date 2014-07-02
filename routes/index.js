@@ -1,6 +1,10 @@
 var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart();
 var fs = require('fs');
+var multipartMiddleware = multipart(
+    {
+        uploadDir: 'public/tmp'
+    }
+);
 
 var utils = require('../libs/util.js');
 var Dot = require('../models/dot').Dot;
@@ -10,21 +14,22 @@ module.exports = function (app) {
     app.get('/admin', admin);
     app.get('/dots', sendDots);
 
-    app.post('/upload', multipartMiddleware, function (req, res, next) {
+    app.post('/uploadimage', multipartMiddleware, function (req, res, next) {
+//        for (var file in req.files) {
+//            console.log(req.files[file]);
+//        }
+        console.log(req.files.markerimage);
 
-        for (var file in req.files) {
-            console.log(req.files[file]);
-        }
+        var tmpFilePath = req.files.markerimage.ws.path;
+        var tmpFile = fs.readFileSync(tmpFilePath);
 
-//        var imagedata = '';
-//        fs.writeFile('/public/logo.png', imagedata, 'binary', function(err){
-//            if (err) throw err;
-//            console.log('File saved.')
-//        });
+        fs.writeFileSync('public/marker-images/imagetest.png', tmpFile);
+        fs.unlinkSync(tmpFilePath);
 
         res.end('File accepted by server');
     });
-    app.post('/dot', addDot);
+    app.post('/dot', multipartMiddleware, addDot);
+
     app.put('/dot/*', saveDot);
     app.delete('/dot/*', destroyDot);
 };
@@ -45,20 +50,22 @@ var sendDots = function (req, res) {
 };
 
 var addDot = function (req, res) {
-    req.on("data", function (data) {
-        var dot = JSON.parse(data);
-        dot.id = utils.guid();
+    var dotValues = JSON.parse(req.body.json);
+    dotValues.id = utils.guid();
 
-        var dotValid = new Dot(dot);
+    console.log(dotValues);
 
-        dotValid.save(function (err, dot, affected) {
-            if (err) throw err;
-            res.end(JSON.stringify(dot));
-        });
+    var dotValid = new Dot(dotValues);
 
-        console.log("Dot added on server");
+    dotValid.save(function (err, dot, affected) {
+        if (err) throw err;
+        res.end(JSON.stringify(dot));
     });
 
+    console.log("Dot added on server");
+
+    req.on("data", function (data) {
+    });
 };
 
 var saveDot = function (req, res) {

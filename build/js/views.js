@@ -238,23 +238,6 @@ var View = {
             $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
-            // ajax send file - FormData Multipart
-            var data, xhr;
-            var inputImageFiles = document.querySelector('.input-image').files;
-
-            data = new FormData();
-
-//            for(var i = 0; i < inputImageFiles.length; i++){
-//                data.append("file_"+ i, inputImageFiles[i]);
-//            }
-
-            data.append("image_", inputImageFiles[0]);
-
-            xhr = new XMLHttpRequest();
-
-            xhr.open( 'POST', '/upload', true );
-            xhr.onreadystatechange = function (response) {};
-            xhr.send(data);
 
             // send json
             var _this = $(this.$el);
@@ -290,9 +273,24 @@ var View = {
                     marker      : L.marker(_this.position)
                 });
 
-                dot.save(null, {
+                // create FormData Object with files/json
+                var fd = new FormData();
+
+                var file_data = $('.input-image')[0].files;
+                var other_data = JSON.stringify(dot);
+
+                for(var i = 0; i < file_data.length; i++){
+                    fd.append("file_" + i, file_data[i]);
+                }
+
+                fd.append('json', other_data);
+
+                dot.sync('post', fd, {
                     success: function(model, response){
                         console.log('Dot created on server');
+
+                        var response = JSON.parse(model);
+                        console.log(response);
 
                         delete response.__v;
                         delete response._id;
@@ -300,14 +298,33 @@ var View = {
 
                         BDots.records.add(dotValid);
 
-                        var view = new View.showDot(dot.attributes);
-                        L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
+                        var view = new View.showDot(response);
+                        L.marker(response.position, { icon: dot.getIcon() }).bindPopup(view.template(response)).addTo(map);
                     },
                     error: function(model, response){
                         console.log('Dot creation server error!');
                         console.log(response.responseText);
                     }
                 });
+
+//                dot.save(null, {
+//                    success: function(model, response){
+//                        console.log('Dot created on server');
+//
+//                        delete response.__v;
+//                        delete response._id;
+//                        var dotValid = new BDot(response);
+//
+//                        BDots.records.add(dotValid);
+//
+//                        var view = new View.showDot(dot.attributes);
+//                        L.marker(dot.attributes.position, { icon: dot.getIcon() }).bindPopup(view.template(dot.attributes)).addTo(map);
+//                    },
+//                    error: function(model, response){
+//                        console.log('Dot creation server error!');
+//                        console.log(response.responseText);
+//                    }
+//                });
             }
             else throw Error('BDots.records don t exist');
 

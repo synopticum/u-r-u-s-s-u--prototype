@@ -1,6 +1,17 @@
 var BDot = Backbone.Model.extend({
     urlRoot : '/dot',
     defaultImage: '/images/q.gif',
+    sync: function(method, fd, options){
+        return $.ajax({
+            url: '/dot',
+            data: fd,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: options.success,
+            error:   options.error
+        });
+    },
     getIcon: function () {
         switch (this.attributes.icon) {
             case "pink" :
