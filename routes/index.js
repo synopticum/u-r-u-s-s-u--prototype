@@ -7,7 +7,7 @@ var Dot = require('../models/dot').Dot;
 
 module.exports = function (app) {
     app.get('/', index);
-    app.get('/admin', admin);
+    app.get('/login', login);
     app.get('/dots', sendDots);
 
 
@@ -20,8 +20,8 @@ var index = function (req, res) {
     res.render('index', { title: 'Node Boilerplate' });
 };
 
-var admin = function (req, res) {
-    res.render('admin', { title: 'Node Admin' });
+var login = function (req, res) {
+    res.render('login', { title: 'Node Login' });
 };
 
 var sendDots = function (req, res) {
@@ -34,18 +34,50 @@ var sendDots = function (req, res) {
 var addDot = function (req, res) {
     var dotValues = JSON.parse(req.body.json);
     dotValues.id = utils.guid();
+    dotValues.gallery = [];
 
     // create image
     if (!utils.isEmpty(req.files)) {
-        var tmpFilePath = req.files.file_0.ws.path;
-        var tmpFile = fs.readFileSync(tmpFilePath);
+        // add image
+        if (req.files.file_0) {
+            var tmpFilePath = req.files.file_0.ws.path;
+            fs.readFile(tmpFilePath, function (err, result) {
+                fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
+                    if (err) throw err;
+                });
+            });
 
-        fs.writeFileSync('public/marker-images/' + dotValues.id + '.png', tmpFile);
-        fs.unlinkSync(tmpFilePath);
+            fs.unlink(tmpFilePath, function (err) {
+                if (err) throw err;
+                conlole.log('deleted!');
+            });
+        }
+
+        // add gallery
+        fs.mkdir('public/galleries/' + dotValues.id, 0755, function (err, result) {
+            if (err) throw err;
+        });
+
+        for (var galleryImage in req.files) {
+            var tmpFilePath = req.files[galleryImage].ws.path;
+
+            fs.readFile(tmpFilePath, function (err, result) {
+                fs.writeFile('public/galleries/' + dotValues.id + '/' + (Math.random()*31337 | 0) +'.jpg', result, function (err) {
+                    if (err) throw err;
+                });
+            });
+            dotValues.gallery.push('hui');
+
+            fs.unlink(tmpFilePath, function (err) {
+                if (err) throw err;
+                console.log('deleted!');
+            });
+        }
     }
 
     // save in db
     var dotValid = new Dot(dotValues);
+    console.log(dotValues.gallery);
     dotValid.image = 'marker-images/' + dotValues.id + '.png';
 
     dotValid.save(function (err, dot, affected) {

@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/vendor/jquery.min.js"></script>
+
+    <!-- vendor -->
+    <script src="js/vendor/socket.io-1.0.4.js"></script>
+    <script src="js/vendor/jquery.min.js"></script>
+</head>
+<body id="login">
+<div id="overlay-1"><div id="overlay-2"></div></div>
+
+<span id="next"></span>
+
+<script>
+    $('#next').click(function () {
+        if ($('#overlay-2')[0].style.display === 'none') {
+            $('#overlay-1').fadeOut('slow');
+        }
+        else $('#overlay-2').fadeOut('slow');
+    });
+</script>
+</body>
+</html>

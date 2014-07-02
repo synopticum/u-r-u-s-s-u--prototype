@@ -151,18 +151,23 @@ var View = {
                 var fd = new FormData();
 
                 var file_data = $('.input-image')[0].files;
-                var other_data = JSON.stringify(dot);
-
                 for(var i = 0; i < file_data.length; i++){
                     fd.append("file_" + i, file_data[i]);
                 }
+
+                var gallery_data = $('.input-gallery')[0].files;
+                for(var j = 0; j < gallery_data.length; j++){
+                    fd.append("gallery_" + j, gallery_data[j]);
+                }
+                console.log(gallery_data);
+
+                var other_data = JSON.stringify(dot);
 
                 fd.append('json', other_data);
 
                 dot.sync('post', fd, {
                     success: function(model, response){
                         var response = JSON.parse(model);
-                        console.log(response);
 
                         delete response.__v;
                         delete response._id;
