@@ -85,7 +85,6 @@
 
     <!-- add dot popup template -->
     <script type="text/html" id="adddot-popup-template">
-        <form action="/upload" method="POST" enctype="multipart/form-data" id="testform">
         <table>
             <tr>
                 <td>
@@ -121,10 +120,10 @@
             </tr>
             <tr>
                 <td>
-                    <input type="file" name="image" class="input-image" placeholder=""/>
+                    <input type="file" name="image" class="input-image" placeholder="" multiple/>
                 </td>
                 <td colspan="2">
-                    <button class="popup-button input-submit">Добавить метку</button>
+                    <button type="button" class="popup-button input-submit">Добавить метку</button>
                 </td>
             </tr>
         </table>
@@ -177,7 +176,6 @@
                     src="js/leaflet/images/markers/marker-icon-f-blue.png" alt=""/></label>
             </div>
         </div>
-        </form>
     </script>
 
     <!-- edit dot popup template -->
@@ -220,7 +218,7 @@
                     <input type="file" name="" class="input-image" placeholder=""/>
                 </td>
                 <td colspan="2">
-                    <button class="popup-button input-submit">Обновить метку</button>
+                    <buttonn type="submit" class="popup-button input-submit">Обновить метку</button>
                 </td>
             </tr>
         </table>

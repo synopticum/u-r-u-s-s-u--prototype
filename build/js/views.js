@@ -226,15 +226,6 @@ var View = {
             return this.$el.html(this.template());
         },
         events: {
-            'submit form': function (e) {
-                var formElement = document.querySelector(".input-image");
-
-                $.post("upload", new FormData(formElement.append('asd', 'zcczcx')), function( data ) {
-                    alert('sended')
-                });
-
-                e.preventDefault();
-            },
             'click .input-submit': 'submit',
             'click .input-marker': 'select-marker-open',
             'click #selectMarkerPopup input': 'select-marker-close'
@@ -247,6 +238,21 @@ var View = {
             $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
+            var data, xhr;
+            var inputImageFiles = document.querySelector('.input-image').files;
+
+            data = new FormData();
+
+            for(var i = 0; i < inputImageFiles.length; i++){
+                data.append("file_"+ i, inputImageFiles[i]);
+            }
+
+            xhr = new XMLHttpRequest();
+
+            xhr.open( 'POST', '/upload', true );
+            xhr.onreadystatechange = function ( response ) {};
+            xhr.send( data );
+
             var _this = $(this.$el);
 
             _this.position    = this.position;

@@ -11,7 +11,17 @@ module.exports = function (app) {
     app.get('/dots', sendDots);
 
     app.post('/upload', multipartMiddleware, function (req, res, next) {
-        console.log(req.files);
+
+        for (var file in req.files) {
+            console.log(req.files[file]);
+        }
+
+//        var imagedata = '';
+//        fs.writeFile('/public/logo.png', imagedata, 'binary', function(err){
+//            if (err) throw err;
+//            console.log('File saved.')
+//        });
+
         res.end('File accepted by server');
     });
     app.post('/dot', addDot);
