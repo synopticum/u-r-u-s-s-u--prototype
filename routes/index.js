@@ -36,11 +36,22 @@ var addDot = function (req, res) {
     dotValues.id = utils.guid();
     dotValues.gallery = [];
 
+    // save in db
+    var dotValid = new Dot(dotValues);
+    console.log(dotValues.gallery);
+    dotValid.image = 'marker-images/' + dotValues.id + '.png';
+
+    dotValid.save(function (err, dot) {
+        if (err) throw err;
+        res.end(JSON.stringify(dot));
+    });
+
     // create image
     if (!utils.isEmpty(req.files)) {
         // add image
         if (req.files.file_0) {
             var tmpFilePath = req.files.file_0.ws.path;
+
             fs.readFile(tmpFilePath, function (err, result) {
                 fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
                     if (err) throw err;
@@ -54,19 +65,21 @@ var addDot = function (req, res) {
         }
 
         // add gallery
-        fs.mkdir('public/galleries/' + dotValues.id, 0755, function (err, result) {
+        fs.mkdir('public/galleries/' + dotValues.id, 0755, function (err) {
             if (err) throw err;
         });
 
         for (var galleryImage in req.files) {
-            var tmpFilePath = req.files[galleryImage].ws.path;
+            var tmpGalleryPath = req.files[galleryImage].ws.path;
 
-            fs.readFile(tmpFilePath, function (err, result) {
-                fs.writeFile('public/galleries/' + dotValues.id + '/' + (Math.random()*31337 | 0) +'.jpg', result, function (err) {
+            fs.readFile(tmpGalleryPath, function (err, result) {
+                var imageName = (Math.random()*31337 | 0) + '.jpg';
+                dotValues.gallery.push(imageName);
+
+                fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
                     if (err) throw err;
                 });
             });
-            dotValues.gallery.push('hui');
 
             fs.unlink(tmpFilePath, function (err) {
                 if (err) throw err;
@@ -74,16 +87,6 @@ var addDot = function (req, res) {
             });
         }
     }
-
-    // save in db
-    var dotValid = new Dot(dotValues);
-    console.log(dotValues.gallery);
-    dotValid.image = 'marker-images/' + dotValues.id + '.png';
-
-    dotValid.save(function (err, dot, affected) {
-        if (err) throw err;
-        res.end(JSON.stringify(dot));
-    });
 
     console.log("Dot added on server");
 

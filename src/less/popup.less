@@ -1,3 +1,5 @@
+@color : #6B9B2A;
+
 .fancybox-skin {
   padding: 0 !important;
   border: 2px solid #6B9B2A !important;
@@ -121,4 +123,67 @@
   background: -ms-radial-gradient(center, ellipse cover,  #ffffff 0%,#eeeeee 100%);
   background: radial-gradient(ellipse at center,  #ffffff 0%,#eeeeee 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=1 );
+}
+
+// login
+.login-popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 800px;
+  padding: 20px 30px;
+  color: #ffffff;
+  line-height: 140%;
+  background: rgba(255,255,255,.65);
+  transition: .3s;
+  overflow: hidden;
+  height: 400px;
+  border-radius: 0 0 35px 35px;
+}
+.login-popup .alignleft {
+  float: left;
+  padding: 20px 20px 50px 50px;
+  width: 50%;
+  border-right: 1px solid #fff;
+  box-sizing: border-box;
+}
+.login-popup .alignright {
+  float: right;
+  padding: 20px 20px 50px 50px;
+  width: 50%;
+  box-sizing: border-box;
+}
+.login-popup h1, .login-popup h2 {
+  display: inline-block;
+  padding: 10px;
+  background: rgba(0,0,0,.4);
+  font-family: 'Noto Sans Bold';
+  font-size: 16px;
+  transition: .3s;
+}
+.login-popup ul {
+  margin: 20px 20px;
+  list-style: disc outside;
+  color: #444;
+}
+.login-popup li {
+  padding: 10px 0;
+  transition: .3s;
+  border-bottom: 1px solid #fff;
+}
+.login-popup li:last-child {
+  border-bottom: 0;
+}
+.login-popup:hover {
+  background: rgba(255,255,255,.85);
+}
+.login-popup:hover li {
+  border-color: #ccc;
+}
+.login-popup:hover h1, .login-popup:hover h2 {
+  background: #fff;
+  color: #000000;
 }

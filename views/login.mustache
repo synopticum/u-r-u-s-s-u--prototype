@@ -12,15 +12,60 @@
 <body id="login">
 <div id="overlay-1"><div id="overlay-2"></div></div>
 
+<div id="welcome" class="login-popup">
+    <div class="alignleft">
+        <h1>Что это такое?</h1>
+
+        <ul>
+            <li>Это одностраничное веб-приложение.</li>
+        </ul>
+
+        <h2>Для чего это нужно?</h2>
+
+        <ul>
+            <li>Для быстрого доступа к полезной информации, которой в нужный момент не бывает под рукой.</li>
+            <li>Для отработки свежих интернет-технологий на живой аудитории.</li>
+            <li>Чисто поприкалываться.</li>
+        </ul>
+    </div>
+
+    <div class="alignright">
+        <h2>Что здесь можно делать?</h2>
+
+        <ul>
+            <li>Оставлять комментарии к конкретным местам, а также отмечать свои места.</li>
+            <li>Давать бесплатные объявления.</li>
+            <li>Читать и добавлять новости.</li>
+            <li>Общаться в простом чате.</li>
+            <li>Разглядывать красивые и редкие фотографии посёлка.</li>
+        </ul>
+    </div>
+</div>
+
 <span id="next"></span>
+
+<a id="vk" href=""></a>
 
 <script>
     $('#next').click(function () {
         if ($('#overlay-2')[0].style.display === 'none') {
             $('#overlay-1').fadeOut('slow');
         }
-        else $('#overlay-2').fadeOut('slow');
+        else {
+            $('#overlay-2').fadeOut('slow');
+            $('#welcome').slideUp('fast');
+        }
     });
+
+    $(function(){
+        var x = 0;
+        var y = 0;
+        setInterval(function(){
+            x-=1;
+            y-=1;
+            $('#overlay-1').css('background-position', x + 'px ' + y + 'px');
+        }, 150);
+    })
 </script>
 </body>
 </html>
