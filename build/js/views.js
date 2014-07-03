@@ -69,6 +69,8 @@ var View = {
                     var view = new View.removeDot({ dotId: popupId });
                     $.fancybox.open(view.render());
                 });
+
+                $('.fancybox').fancybox();
             });
         },
         hideLoadScreen : $('#clouds').fadeOut(2000)
@@ -159,7 +161,6 @@ var View = {
                 for(var j = 0; j < gallery_data.length; j++){
                     fd.append("gallery_" + j, gallery_data[j]);
                 }
-                console.log(gallery_data);
 
                 var other_data = JSON.stringify(dot);
 
