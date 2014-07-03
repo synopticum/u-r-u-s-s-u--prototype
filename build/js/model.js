@@ -1,6 +1,5 @@
 var BDot = Backbone.Model.extend({
     urlRoot : '/dot',
-    defaultImage: '/images/q.gif',
     sync: function(method, fd, options){
         return $.ajax({
             url: '/dot',

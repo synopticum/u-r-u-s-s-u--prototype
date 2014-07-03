@@ -34,6 +34,10 @@ var sendDots = function (req, res) {
 var addDot = function (req, res) {
     var dotValues = JSON.parse(req.body.json);
     dotValues.id = utils.guid();
+    dotValues.image = 'marker-images/' + dotValues.id + '.png';
+
+    // save in db
+    var dotValid = new Dot(dotValues);
 
     // create image
     if (!utils.isEmpty(req.files)) {
@@ -49,12 +53,15 @@ var addDot = function (req, res) {
                 });
             });
         }
+        else {
+            dotValid.image = 'images/q.gif';
+        }
 
-        // add gallery
-        fs.mkdir('public/galleries/' + dotValues.id, 0755, function (err) {
-            if (err) throw err;
-        });
+        // create gallery dir
+        var galleryPath = 'public/galleries/' + dotValues.id;
+        utils.mkdir(galleryPath);
 
+        // create gallery files
         for (var galleryImage in req.files) {
             var tmpGalleryPath = req.files[galleryImage].ws.path;
             var update = { gallery: [] };
@@ -75,16 +82,18 @@ var addDot = function (req, res) {
                 });
             });
         }
+
+        dotValid.save(function (err, dot) {
+            if (err) throw err;
+            res.end(JSON.stringify(dot));
+        });
     }
-
-    // save in db
-    var dotValid = new Dot(dotValues);
-    dotValid.image = 'marker-images/' + dotValues.id + '.png';
-
-    dotValid.save(function (err, dot) {
-        if (err) throw err;
-        res.end(JSON.stringify(dot));
-    });
+    else {
+        dotValid.save(function (err, dot) {
+            if (err) throw err;
+            res.end(JSON.stringify(dot));
+        });
+    }
 
     console.log("Dot added on server");
 
@@ -134,7 +143,10 @@ var removeDot = function (req, res) {
         var galleryPath = 'public/galleries/' + dotId;
 
         fs.stat(galleryPath, function (err, status) {
-            if (err) throw err;
+            if (err) {
+                console.log('marker gallery don\'t exists');
+                return;
+            }
             utils.deleteFolderRecursive(galleryPath, function (err) {
                 if (err) throw err;
                 console.log('dot gallery deleted');
@@ -142,7 +154,10 @@ var removeDot = function (req, res) {
         });
 
         fs.stat(markerPath, function (err, status) {
-            if (err) throw err;
+            if (err) {
+                console.log('marker image don\'t exists');
+                return;
+            }
             fs.unlink(markerPath, function (err) {
                 if (err) throw err;
                 console.log('dot marker image deleted');

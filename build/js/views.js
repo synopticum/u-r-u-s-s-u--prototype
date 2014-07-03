@@ -244,7 +244,7 @@ var View = {
                 position    : _this.position,
                 title       : _this.title || "Уруссинское отделение полиции",
                 text        : _this.text || "Нет у вас методов против Кости Сапрыкина.",
-                image       : _this.image || BDot.defaultImage,
+                image       : _this.image,
                 icon        : _this.icon,
                 address     : _this.address || "пр.",
                 street      : _this.street || "имени Китайской Революции",
