@@ -89,6 +89,8 @@ var addDot = function (req, res) {
         });
     }
     else {
+        dotValid.image = 'images/q.gif';
+
         dotValid.save(function (err, dot) {
             if (err) throw err;
             res.end(JSON.stringify(dot));
@@ -96,36 +98,64 @@ var addDot = function (req, res) {
     }
 
     console.log("Dot added on server");
-
-    req.on("data", function (data) {
-    });
 };
 
 var editDot = function (req, res) {
     var dotValues = JSON.parse(req.body.json);
+    dotValues.image = 'marker-images/' + dotValues.id + '.png';
 
     if (!utils.isEmpty(req.files)) {
-        var tmpFilePath = req.files.file_0.ws.path;
-        var tmpFile = fs.readFileSync(tmpFilePath);
+        // add image
+        if (req.files.file_0) {
+            var tmpFilePath = req.files.file_0.ws.path;
 
-        fs.writeFileSync('public/marker-images/' + dotValues.id + '.png', tmpFile);
-        fs.unlinkSync(tmpFilePath);
+            fs.readFile(tmpFilePath, function (err, result) {
+                if (err) throw err;
+
+                fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
+                    if (err) throw err;
+                });
+            });
+        }
+
+        // create gallery files
+        for (var galleryImage in req.files) {
+            var tmpGalleryPath = req.files[galleryImage].ws.path;
+            var update = { gallery: [] };
+
+            fs.readFile(tmpGalleryPath, function (err, result) {
+                var imageName = (Math.random()*31337 | 0) + '.jpg';
+                var imagePath = 'galleries/' + dotValues.id + '/' + imageName;
+
+                update.gallery.push(imagePath);
+
+                fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
+                    if (err) throw err;
+                });
+
+                Dot.findOneAndUpdate({id: dotValues.id}, update, function (err) {
+                    if (err) throw err;
+                    res.end(JSON.stringify(dotValues));
+                });
+            });
+        }
+
+        // save in db
+        Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {
+            if (err) throw err;
+            res.end(JSON.stringify(dotValues));
+        });
 
         console.log('image updated');
     }
-
-    // save in db
-    dotValues.image = 'marker-images/' + dotValues.id + '.png';
-
-    Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {
-        if (err) throw err;
-        res.end(JSON.stringify(dotValues));
-    });
+    else {
+        Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {
+            if (err) throw err;
+            res.end(JSON.stringify(dotValues));
+        });
+    }
 
     console.log("Dot updated on server");
-
-    req.on("data", function (data) {
-    });
 };
 
 var removeDot = function (req, res) {
@@ -144,23 +174,23 @@ var removeDot = function (req, res) {
 
         fs.stat(galleryPath, function (err, status) {
             if (err) {
-                console.log('marker gallery don\'t exists');
+                console.log('Marker gallery don\'t exists');
                 return;
             }
             utils.deleteFolderRecursive(galleryPath, function (err) {
                 if (err) throw err;
-                console.log('dot gallery deleted');
+                console.log('Dot gallery deleted');
             });
         });
 
         fs.stat(markerPath, function (err, status) {
             if (err) {
-                console.log('marker image don\'t exists');
+                console.log('Marker image don\'t exists');
                 return;
             }
             fs.unlink(markerPath, function (err) {
                 if (err) throw err;
-                console.log('dot marker image deleted');
+                console.log('Dot marker image deleted');
             });
         });
     });

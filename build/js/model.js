@@ -17,7 +17,7 @@ var BDot = Backbone.Model.extend({
             data: id,
             contentType: 'text/plain',
             processData: false,
-            type: 'delete',
+            type: 'DELETE',
             success: options.success,
             error:   options.error
         });

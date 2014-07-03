@@ -138,15 +138,14 @@ var View = {
                     position    : _this.position,
                     title       : _this.title || "Уруссинское отделение полиции",
                     text        : _this.text || "Нет у вас методов против Кости Сапрыкина.",
-                    image       : _this.image || new BDot().defaultImage,
+                    image       : _this.image,
                     icon        : _this.icon,
                     address     : _this.address || "пр.",
                     street      : _this.street || "имени Китайской Революции",
                     house       : _this.house || "19",
                     homePhone   : _this.homePhone || "2-12-48",
                     mobilePhone : _this.mobilePhone || "(937) 460-78-74",
-                    gallery     : [] || null,
-                    marker      : L.marker(_this.position)
+                    gallery     : [] || null
                 });
 
                 // create FormData Object with files/json
@@ -166,6 +165,7 @@ var View = {
 
                 fd.append('json', other_data);
 
+                // send
                 dot.sync('post', fd, {
                     success: function(model, response){
                         var response = JSON.parse(model);
@@ -173,6 +173,7 @@ var View = {
                         delete response.__v;
                         delete response._id;
                         var dotValid = new BDot(response);
+                        dotValid.attributes.marker = L.marker(response.position);
 
                         BDots.records.add(dotValid);
 
@@ -255,15 +256,21 @@ var View = {
             });
 
             if (BDots.records) {
+
                 // create FormData Object with files/json
                 var fd = new FormData();
 
                 var file_data = $('.input-image')[0].files;
-                var other_data = JSON.stringify(dot);
-
                 for(var i = 0; i < file_data.length; i++){
                     fd.append("file_" + i, file_data[i]);
                 }
+
+                var gallery_data = $('.input-gallery')[0].files;
+                for(var j = 0; j < gallery_data.length; j++){
+                    fd.append("gallery_" + j, gallery_data[j]);
+                }
+
+                var other_data = JSON.stringify(dot);
 
                 fd.append('json', other_data);
 
@@ -318,20 +325,24 @@ var View = {
 
             if (BDots.records) {
                 var record = BDots.records.get(this.dotId);
+                console.log(this.dot.marker);
+
                 record.destroy(this.dotId, {
                     success: function(model, response){
                         console.log('dot removed from server!!');
                         console.log(response);
+                        BDots.records.remove(record);
                     },
                     error: function(model, response){
                         console.log('dot remove server error!');
                         console.log(response.responseText);
                     }
                 });
+
+                map.removeLayer(this.dot.marker);
             }
             else throw Error('BDots.records don t exist');
 
-            map.removeLayer(this.dot.marker);
             $.fancybox.close(_this);
             helper.status('Точка удалена');
         }
