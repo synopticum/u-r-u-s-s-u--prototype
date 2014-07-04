@@ -77,7 +77,7 @@
                 <div class="dot-gallery">
                     <% if (gallery) { _.each(gallery, function (imageURL) { %> <a
                         href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
-                    <% }); } %>
+                    <% }); }; %>
                 </div>
             </div>
         </div>
@@ -88,13 +88,13 @@
         <table>
             <tr>
                 <td>
+                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+                </td>
+                <td colspan="2">
                     <select class="input-layer selectbox">
                         <option value="main">Основной слой</option>
                         <option value="second">Второстепенный слой</option>
                     </select>
-                </td>
-                <td colspan="2">
-                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
                 </td>
             </tr>
             <tr>
@@ -115,22 +115,23 @@
             </tr>
             <tr>
                 <td><input type="text" class="input-home-phone popup-textbox" placeholder="Рабочий телефон"/></td>
-                <td><input type="text" class="input-mobile-phone popup-textbox" placeholder="Мобильный телефон"/></td>
-                <td><input type="text" class="input-marker popup-textbox" value="Цвет маркера"/></td>
+                <td colspan="2"><input type="text" class="input-mobile-phone popup-textbox" placeholder="Мобильный телефон"/></td>
             </tr>
             <tr>
-                <td>
-                    <input type="file" name="image" class="input-image" placeholder=""/>
+                <td class="required">
+                    Картинка для точки <mark>(80x80)</mark> <span class="req">*</span>:<br>
+                    <input type="file" name="image" class="input-image" />
                 </td>
+                <td colspan="2" class="required">
+                    Галерея изображений:<br>
+                    <input type="file" name="image2" class="input-gallery" multiple/>
+                </td>
+            </tr>
+            <tr class="last">
+                <td><span class="input-marker">Цвет маркера</span></td>
                 <td colspan="2">
                     <button type="button" class="popup-button input-submit">Добавить метку</button>
                 </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="file" name="image" class="input-gallery" placeholder="" multiple/>
-                </td>
-                <td colspan="2">&nbsp;</td>
             </tr>
         </table>
 
@@ -189,18 +190,18 @@
         <table>
             <tr>
                 <td>
+                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+                </td>
+                <td colspan="2">
                     <select class="input-layer selectbox">
                         <option value="main">Основной слой</option>
                         <option value="second">Второстепенный слой</option>
                     </select>
                 </td>
-                <td colspan="2">
-                    <input type="text" class="input-title popup-textbox" value="<%= title %>"/>
-                </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <textarea class="input-short-text popup-textarea"><%= text %></textarea>
+                    <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
                 </td>
             </tr>
             <tr>
@@ -211,27 +212,28 @@
                         <option value="пер.">пер.</option>
                     </select>
                 </td>
-                <td><input type="text" class="input-street popup-textbox" value="<%= street %>"/></td>
-                <td><input type="text" class="input-house popup-textbox" value="<%= house %>"/></td>
+                <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
+                <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
             </tr>
             <tr>
-                <td><input type="text" class="input-home-phone popup-textbox" value="<%= homePhone %>"/></td>
-                <td><input type="text" class="input-mobile-phone popup-textbox" value="<%= mobilePhone %>"/></td>
-                <td><input type="text" class="input-marker popup-textbox" value="Цвет маркера"/></td>
+                <td><input type="text" class="input-home-phone popup-textbox" placeholder="Рабочий телефон"/></td>
+                <td colspan="2"><input type="text" class="input-mobile-phone popup-textbox" placeholder="Мобильный телефон"/></td>
             </tr>
             <tr>
                 <td>
-                    <input type="file" name="" class="input-image" placeholder=""/>
+                    Картинка для точки <mark>(80x80)</mark>:<br>
+                    <input type="file" name="image" class="input-image" placeholder=""/>
                 </td>
                 <td colspan="2">
-                    <button type="submit" class="popup-button input-submit">Обновить метку</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
+                    Галерея изображений:<br>
                     <input type="file" name="image" class="input-gallery" placeholder="" multiple/>
                 </td>
-                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr class="last">
+                <td><span class="input-marker">Цвет маркера</span></td>
+                <td colspan="2">
+                    <button type="button" class="popup-button input-submit">Изменить метку</button>
+                </td>
             </tr>
         </table>
 

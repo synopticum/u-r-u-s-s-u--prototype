@@ -5,6 +5,8 @@ var multipartMiddleware = multipart( { uploadDir: 'public/tmp' });
 var utils = require('../libs/util.js');
 var Dot = require('../models/dot').Dot;
 
+var tmpDir = 'public/tmp';
+
 module.exports = function (app) {
     app.get('/', index);
     app.get('/login', login);
@@ -42,24 +44,32 @@ var addDot = function (req, res) {
     // create image
     if (!utils.isEmpty(req.files)) {
         // add image
-        if (req.files.file_0) {
-            var tmpFilePath = req.files.file_0.ws.path;
+        if (req.files.markerimage) {
+            var tmpFilePath = req.files.markerimage.ws.path;
 
             fs.readFile(tmpFilePath, function (err, result) {
                 if (err) throw err;
 
                 fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
                     if (err) throw err;
+
+                    fs.unlink(tmpFilePath, function (err) {
+                        if (err) throw err;
+                        console.log('tmp file deleted');
+                    })
                 });
             });
         }
         else {
-            dotValid.image = 'images/q.gif';
+            dotValues.image = 'images/q.gif';
         }
 
         // create gallery dir
         var galleryPath = 'public/galleries/' + dotValues.id;
         utils.mkdir(galleryPath);
+
+        delete req.files.markerimage;
+        console.log(req.files);
 
         // create gallery files
         for (var galleryImage in req.files) {
@@ -106,39 +116,54 @@ var editDot = function (req, res) {
 
     if (!utils.isEmpty(req.files)) {
         // add image
-        if (req.files.file_0) {
-            var tmpFilePath = req.files.file_0.ws.path;
+        if (req.files.markerimage) {
+            var tmpFilePath = req.files.markerimage.ws.path;
 
             fs.readFile(tmpFilePath, function (err, result) {
                 if (err) throw err;
 
                 fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
                     if (err) throw err;
+
+                    fs.unlink(tmpFilePath, function (err) {
+                        if (err) throw err;
+                        console.log('tmp file deleted');
+                    })
                 });
             });
         }
 
         // create gallery files
-        for (var galleryImage in req.files) {
-            var tmpGalleryPath = req.files[galleryImage].ws.path;
-            var update = { gallery: [] };
+        var galleryPath = 'public/galleries/' + dotValues.id;
 
-            fs.readFile(tmpGalleryPath, function (err, result) {
-                var imageName = (Math.random()*31337 | 0) + '.jpg';
-                var imagePath = 'galleries/' + dotValues.id + '/' + imageName;
+        fs.stat(galleryPath, function (err, status) {
+            if (err) {
+                utils.mkdir(galleryPath);
+                console.log('Marker gallery created');
+            }
 
-                update.gallery.push(imagePath);
+            for (var galleryImage in req.files) {
+                var tmpGalleryPath = req.files[galleryImage].ws.path;
+                var update = { gallery: [] };
+                utils.mkdir(tmpDir);
 
-                fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
-                    if (err) throw err;
+                fs.readFile(tmpGalleryPath, function (err, result) {
+                    var imageName = (Math.random()*31337 | 0) + '.jpg';
+                    var imagePath = 'galleries/' + dotValues.id + '/' + imageName;
+
+                    update.gallery.push(imagePath);
+
+                    fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
+                        if (err) throw err;
+                    });
+
+                    Dot.findOneAndUpdate({id: dotValues.id}, update, function (err) {
+                        if (err) throw err;
+                        res.end(JSON.stringify(dotValues));
+                    });
                 });
-
-                Dot.findOneAndUpdate({id: dotValues.id}, update, function (err) {
-                    if (err) throw err;
-                    res.end(JSON.stringify(dotValues));
-                });
-            });
-        }
+            }
+        });
 
         // save in db
         Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {

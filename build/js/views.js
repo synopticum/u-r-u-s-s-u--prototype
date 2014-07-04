@@ -114,6 +114,15 @@ var View = {
             $('#selectMarkerPopup').fadeOut('fast');
         },
         'submit': function() {
+            // check required fields
+            var requiredCheck = 0;
+            $('.required input').each(function (e) {
+                if (!this.value) requiredCheck++
+            });
+            if (requiredCheck) {
+                $('.required').addClass('highlight');
+                return false;
+            }
 
             // send json
             var _this = $(this.$el);
@@ -153,7 +162,7 @@ var View = {
 
                 var file_data = $('.input-image')[0].files;
                 for(var i = 0; i < file_data.length; i++){
-                    fd.append("file_" + i, file_data[i]);
+                    fd.append("markerimage", file_data[i]);
                 }
 
                 var gallery_data = $('.input-gallery')[0].files;
@@ -262,7 +271,7 @@ var View = {
 
                 var file_data = $('.input-image')[0].files;
                 for(var i = 0; i < file_data.length; i++){
-                    fd.append("file_" + i, file_data[i]);
+                    fd.append("markerimage", file_data[i]);
                 }
 
                 var gallery_data = $('.input-gallery')[0].files;
@@ -325,7 +334,6 @@ var View = {
 
             if (BDots.records) {
                 var record = BDots.records.get(this.dotId);
-                console.log(this.dot.marker);
 
                 record.destroy(this.dotId, {
                     success: function(model, response){
