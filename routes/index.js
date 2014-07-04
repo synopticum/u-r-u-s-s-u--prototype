@@ -69,7 +69,6 @@ var addDot = function (req, res) {
         utils.mkdir(galleryPath);
 
         delete req.files.markerimage;
-        console.log(req.files);
 
         // create gallery files
         for (var galleryImage in req.files) {
@@ -86,9 +85,9 @@ var addDot = function (req, res) {
                     if (err) throw err;
                 });
 
-                Dot.findOneAndUpdate({id: dotValues.id}, update, function (err) {
+                Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
                     if (err) throw err;
-                    res.end(JSON.stringify(dotValues));
+                    res.end(JSON.stringify(result));
                 });
             });
         }
@@ -115,6 +114,7 @@ var editDot = function (req, res) {
     dotValues.image = 'marker-images/' + dotValues.id + '.png';
 
     if (!utils.isEmpty(req.files)) {
+        console.log('Dot update have files');
         // add image
         if (req.files.markerimage) {
             var tmpFilePath = req.files.markerimage.ws.path;
@@ -144,7 +144,7 @@ var editDot = function (req, res) {
 
             for (var galleryImage in req.files) {
                 var tmpGalleryPath = req.files[galleryImage].ws.path;
-                var update = { gallery: [] };
+                var update = { gallery: dotValues.gallery };
                 utils.mkdir(tmpDir);
 
                 fs.readFile(tmpGalleryPath, function (err, result) {
@@ -157,9 +157,10 @@ var editDot = function (req, res) {
                         if (err) throw err;
                     });
 
-                    Dot.findOneAndUpdate({id: dotValues.id}, update, function (err) {
+                    Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
                         if (err) throw err;
-                        res.end(JSON.stringify(dotValues));
+                        console.log(result);
+                        res.end(JSON.stringify(result));
                     });
                 });
             }
@@ -174,9 +175,12 @@ var editDot = function (req, res) {
         console.log('image updated');
     }
     else {
-        Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {
+        console.log('Dot update dont have files');
+        delete dotValues.gallery;
+
+        Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err, result) {
             if (err) throw err;
-            res.end(JSON.stringify(dotValues));
+            res.end(JSON.stringify(result));
         });
     }
 

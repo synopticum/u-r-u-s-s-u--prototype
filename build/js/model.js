@@ -51,6 +51,9 @@ var BDot = Backbone.Model.extend({
             case "vertical-green" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-green.png'});
                 break;
+            case "message-green" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-green.png'});
+                break;
             case "message-pink" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-pink.png'});
                 break;
@@ -66,8 +69,8 @@ var BDot = Backbone.Model.extend({
             case "flag-blue" :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-blue.png'});
                 break;
-            case "message-green" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-green.png'});
+            case "gold" :
+                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-gold.png'});
                 break;
             default :
                 return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'});

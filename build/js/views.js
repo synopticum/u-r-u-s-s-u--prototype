@@ -9,16 +9,18 @@ var View = {
 
             var mainLayer = L.layerGroup(BDots.layers.main);
             var secondLayer = L.layerGroup(BDots.layers.second);
+            var oldLayer = L.layerGroup(BDots.layers.old);
 
             var staticLayers = {
                 "Models": mainLayer
             };
 
             var dynamicLayers = {
-                "Second Layer": secondLayer
+                "Second Layer": secondLayer,
+                "Старые виды": oldLayer
             };
 
-            map = L.map('map', { layers: [mainLayer, secondLayer] });
+            map = L.map('map', { layers: [mainLayer, secondLayer, oldLayer] });
 
             // map default view & draggable area
             map.setView([70, 10], 5);
@@ -245,6 +247,7 @@ var View = {
             _this.house       = $(".input-house", _this).val();
             _this.homePhone   = $(".input-home-phone", _this).val();
             _this.mobilePhone = $(".input-mobile-phone", _this).val();
+            _this.gallery     = this.dot.gallery;
 
             var dot = new BDot({
                 id          : _this.id,
@@ -261,7 +264,7 @@ var View = {
                 house       : _this.house || "19",
                 homePhone   : _this.homePhone || "2-12-48",
                 mobilePhone : _this.mobilePhone || "(937) 460-78-74",
-                gallery     : [] || null
+                gallery     : _this.gallery
             });
 
             if (BDots.records) {
