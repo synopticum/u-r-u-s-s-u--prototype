@@ -47,8 +47,12 @@
             <span class="dot-destroy"></span>
 
             <div class="dot-nav">
-                <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
+                <div class="dot-gallery">
+                    <% if (gallery) { _.each(gallery, function (imageURL) { %> <a
+                        href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"><img
                         src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
+                    <% }); }; %>
+                </div>
             </div>
 
             <div class="dot-description">
@@ -74,12 +78,6 @@
                         </td>
                     </tr>
                 </table>
-
-                <div class="dot-gallery">
-                    <% if (gallery) { _.each(gallery, function (imageURL) { %> <a
-                        href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
-                    <% }); }; %>
-                </div>
             </div>
         </div>
     </script>
