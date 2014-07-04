@@ -55,7 +55,7 @@ var addDot = function (req, res) {
 
                     fs.unlink(tmpFilePath, function (err) {
                         if (err) throw err;
-                        console.log('tmp file deleted');
+                        console.log('Temporary marker file deleted');
                     })
                 });
             });
@@ -87,14 +87,13 @@ var addDot = function (req, res) {
 
                 Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
                     if (err) throw err;
-                    res.end(JSON.stringify(result));
                 });
             });
         }
 
         dotValid.save(function (err, dot) {
             if (err) throw err;
-            res.end(JSON.stringify(dot));
+            res.send(JSON.stringify(dot));
         });
     }
     else {
@@ -136,6 +135,8 @@ var editDot = function (req, res) {
         // create gallery files
         var galleryPath = 'public/galleries/' + dotValues.id;
 
+        delete req.files.markerimage;
+
         fs.stat(galleryPath, function (err, status) {
             if (err) {
                 utils.mkdir(galleryPath);
@@ -159,7 +160,7 @@ var editDot = function (req, res) {
 
                     Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
                         if (err) throw err;
-                        console.log(result);
+                        console.log('Marker gallery updated');
                         res.end(JSON.stringify(result));
                     });
                 });
@@ -167,9 +168,9 @@ var editDot = function (req, res) {
         });
 
         // save in db
-        Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err) {
+        Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err, result) {
             if (err) throw err;
-            res.end(JSON.stringify(dotValues));
+            res.end(JSON.stringify(result));
         });
 
         console.log('image updated');

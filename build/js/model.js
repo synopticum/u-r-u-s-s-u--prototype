@@ -136,5 +136,10 @@ var BModel = Backbone.Model.extend({
                 this.layers[layerName].push(marker);
             }
         }
+
+        // update
+        setInterval(function() {
+            BDots.records.fetch({ url : "/dots" });
+        }, 10000);
     }
 });
