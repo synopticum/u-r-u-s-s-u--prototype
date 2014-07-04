@@ -89,6 +89,11 @@ var addDot = function (req, res) {
                     });
                 });
             });
+
+            fs.unlink(tmpGalleryPath, function (err) {
+                if (err) throw err;
+                console.log('Temporary gallery image deleted');
+            })
         }
 
         dotValid.save(function (err, dot) {
@@ -164,6 +169,11 @@ var editDot = function (req, res) {
                         });
                     });
                 });
+
+                fs.unlink(tmpGalleryPath, function (err) {
+                    if (err) throw err;
+                    console.log('Temporary gallery image deleted');
+                })
             }
         });
 
