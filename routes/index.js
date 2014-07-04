@@ -83,10 +83,10 @@ var addDot = function (req, res) {
 
                 fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
                     if (err) throw err;
-                });
 
-                Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
-                    if (err) throw err;
+                    Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
+                        if (err) throw err;
+                    });
                 });
             });
         }
@@ -156,12 +156,12 @@ var editDot = function (req, res) {
 
                     fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
                         if (err) throw err;
-                    });
 
-                    Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
-                        if (err) throw err;
-                        console.log('Marker gallery updated');
-                        res.end(JSON.stringify(result));
+                        Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
+                            if (err) throw err;
+                            console.log('Marker gallery updated');
+                            res.end(JSON.stringify(result));
+                        });
                     });
                 });
             }
