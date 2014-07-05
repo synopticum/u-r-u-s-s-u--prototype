@@ -36,16 +36,12 @@ module.exports = function (app) {
 
 var admin = function (req, res) {
     if (req.user) {
-        res.render('index', { title: 'Node Boilerplate' });
-    }
-    else {
-        res.redirect('/join');
-    }
-};
-
-var user = function (req, res) {
-    if (req.user) {
-        res.render('user', { title: 'User Node Boilerplate' });
+        // check admin rules
+        if (req.user.vkontakteId === '257378450') {
+            res.render('admin', { title: 'Admin Node Boilerplate' });
+        }
+        else
+            res.render('user', { title: ' User Node Boilerplate' });
     }
     else {
         res.redirect('/join');
