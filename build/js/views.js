@@ -8,19 +8,28 @@ var View = {
             var mapMaxZoom = 5;
 
             var mainLayer = L.layerGroup(BDots.layers.main);
-            var secondLayer = L.layerGroup(BDots.layers.second);
             var oldLayer = L.layerGroup(BDots.layers.old);
+            var placesLayer = L.layerGroup(BDots.layers.places);
+            var eventsLayer = L.layerGroup(BDots.layers.events);
+
+            var layersArray = [
+                mainLayer,           // main layer
+                oldLayer,            // old photos
+                placesLayer,         // user dot approved
+                eventsLayer          // user event approved
+            ];
 
             var staticLayers = {
-                "Models": mainLayer
+                "Общая карта": mainLayer
             };
 
             var dynamicLayers = {
-                "Second Layer": secondLayer,
+                "Места": placesLayer,
+                "События": eventsLayer,
                 "Старые виды": oldLayer
             };
 
-            map = L.map('map', { layers: [mainLayer, secondLayer, oldLayer] });
+            map = L.map('map', { layers: layersArray });
 
             // map default view & draggable area
             map.setView([70, 10], 5);

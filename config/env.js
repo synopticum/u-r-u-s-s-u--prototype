@@ -9,7 +9,7 @@ var passport = require('passport'),
 passport.use(new VKontakteStrategy({
         clientID:     4447151,
         clientSecret: 'bk2AL0XGFoyUjWmFWBcX',
-        callbackURL:  "http://localhost:3000/auth/vkontakte/callback"
+        callbackURL:  "http://localhost:3000/auth/callback"
     },
     function(accessToken, refreshToken, profile, done) {
         User.findOne({ 'vkontakteId': profile.id }, function(err, user) {

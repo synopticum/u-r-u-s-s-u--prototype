@@ -7,7 +7,7 @@ var multipart = require('connect-multiparty'),
 var Dot  = require('../models').Dot;
 
 module.exports = function (app) {
-    app.get('/', index);
+    app.get('/', admin);
     app.get('/join', join);
 
     app.get('/dots', sendDots);
@@ -17,14 +17,14 @@ module.exports = function (app) {
     app.delete('/dot', removeDot);
 
     // auth
-    app.get('/auth/vkontakte',
+    app.get('/auth',
         passport.authenticate('vkontakte'),
         function(req, res){
             // The request will be redirected to vk.com for authentication, so
             // this function will not be called.
         });
 
-    app.get('/auth/vkontakte/callback',
+    app.get('/auth/callback',
         passport.authenticate('vkontakte', { failureRedirect: '/site-error' }),
         function(req, res) {
             // Successful authentication, redirect home.
@@ -34,9 +34,18 @@ module.exports = function (app) {
     app.get('/logout', logout);
 };
 
-var index = function (req, res) {
+var admin = function (req, res) {
     if (req.user) {
         res.render('index', { title: 'Node Boilerplate' });
+    }
+    else {
+        res.redirect('/join');
+    }
+};
+
+var user = function (req, res) {
+    if (req.user) {
+        res.render('user', { title: 'User Node Boilerplate' });
     }
     else {
         res.redirect('/join');
