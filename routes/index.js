@@ -1,35 +1,57 @@
-var multipart = require('connect-multiparty');
-var fs = require('fs');
-var multipartMiddleware = multipart( { uploadDir: 'public/tmp' });
+var multipart = require('connect-multiparty'),
+    fs = require('fs'),
+    multipartMiddleware = multipart( { uploadDir: 'public/tmp' }),
+    passport = require('passport'),
+    utils = require('../libs/util.js');
 
-var utils = require('../libs/util.js');
-var Dot = require('../models/dot').Dot;
-
-var tmpDir = 'public/tmp';
+var Dot  = require('../models').Dot;
 
 module.exports = function (app) {
     app.get('/', index);
-    app.get('/login', login);
-    app.get('/dots', sendDots);
+    app.get('/join', join);
 
+    app.get('/dots', sendDots);
 
     app.post('/dot', multipartMiddleware, addDot);
     app.put('/dot', multipartMiddleware, editDot);
     app.delete('/dot', removeDot);
+
+    // auth
+    app.get('/auth/vkontakte',
+        passport.authenticate('vkontakte'),
+        function(req, res){
+            // The request will be redirected to vk.com for authentication, so
+            // this function will not be called.
+        });
+
+    app.get('/auth/vkontakte/callback',
+        passport.authenticate('vkontakte', { failureRedirect: '/site-error' }),
+        function(req, res) {
+            // Successful authentication, redirect home.
+            res.redirect('/');
+        });
+
+    app.get('/logout', logout);
 };
 
 var index = function (req, res) {
-    res.render('index', { title: 'Node Boilerplate' });
+    if (req.user) {
+        res.render('index', { title: 'Node Boilerplate' });
+    }
+    else {
+        res.redirect('/join');
+    }
+    console.log(req.user);
 };
 
-var login = function (req, res) {
+var join = function (req, res) {
     res.render('login', { title: 'Node Login' });
 };
 
 var sendDots = function (req, res) {
-    Dot.find(function (err, person) {
-        if (err) return handleError(err);
-        res.end(JSON.stringify(person));
+    Dot.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
     });
 };
 
@@ -151,7 +173,7 @@ var editDot = function (req, res) {
             for (var galleryImage in req.files) {
                 var tmpGalleryPath = req.files[galleryImage].ws.path;
                 var update = { gallery: dotValues.gallery };
-                utils.mkdir(tmpDir);
+                utils.mkdir('public/tmp');
 
                 fs.readFile(tmpGalleryPath, function (err, result) {
                     var imageName = (Math.random()*31337 | 0) + '.jpg';
@@ -236,4 +258,10 @@ var removeDot = function (req, res) {
     });
 
     console.log("Dot removed from server");
+};
+
+// Здесь все просто =)
+var logout = function(req, res) {
+    req.logout();
+    res.redirect('/');
 };

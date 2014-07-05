@@ -1,7 +1,8 @@
 var mongoose = require('../libs/mongoose'),
     Schema = mongoose.Schema;
 
-var schema = new Schema({
+// Dot
+var DotSchema = new Schema({
     id : {
         type : String,
         unique : true,
@@ -61,4 +62,23 @@ var schema = new Schema({
     }
 });
 
-exports.Dot = mongoose.model('Dot', schema);
+// User
+var UserSchema = new Schema({
+    username: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    displayName: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    vkontakteId : {
+        type: String,
+        unique: true
+    }
+});
+
+exports.Dot = mongoose.model('Dot', DotSchema);
+exports.User = mongoose.model('User', UserSchema);

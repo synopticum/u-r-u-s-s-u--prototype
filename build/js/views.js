@@ -49,7 +49,7 @@ var View = {
             map.on('load', View.map.hideLoadScreen);
 
             // set dot
-            map.on('click', function (position) {
+            map.on('dblclick', function (position) {
                 var view = new View.addDot();
                 $.fancybox.open(view.render(position));
                 $(".selectbox").selectbox();
@@ -147,15 +147,15 @@ var View = {
                     byUser      : null,
                     layer       : _this.layer,
                     position    : _this.position,
-                    title       : _this.title || "Уруссинское отделение полиции",
-                    text        : _this.text || "Нет у вас методов против Кости Сапрыкина.",
+                    title       : _this.title || "-",
+                    text        : _this.text || "-",
                     image       : _this.image,
                     icon        : _this.icon,
-                    address     : _this.address || "пр.",
-                    street      : _this.street || "имени Китайской Революции",
-                    house       : _this.house || "19",
-                    homePhone   : _this.homePhone || "2-12-48",
-                    mobilePhone : _this.mobilePhone || "(937) 460-78-74",
+                    address     : _this.address || "-",
+                    street      : _this.street || "-",
+                    house       : _this.house || "-",
+                    homePhone   : _this.homePhone || "-",
+                    mobilePhone : _this.mobilePhone || "-",
                     gallery     : [] || null
                 });
 
@@ -255,15 +255,15 @@ var View = {
                 byUser      : null,
                 layer       : _this.layer,
                 position    : _this.position,
-                title       : _this.title || "Уруссинское отделение полиции",
-                text        : _this.text || "Нет у вас методов против Кости Сапрыкина.",
+                title       : _this.title || "-",
+                text        : _this.text || "-",
                 image       : _this.image,
                 icon        : _this.icon,
-                address     : _this.address || "пр.",
-                street      : _this.street || "имени Китайской Революции",
-                house       : _this.house || "19",
-                homePhone   : _this.homePhone || "2-12-48",
-                mobilePhone : _this.mobilePhone || "(937) 460-78-74",
+                address     : _this.address || "-",
+                street      : _this.street || "-",
+                house       : _this.house || "-",
+                homePhone   : _this.homePhone || "-",
+                mobilePhone : _this.mobilePhone || "-",
                 gallery     : _this.gallery
             });
 
@@ -340,7 +340,6 @@ var View = {
 
                 record.destroy(this.dotId, {
                     success: function(model, response){
-                        console.log('dot removed from server!!');
                         console.log(response);
                         BDots.records.remove(record);
                     },

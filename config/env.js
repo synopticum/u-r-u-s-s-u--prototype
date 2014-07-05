@@ -1,6 +1,54 @@
 var util = require(__dirname + '/../libs/util.js'),
     mustache = require('mu2');
 
+// vk oauth 2.0
+var passport = require('passport'),
+    VKontakteStrategy = require('passport-vkontakte').Strategy,
+    User = require('../models').User;
+
+passport.use(new VKontakteStrategy({
+        clientID:     4447151,
+        clientSecret: 'bk2AL0XGFoyUjWmFWBcX',
+        callbackURL:  "http://localhost:3000/auth/vkontakte/callback"
+    },
+    function(accessToken, refreshToken, profile, done) {
+        User.findOne({ 'vkontakteId': profile.id }, function(err, user) {
+            if (err) {
+                return done(err);
+            }
+            //No user was found... so create a new user with values from Facebook (all the profile. stuff)
+            if (!user) {
+                user = new User({
+                    username: profile.username,
+                    displayName: profile.displayName,
+                    provider: 'vkontakte',
+                    vkontakteId: profile.id
+                });
+                user.save(function(err) {
+                    if (err) console.log(err);
+                    return done(err, user);
+                });
+            } else {
+                //found user. Return
+                return done(err, user);
+            }
+        });
+    }
+));
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err,user){
+        err
+            ? done(err)
+            : done(null,user);
+    });
+});
+
 module.exports = function (express, app) {
 
     // Common configuration
@@ -25,6 +73,15 @@ module.exports = function (express, app) {
                 fn(e);
             });
         });
+
+        // Middlewares, которые должны быть определены до passport:
+        app.use(express.cookieParser());
+        app.use(express.bodyParser());
+        app.use(express.session({ secret: 'SECRET' }));
+
+        // Passport:
+        app.use(passport.initialize());
+        app.use(passport.session());
 
         app.use(app.router);
 
