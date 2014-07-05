@@ -41,7 +41,6 @@ var index = function (req, res) {
     else {
         res.redirect('/join');
     }
-    console.log(req.user);
 };
 
 var join = function (req, res) {
