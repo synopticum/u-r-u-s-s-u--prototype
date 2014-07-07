@@ -22,6 +22,7 @@ module.exports = function (app) {
     // dot messages
     app.get('/messages', multipartMiddleware, getMessages);
     app.post('/messages', multipartMiddleware, addMessage);
+    app.put('/messages', multipartMiddleware, editMessage);
     app.delete('/messages', multipartMiddleware, removeMessage);
 
     // auth
@@ -277,6 +278,7 @@ var removeDot = function (req, res) {
     console.log("Dot removed from server");
 };
 
+// messages
 var addMessage = function (req, res) {
     var message = {
         messageId    : 'm' + utils.guid(),
@@ -300,6 +302,17 @@ var getMessages = function (req, res) {
         if (err) throw err;
         res.end(JSON.stringify(result));
     });
+};
+
+var editMessage = function (req, res) {
+    console.log(req.body.id);
+
+    Message.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        if (err) throw err;
+        res.end("Message updated on server");
+    });
+
+    console.log("Message updated on server");
 };
 
 var removeMessage = function (req, res) {

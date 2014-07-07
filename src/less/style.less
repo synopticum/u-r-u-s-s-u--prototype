@@ -159,6 +159,14 @@
   background: url("../images/remove.png") no-repeat;
 }
 
+.leaflet-container a.leaflet-popup-close-button, .dot-edit, .dot-destroy {
+  transition: .3s;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover, .dot-edit:hover, .dot-destroy:hover {
+  opacity: .5;
+}
+
 .dot-contacts {
   margin: 5px 0 0 0;
   width: 100%;
@@ -247,6 +255,7 @@ a {
   background: #fff;
   outline: none;
   border-right: 1px solid #eee;
+  transition: .1s;
 }
 #startScreen .tabs .ui-state-default:last-child a {
   border-right: 0;
@@ -258,4 +267,14 @@ a {
 
 .tabs-wrapper {
   padding: 0 20px;
+}
+
+#messagesmod {
+  color: #ffffff;
+  cursor: pointer;
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 999;
+  text-decoration: underline;
 }

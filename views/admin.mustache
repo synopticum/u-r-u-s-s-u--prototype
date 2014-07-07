@@ -363,16 +363,16 @@
             <div class="dot-messages-list">
                 <% if (messages) { _.each(messages, function (message) { %>
                 <div class="item" id="<%= message.messageId %>">
-                    <div class="remove" onclick="$.ajax({ url: '/messages', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
-
+                    <div class="control">
+                        <div class="approve" onclick="$.ajax({ url: '/messages', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                        <div class="remove" onclick="$.ajax({ url: '/messages', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                    </div>
                     <div class="view">
                         <a href="" class="name"><%= message.name %></a><br>
                         <span class="date"><%= message.created %></span>
                     </div>
 
-                    <div class="description">
-                        <%= message.text %>
-                    </div>
+                    <div class="description" contenteditable="true"><%= message.text %></div>
                 </div>
                 <% }); } %>
             </div>

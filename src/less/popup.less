@@ -101,6 +101,7 @@
 .popup-textarea {
   resize: none;
   height: 200px;
+  overflow: hidden;
 }
 .popup-textbox:focus, .popup-textarea:focus {
   border-color: #6B9B2A;
@@ -334,25 +335,34 @@
   overflow: hidden;
 }
 
+.dot-messages-wrapper .control {
+  float: right;
+  width: 50px;
+}
+
 .dot-messages-wrapper .remove {
+  float: right;
   cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 10px;
   width: 14px;
   height: 14px;
   background: url("../images/remove.png") no-repeat;
 }
 
-#startscreen-popup.popup {
-  width: 700px;
+.dot-messages-wrapper .approve {
+  float: right;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  margin: 0 5px;
+  background: url("../images/approve.png") no-repeat;
+}
+.dot-messages-wrapper .remove, .dot-messages-wrapper .approve {
+  transition: .3s;
+}
+.dot-messages-wrapper .remove:hover, .dot-messages-wrapper .approve:hover {
+  opacity: .5;
 }
 
-#messagesmod {
-  color: #ffffff;
-  cursor: pointer;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 999;
+#startscreen-popup.popup {
+  width: 700px;
 }
