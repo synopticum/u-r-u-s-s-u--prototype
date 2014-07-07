@@ -311,24 +311,33 @@
   width: 570px;
   height: 100px;
 }
+.dot-messages-send .news-textarea {
+  width: 730px;
+}
 .dot-messages-send .popup-button {
   float: right;
 }
 .dot-messages-list {
   max-height: 400px;
   overflow: auto;
-
+}
+.news-screen .dot-messages-list {
+  height: 300px;
 }
 .dot-messages-list .item {
   position: relative;
   padding: 15px 0;
   border-bottom: 1px solid #ccc;
   overflow: hidden;
+  transition: .3s;
+}
+.dot-messages-list .item:hover {
+  background: #e3ffd7;
 }
 .dot-messages-list .view {
   float: left;
   width: 150px;
-  margin: 0 20px 0 0;
+  margin: 0 20px 0 10px;
   color: #999999;
 }
 .dot-messages-list .description {
@@ -345,6 +354,7 @@
   cursor: pointer;
   width: 14px;
   height: 14px;
+  margin: 0 5px 0 0;
   background: url("../images/remove.png") no-repeat;
 }
 
@@ -353,7 +363,7 @@
   cursor: pointer;
   width: 14px;
   height: 14px;
-  margin: 0 5px;
+  margin: 0 5px 0 0;
   background: url("../images/approve.png") no-repeat;
 }
 .dot-messages-wrapper .remove, .dot-messages-wrapper .approve {

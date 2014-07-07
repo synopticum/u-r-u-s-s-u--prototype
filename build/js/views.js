@@ -458,11 +458,13 @@ var View = {
             return this.$el.html(this.template());
         },
         events: {
-            'click #tab-news': 'showNews'
+            'click #tab-news span': 'showNews'
         },
         'showNews': function() {
             var view = new View.newsScreen();
             $('.tabs-wrapper').html(view.render());
+
+            $('#tab-news').addClass('active');
         }
     })
 };
