@@ -81,11 +81,10 @@ var BDot = Backbone.Model.extend({
 
 // Main Model
 var BDots;
+var BMessages;
 
-var Collection = new Backbone.Collection();
-
-var BModel = Backbone.Model.extend({
-    records: Collection,
+var BDotsModel = Backbone.Model.extend({
+    records: new Backbone.Collection(),
     layers: {},
     initialize: function (data) {
         /* create dots records */
@@ -140,6 +139,20 @@ var BModel = Backbone.Model.extend({
         // update
         setInterval(function() {
             BDots.records.fetch({ url : "/dots" });
+            BMessages.records.fetch({ url : "/messages" });
         }, 10000);
+    }
+});
+
+var BMessagesModel = Backbone.Model.extend({
+    records: new Backbone.Collection(),
+    initialize: function (data) {
+        for (var jsonItem in data) {
+            var message = data[jsonItem];
+            delete message._id;
+            delete message.__v;
+
+            this.records.add(message);
+        }
     }
 });

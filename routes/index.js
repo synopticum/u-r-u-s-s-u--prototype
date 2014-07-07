@@ -5,16 +5,24 @@ var multipart = require('connect-multiparty'),
     utils = require('../libs/util.js');
 
 var Dot  = require('../models').Dot;
+var Message  = require('../models').Message;
 
 module.exports = function (app) {
-    app.get('/', admin);
+    app.get('/', logged);
     app.get('/join', join);
 
+    // init, send all dots
     app.get('/dots', sendDots);
 
+    // add / update / remove dot
     app.post('/dot', multipartMiddleware, addDot);
     app.put('/dot', multipartMiddleware, editDot);
-    app.delete('/dot', removeDot);
+    app.delete('/dot', multipartMiddleware, removeDot);
+
+    // dot messages
+    app.get('/messages', multipartMiddleware, getMessages);
+    app.post('/messages', multipartMiddleware, addMessage);
+    app.delete('/messages', multipartMiddleware, removeMessage);
 
     // auth
     app.get('/auth',
@@ -34,7 +42,7 @@ module.exports = function (app) {
     app.get('/logout', logout);
 };
 
-var admin = function (req, res) {
+var logged = function (req, res) {
     if (req.user) {
         // check admin rules
         if (req.user.vkontakteId === '257378450') {
@@ -50,6 +58,11 @@ var admin = function (req, res) {
 
 var join = function (req, res) {
     res.render('login', { title: 'Node Login' });
+};
+
+var logout = function(req, res) {
+    req.logout();
+    res.redirect('/');
 };
 
 var sendDots = function (req, res) {
@@ -264,8 +277,37 @@ var removeDot = function (req, res) {
     console.log("Dot removed from server");
 };
 
-// Здесь все просто =)
-var logout = function(req, res) {
-    req.logout();
-    res.redirect('/');
+var addMessage = function (req, res) {
+    var message = {
+        messageId    : 'm' + utils.guid(),
+        dotId        : req.body.id,
+        name         : req.user.displayName,
+        link         : req.user.username,
+        text         : req.body.text,
+        approved     : false
+    };
+
+    var messageValid = new Message(message);
+
+    messageValid.save(function (err, dot) {
+        if (err) throw err;
+        res.send('saved');
+    });
+};
+
+var getMessages = function (req, res) {
+    Message.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+};
+
+var removeMessage = function (req, res) {
+    // remove from db
+    Message.remove({ messageId: req.body.id }, function (err) {
+        if (err) throw err;
+        res.end("Message removed from server");
+    });
+
+    console.log("Message removed from server");
 };

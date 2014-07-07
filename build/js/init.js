@@ -1,7 +1,11 @@
 // init
 $.getJSON("/dots", function (data) {
-    BDots = new BModel(data);
+    BDots = new BDotsModel(data);
     View.map.init();
+});
+
+$.getJSON("/messages", function (data) {
+    BMessages = new BMessagesModel(data);
 });
 
 // socket

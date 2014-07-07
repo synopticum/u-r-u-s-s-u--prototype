@@ -56,6 +56,7 @@ var View = {
             L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
             map.on('load', View.map.hideLoadScreen);
+            map.on('load', View.map.showStartScreen);
 
             // set dot
             map.on('dblclick', function (position) {
@@ -81,6 +82,11 @@ var View = {
                     $.fancybox.open(view.render());
                 });
 
+                $(this._popup._wrapper).find('.dot-messages').click(function () {
+                    var view = new View.messagesDot({ dotId: popupId });
+                    $.fancybox.open(view.render());
+                });
+
                 $('.fancybox').fancybox();
             });
         },
@@ -89,7 +95,6 @@ var View = {
 
     showDot : Backbone.View.extend({
         initialize: function () {
-//            console.log(model)
         },
         template: _.template($('#dot-popup-template').html()),
         events: {
@@ -364,6 +369,61 @@ var View = {
 
             $.fancybox.close(_this);
             helper.status('Точка удалена');
+        }
+    }),
+
+    messagesDot: Backbone.View.extend({
+        dot: null,
+        dotId: null,
+        initialize: function (obj) {
+            this.dotId = obj.dotId;
+            this.dot = BDots.records.get(this.dotId).attributes;
+
+            // dot messages search
+            var messagesFound = BMessages.records.where({ dotId: this.dotId, approved : true });
+            messagesFound = JSON.stringify(messagesFound);
+            this.dot.messages = JSON.parse(messagesFound);
+        },
+        id: 'messagesdot-popup',
+        className: 'popup',
+        template: _.template($('#messagesdot-popup-template').html()),
+        render: function() {
+            console.log(this.dot);
+            return this.$el.html(this.template(this.dot));
+        },
+        events: {
+            'click .input-submit': 'submit'
+        },
+        'submit': function() {
+            var _this = $(this.$el);
+            var message = {
+                id: this.dotId,
+                text: $('.popup-textarea' ,_this).val()
+            };
+
+            $.post('/messages', message, { success: function (res) {
+                console.log('message added')
+            }, error: function () {
+                console.log(res)
+            } });
+
+            $.fancybox.close(_this);
+            helper.status('Сообщение отправлено');
+        }
+    }),
+
+    startScreen: Backbone.View.extend({
+        id: 'startscreen-popup',
+        className: 'popup',
+        template: _.template($('#startscreen-popup-template').html()),
+        render: function() {
+            return this.$el.html(this.template(this.dot));
+        },
+        events: {
+//            'click .input-submit': 'submit'
+        },
+        'submit': function() {
+            helper.status('Сообщение отправлено');
         }
     })
 };

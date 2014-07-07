@@ -5,6 +5,10 @@
   border: 2px solid #6B9B2A !important;
 }
 
+.fancybox-overlay {
+  background: url(../images/clouds.png) no-repeat 50% 50%;
+}
+
 #adddot-popup.popup, #editdot-popup.popup {
   width: 500px;
   padding: 20px;
@@ -17,6 +21,18 @@
   width: 300px;
   padding: 30px 20px 20px 20px;
   text-align: center;
+}
+
+#messagesdot-popup.popup h3 {
+  font-family: 'Noto Sans Bold';
+  font-size: 16px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+#messagesdot-popup.popup h3 mark {
+  font-family: 'Noto Sans Bold';
+  font-style: normal;
+  color: #6b9b2a;
 }
 
 .popup table {
@@ -37,7 +53,6 @@
   font-family: 'Noto Sans Italic';
   color: #999999;
 }
-
 .popup-button {
   cursor: pointer;
   display: inline-block;
@@ -81,6 +96,7 @@
   font-size: 14px;
   color: #000000;
   background: #fff;
+  transition: .3s;
 }
 .popup-textarea {
   resize: none;
@@ -264,4 +280,79 @@
   text-decoration: none;
 }
 .login-button img {
+}
+
+#messagesdot-popup.popup {
+  width: 700px;
+  padding: 20px;
+}
+
+.dot-messages-wrapper {
+  line-height: 140%;
+  font-size: 12px;
+  border-bottom: 1px solid #eee;
+}
+.dot-messages-wrapper .rules {
+  padding: 10px 0;
+  color: #999999;
+}
+.dot-messages-wrapper .rules mark {
+  color: #000;
+  font-family: 'Noto Sans Regular';
+}
+
+.dot-messages-send {
+  margin: 10px 0 0 0;
+  overflow: hidden;
+}
+.dot-messages-send .popup-textarea {
+  float: left;
+  width: 570px;
+  height: 100px;
+}
+.dot-messages-send .popup-button {
+  float: right;
+}
+.dot-messages-list {
+  max-height: 400px;
+  overflow: auto;
+
+}
+.dot-messages-list .item {
+  position: relative;
+  padding: 15px 0;
+  border-bottom: 1px solid #ccc;
+  overflow: hidden;
+}
+.dot-messages-list .view {
+  float: left;
+  width: 150px;
+  margin: 0 20px 0 0;
+  color: #999999;
+}
+.dot-messages-list .description {
+  overflow: hidden;
+}
+
+.dot-messages-wrapper .remove {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 14px;
+  height: 14px;
+  background: url("../images/remove.png") no-repeat;
+}
+
+#startscreen-popup.popup {
+  width: 700px;
+}
+
+#messagesmod {
+  color: #ffffff;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
 }

@@ -175,6 +175,9 @@
   border-bottom: 0;
   padding-bottom: 0;
 }
+.dot-contacts .tr {
+  text-align: right;
+}
 .dot-contacts mark {
   color: #000;
   margin: 0 5px 0 0;
@@ -204,4 +207,55 @@
 
 .dot-gallery {
   display: none;
+}
+
+.dot-messages {
+  cursor: pointer;
+  font-family: 'Noto Sans Regular';
+  color: #0078a8;
+  text-decoration: underline;
+}
+
+.dot-messages:hover {
+  color: #ee0000;
+}
+
+a {
+  color: #0078a8;
+}
+
+#startScreen {
+  overflow: hidden;
+}
+#startScreen .tabs {
+  background: #eee;
+  font-size: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #6B9B2A;
+}
+#startScreen .tabs li {
+  float: left;
+  vertical-align: top;
+}
+#startScreen .tabs .ui-state-default a {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 14px;
+  padding: 15px 30px;
+  color: #000;
+  text-decoration: none;
+  background: #fff;
+  outline: none;
+  border-right: 1px solid #eee;
+}
+#startScreen .tabs .ui-state-default:last-child a {
+  border-right: 0;
+}
+#startScreen .tabs .ui-state-active a {
+  background: #6B9B2A;
+  color: #fff;
+}
+
+.tabs-wrapper {
+  padding: 0 20px;
 }
