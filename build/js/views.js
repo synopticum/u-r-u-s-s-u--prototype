@@ -337,7 +337,7 @@ var View = {
             anonymousFound = JSON.stringify(anonymousFound);
             this.messages = JSON.parse(anonymousFound);
         },
-        id: 'ads-screen',
+        id: 'anonymous-screen',
         template: _.template($('#anonymous-template').html()),
         render: function() {
             return this.$el.html(this.template(this));
@@ -381,6 +381,7 @@ var View = {
             var view = new View.newsScreen();
             $('.tabs-wrapper').html(view.render());
 
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
             $('.tabs li').removeClass('active');
             $('#tab-news').addClass('active');
         },
@@ -388,6 +389,7 @@ var View = {
             var view = new View.adsScreen();
             $('.tabs-wrapper').html(view.render());
 
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
             $('.tabs li').removeClass('active');
             $('#tab-ads').addClass('active');
         },
@@ -395,6 +397,7 @@ var View = {
             var view = new View.anonymousScreen();
             $('.tabs-wrapper').html(view.render());
 
+            $('.fancybox-skin, .tabs').css('border-color', '#000');
             $('.tabs li').removeClass('active');
             $('#tab-anonymous').addClass('active');
         }

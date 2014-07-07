@@ -396,7 +396,7 @@ View.anonymousScreen = Backbone.View.extend({
         anonymousFound = JSON.stringify(anonymousFound);
         this.messages = JSON.parse(anonymousFound);
     },
-    id: 'ads-screen',
+    id: 'anonymous-screen',
     template: _.template($('#anonymous-template').html()),
     render: function() {
         return this.$el.html(this.template(this));
