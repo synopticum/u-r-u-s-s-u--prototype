@@ -83,6 +83,8 @@ var BDot = Backbone.Model.extend({
 var BDots;
 var BMessages;
 var BNews;
+var BAds;
+var BAnonymous;
 
 var BDotsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
@@ -141,6 +143,9 @@ var BDotsModel = Backbone.Model.extend({
         setInterval(function() {
             BDots.records.fetch({ url : "/dots" });
             BMessages.records.fetch({ url : "/messages" });
+            BNews.records.fetch({ url : "/news" });
+            BAds.records.fetch({ url : "/ads" });
+            BAnonymous.records.fetch({ url : "/anonymous" });
         }, 10000);
     }
 });
@@ -159,6 +164,32 @@ var BMessagesModel = Backbone.Model.extend({
 });
 
 var BNewsModel = Backbone.Model.extend({
+    records: new Backbone.Collection(),
+    initialize: function (data) {
+        for (var jsonItem in data) {
+            var message = data[jsonItem];
+            delete message._id;
+            delete message.__v;
+
+            this.records.add(message);
+        }
+    }
+});
+
+var BAdsModel = Backbone.Model.extend({
+    records: new Backbone.Collection(),
+    initialize: function (data) {
+        for (var jsonItem in data) {
+            var message = data[jsonItem];
+            delete message._id;
+            delete message.__v;
+
+            this.records.add(message);
+        }
+    }
+});
+
+var BAnonymousModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {

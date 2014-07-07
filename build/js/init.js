@@ -12,6 +12,14 @@ $.getJSON("/news", function (data) {
     BNews = new BNewsModel(data);
 });
 
+$.getJSON("/ads", function (data) {
+    BAds = new BAdsModel(data);
+});
+
+$.getJSON("/anonymous", function (data) {
+    BAnonymous = new BAnonymousModel(data);
+});
+
 // socket
 var socket = io('http://localhost');
 socket.on('dotChanges', function (data) {

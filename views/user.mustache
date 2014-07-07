@@ -187,10 +187,10 @@
         <div id="startScreen">
             <div class="tabs">
                 <ul>
-                    <li><span id="tab-news">Новости</span></li>
-                    <li><span>Объявления</span></li>
+                    <li id="tab-news"><span>Новости</span></li>
+                    <li id="tab-ads"><span>Объявления</span></li>
                     <li><span>Общение</span></li>
-                    <li style="float: right;"><span class="anonymous">&nbsp;</span></li>
+                    <li id="tab-anonymous"><span class="anonymous">&nbsp;</span></li>
                 </ul>
             </div>
 
@@ -207,7 +207,7 @@
                 <% if (messages) { _.each(messages, function (message) { %>
                 <div class="item">
                     <div class="view">
-                        <a href="" class="name"><%= message.name %></a><br>
+                        <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                         <span class="date"><%= message.created %></span>
                     </div>
 
@@ -227,6 +227,68 @@
         <div class="dot-messages-send">
             <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
                       placeholder="Введите сюда текст сообщения"></textarea>
+            <button type="submit" class="input-submit popup-button">Отправить</button>
+        </div>
+    </script>
+
+    <!-- ads template -->
+    <script type="text/html" id="ads-template">
+        <div class="dot-messages-wrapper">
+            <div class="dot-messages-list">
+                <% if (messages) { _.each(messages, function (message) { %>
+                <div class="item">
+                    <div class="view">
+                        <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
+                        <span class="date"><%= message.created %></span>
+                    </div>
+
+                    <div class="description">
+                        <%= message.text %>
+                    </div>
+                </div>
+                <% }); }; %>
+            </div>
+
+            <div class="rules">Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+                Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo;
+                    и &laquo;ться&raquo;</a>.
+                Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+            </div>
+        </div>
+
+        <div class="dot-messages-send">
+            <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+                      placeholder="Введите сюда текст объявления"></textarea>
+            <button type="submit" class="input-submit popup-button">Отправить</button>
+        </div>
+    </script>
+
+    <!-- anonymous template -->
+    <script type="text/html" id="anonymous-template">
+        <div class="dot-messages-wrapper">
+            <div class="dot-messages-list">
+                <% if (messages) { _.each(messages, function (message) { %>
+                <div class="item">
+                    <div class="view">
+                        <a href="" class="name"><%= message.name %></a><br>
+                        <span class="date"><%= message.created %></span>
+                    </div>
+
+                    <div class="description" contenteditable="true"><%= message.text %></div>
+                </div>
+                <% }); }; %>
+            </div>
+
+            <div class="rules">Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+                Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo;
+                    и &laquo;ться&raquo;</a>.
+                Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+            </div>
+        </div>
+
+        <div class="dot-messages-send">
+            <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+                      placeholder="Введите сюда текст объявления"></textarea>
             <button type="submit" class="input-submit popup-button">Отправить</button>
         </div>
     </script>

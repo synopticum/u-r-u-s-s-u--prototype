@@ -7,6 +7,8 @@ var multipart = require('connect-multiparty'),
 var Dot  = require('../models').Dot;
 var Message  = require('../models').Message;
 var News  = require('../models').News;
+var Ads  = require('../models').Ads;
+var Anonymous  = require('../models').Anonymous;
 
 module.exports = function (app) {
     app.get('/', logged);
@@ -31,6 +33,18 @@ module.exports = function (app) {
     app.post('/news', multipartMiddleware, addNews);
     app.put('/news', multipartMiddleware, editNews);
     app.delete('/news', multipartMiddleware, removeNews);
+
+    // ads
+    app.get('/ads', multipartMiddleware, getAds);
+    app.post('/ads', multipartMiddleware, addAds);
+    app.put('/ads', multipartMiddleware, editAds);
+    app.delete('/ads', multipartMiddleware, removeAds);
+
+    // anonymous
+    app.get('/anonymous', multipartMiddleware, getAnonymous);
+    app.post('/anonymous', multipartMiddleware, addAnonymous);
+    app.put('/anonymous', multipartMiddleware, editAnonymous);
+    app.delete('/anonymous', multipartMiddleware, removeAnonymous);
 
     // auth
     app.get('/auth',
@@ -376,4 +390,96 @@ var removeNews = function (req, res) {
     });
 
     console.log("Message removed from server");
+};
+
+// ads
+var addAds = function (req, res) {
+    var message = {
+        messageId    : 'm' + utils.guid(),
+        name         : req.user.displayName,
+        link         : req.user.username,
+        text         : req.body.text,
+        approved     : false
+    };
+
+    var messageValid = new Ads(message);
+
+    messageValid.save(function (err, dot) {
+        if (err) throw err;
+        res.send('Ad saved');
+    });
+};
+
+var getAds = function (req, res) {
+    Ads.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+};
+
+var editAds = function (req, res) {
+    console.log(req.body.id);
+
+    Ads.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        if (err) throw err;
+        res.end("Ad updated on server");
+    });
+
+    console.log("Ad updated on server");
+};
+
+var removeAds = function (req, res) {
+    // remove from db
+    Ads.remove({ messageId: req.body.id }, function (err) {
+        if (err) throw err;
+        res.end("Ad removed from server");
+    });
+
+    console.log("Ad removed from server");
+};
+
+// ads
+var addAnonymous = function (req, res) {
+    var message = {
+        messageId    : 'm' + utils.guid(),
+        name         : req.user.displayName,
+        link         : req.user.username,
+        text         : req.body.text,
+        approved     : false
+    };
+
+    var messageValid = new Anonymous(message);
+
+    messageValid.save(function (err, dot) {
+        if (err) throw err;
+        res.send('Ad saved');
+    });
+};
+
+var getAnonymous = function (req, res) {
+    Anonymous.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+};
+
+var editAnonymous = function (req, res) {
+    console.log(req.body.id);
+
+    Anonymous.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        if (err) throw err;
+        res.end("Ad updated on server");
+    });
+
+    console.log("Ad updated on server");
+};
+
+var removeAnonymous = function (req, res) {
+    // remove from db
+    Anonymous.remove({ messageId: req.body.id }, function (err) {
+        if (err) throw err;
+        res.end("Ad removed from server");
+    });
+
+    console.log("Ad removed from server");
 };

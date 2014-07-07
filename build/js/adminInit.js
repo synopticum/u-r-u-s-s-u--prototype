@@ -109,6 +109,158 @@ View.map = {
     }
 };
 
+View.editDot = Backbone.View.extend({
+    dot: null,
+    dotId: null,
+    initialize: function (obj) {
+        this.dotId = obj.dotId;
+        this.dot = BDots.records.get(this.dotId).attributes;
+    },
+    id: 'editdot-popup',
+    className: 'popup',
+    template: _.template($('#editdot-popup-template').html()),
+    render: function() {
+        return this.$el.html(this.template(this.dot));
+    },
+    events: {
+        'click .input-submit': 'submit',
+        'click .input-marker': 'select-marker-open',
+        'click #selectMarkerPopup input': 'select-marker-close'
+    },
+    'select-marker-open': function (e) {
+        $('#selectMarkerPopup').fadeIn('fast');
+        e.preventDefault();
+    },
+    'select-marker-close': function () {
+        $('#selectMarkerPopup').fadeOut('fast');
+    },
+    'submit': function() {
+        var _this = $(this.$el);
+
+        _this.marker      = this.dot.marker;
+        _this.id          = this.dotId;
+        _this.position    = this.dot.position;
+        _this.layer       = $(".input-layer", _this).val();
+        _this.title       = $(".input-title", _this).val();
+        _this.text        = $(".input-short-text", _this).val();
+        _this.image       = $(".input-image", _this).val();
+        _this.icon        = $("input[name='markerset']:checked", _this).val();
+        _this.address     = $(".input-address", _this).val();
+        _this.street      = $(".input-street", _this).val();
+        _this.house       = $(".input-house", _this).val();
+        _this.homePhone   = $(".input-home-phone", _this).val();
+        _this.mobilePhone = $(".input-mobile-phone", _this).val();
+        _this.gallery     = this.dot.gallery;
+
+        var dot = new BDot({
+            id          : _this.id,
+            template    : null,
+            byUser      : null,
+            layer       : _this.layer,
+            position    : _this.position,
+            title       : _this.title || "-",
+            text        : _this.text || "-",
+            image       : _this.image,
+            icon        : _this.icon,
+            address     : _this.address || "-",
+            street      : _this.street || "-",
+            house       : _this.house || "-",
+            homePhone   : _this.homePhone || "-",
+            mobilePhone : _this.mobilePhone || "-",
+            gallery     : _this.gallery
+        });
+
+        if (BDots.records) {
+
+            // create FormData Object with files/json
+            var fd = new FormData();
+
+            var file_data = $('.input-image')[0].files;
+            for(var i = 0; i < file_data.length; i++){
+                fd.append("markerimage", file_data[i]);
+            }
+
+            var gallery_data = $('.input-gallery')[0].files;
+            for(var j = 0; j < gallery_data.length; j++){
+                fd.append("gallery_" + j, gallery_data[j]);
+            }
+
+            var other_data = JSON.stringify(dot);
+
+            fd.append('json', other_data);
+
+            dot.sync('put', fd, {
+                success: function(model, response){
+                    var response = JSON.parse(model);
+
+                    delete response.__v;
+                    delete response._id;
+
+                    var record = BDots.records.get(response.id);
+                    record.set(response);
+
+                    map.removeLayer(_this.marker);
+
+                    var view = new View.showDot(response.attributes);
+                    L.marker(response.position, { icon: record.getIcon() }).bindPopup(view.template(response)).addTo(map);
+
+                    console.log('Dot updated on server');
+                },
+                error: function(model, response){
+                    console.log('Dot creation server error!');
+                    console.log(response.responseText);
+                }
+            });
+        }
+        else throw Error('BDots.records don t exist');
+
+        $.fancybox.close(_this);
+        helper.status('Точка изменена');
+    }
+});
+
+View.removeDot = Backbone.View.extend({
+    dot: null,
+    dotId: null,
+    initialize: function (obj) {
+        this.dotId = obj.dotId;
+        this.dot = BDots.records.get(this.dotId).attributes;
+    },
+    id: 'destroydot-popup',
+    className: 'popup',
+    template: _.template($('#destroydot-popup-template').html()),
+    render: function() {
+        return this.$el.html(this.template(this.dot));
+    },
+    events: {
+        'click .input-submit': 'submit'
+    },
+    'submit': function() {
+        var _this = $(this.$el);
+
+        if (BDots.records) {
+            var record = BDots.records.get(this.dotId);
+
+            record.destroy(this.dotId, {
+                success: function(model, response){
+                    console.log(response);
+                    BDots.records.remove(record);
+                },
+                error: function(model, response){
+                    console.log('dot remove server error!');
+                    console.log(response.responseText);
+                }
+            });
+
+            map.removeLayer(this.dot.marker);
+        }
+        else throw Error('BDots.records don t exist');
+
+        $.fancybox.close(_this);
+        helper.status('Точка удалена');
+    }
+});
+
 View.messagesMod = Backbone.View.extend({
     messages: {},
     initialize: function (obj) {
@@ -199,7 +351,74 @@ View.newsScreen = Backbone.View.extend({
             console.log(res)
         } });
 
-        helper.status('Новость отправлена');
+        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+    }
+});
+
+View.adsScreen = Backbone.View.extend({
+    messages : {},
+    initialize: function () {
+        var adsFound = BAds.records;
+        adsFound = JSON.stringify(adsFound);
+        this.messages = JSON.parse(adsFound);
+    },
+    id: 'ads-screen',
+    template: _.template($('#ads-template').html()),
+    render: function() {
+        return this.$el.html(this.template(this));
+    },
+    events: {
+        'click .input-submit': 'submit'
+    },
+    'submit': function() {
+        var _this = $(this.$el);
+        var adsItem = {
+            id: this.dotId,
+            text: $('.popup-textarea' ,_this).val()
+        };
+
+        $.post('/ads', adsItem, { success: function (res) {
+            console.log('news item added')
+        }, error: function (res) {
+            console.log(res)
+        } });
+
+        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+    }
+});
+
+View.anonymousScreen = Backbone.View.extend({
+    messages : {},
+    initialize: function () {
+        var anonymousFound = BAnonymous.records;
+        anonymousFound = JSON.stringify(anonymousFound);
+        this.messages = JSON.parse(anonymousFound);
+    },
+    id: 'ads-screen',
+    template: _.template($('#anonymous-template').html()),
+    render: function() {
+        return this.$el.html(this.template(this));
+    },
+    events: {
+        'click .input-submit': 'submit'
+    },
+    'submit': function() {
+        var _this = $(this.$el);
+        var anonymousItem = {
+            id: this.dotId,
+            text: $('.popup-textarea' ,_this).val()
+        };
+
+        $.post('/anonymous', anonymousItem, { success: function (res) {
+            console.log('news item added')
+        }, error: function (res) {
+            console.log(res)
+        } });
+
+        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
     }
 });
 
@@ -215,4 +434,12 @@ $.getJSON("/messages", function (data) {
 
 $.getJSON("/news", function (data) {
     BNews = new BNewsModel(data);
+});
+
+$.getJSON("/ads", function (data) {
+    BAds = new BAdsModel(data);
+});
+
+$.getJSON("/anonymous", function (data) {
+    BAnonymous = new BAnonymousModel(data);
 });
