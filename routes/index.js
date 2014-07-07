@@ -6,6 +6,7 @@ var multipart = require('connect-multiparty'),
 
 var Dot  = require('../models').Dot;
 var Message  = require('../models').Message;
+var News  = require('../models').News;
 
 module.exports = function (app) {
     app.get('/', logged);
@@ -24,6 +25,12 @@ module.exports = function (app) {
     app.post('/messages', multipartMiddleware, addMessage);
     app.put('/messages', multipartMiddleware, editMessage);
     app.delete('/messages', multipartMiddleware, removeMessage);
+
+    // news
+    app.get('/news', multipartMiddleware, getNews);
+    app.post('/news', multipartMiddleware, addNews);
+    app.put('/news', multipartMiddleware, editNews);
+    app.delete('/news', multipartMiddleware, removeNews);
 
     // auth
     app.get('/auth',
@@ -318,6 +325,52 @@ var editMessage = function (req, res) {
 var removeMessage = function (req, res) {
     // remove from db
     Message.remove({ messageId: req.body.id }, function (err) {
+        if (err) throw err;
+        res.end("Message removed from server");
+    });
+
+    console.log("Message removed from server");
+};
+
+// news
+var addNews = function (req, res) {
+    var message = {
+        messageId    : 'm' + utils.guid(),
+        name         : req.user.displayName,
+        link         : req.user.username,
+        text         : req.body.text,
+        approved     : false
+    };
+
+    var messageValid = new News(message);
+
+    messageValid.save(function (err, dot) {
+        if (err) throw err;
+        res.send('saved');
+    });
+};
+
+var getNews = function (req, res) {
+    News.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+};
+
+var editNews = function (req, res) {
+    console.log(req.body.id);
+
+    News.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        if (err) throw err;
+        res.end("Message updated on server");
+    });
+
+    console.log("Message updated on server");
+};
+
+var removeNews = function (req, res) {
+    // remove from db
+    News.remove({ messageId: req.body.id }, function (err) {
         if (err) throw err;
         res.end("Message removed from server");
     });

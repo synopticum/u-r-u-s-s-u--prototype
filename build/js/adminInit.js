@@ -106,9 +106,31 @@ View.map = {
         // show start view
         var view = new View.startScreen();
         $.fancybox.open(view.render());
-        $("#startScreen").tabs();
     }
 };
+
+View.messagesMod = Backbone.View.extend({
+    messages: {},
+    initialize: function (obj) {
+        var messages = JSON.stringify(BMessages.records.where({ approved : false }));
+        this.messages = JSON.parse(messages);
+    },
+    id: 'messagesdot-popup',
+    className: 'popup',
+    template: _.template($('#messagesmod-popup-template').html()),
+    render: function() {
+        return this.$el.html(this.template(this));
+    },
+    events: {
+        'click .input-submit': 'submit'
+    },
+    'submit': function() {
+        var _this = $(this.$el);
+
+        $.fancybox.close(_this);
+        helper.status('Сообщение отправлено');
+    }
+});
 
 View.messagesDot = Backbone.View.extend({
     dot: null,
@@ -140,7 +162,7 @@ View.messagesDot = Backbone.View.extend({
 
         $.post('/messages', message, { success: function (res) {
             console.log('message added')
-        }, error: function () {
+        }, error: function (res) {
             console.log(res)
         } });
 
@@ -149,15 +171,15 @@ View.messagesDot = Backbone.View.extend({
     }
 });
 
-View.messagesMod = Backbone.View.extend({
-    messages: {},
-    initialize: function (obj) {
-        var messages = JSON.stringify(BMessages.records.where({ approved : false }));
-        this.messages = JSON.parse(messages);
+View.newsScreen = Backbone.View.extend({
+    messages : {},
+    initialize: function () {
+        var newsFound = BNews.records;
+        newsFound = JSON.stringify(newsFound);
+        this.messages = JSON.parse(newsFound);
     },
-    id: 'messagesdot-popup',
-    className: 'popup',
-    template: _.template($('#messagesmod-popup-template').html()),
+    id: 'news-screen',
+    template: _.template($('#news-template').html()),
     render: function() {
         return this.$el.html(this.template(this));
     },
@@ -166,12 +188,22 @@ View.messagesMod = Backbone.View.extend({
     },
     'submit': function() {
         var _this = $(this.$el);
+        var newsItem = {
+            id: this.dotId,
+            text: $('.popup-textarea' ,_this).val()
+        };
 
-        $.fancybox.close(_this);
-        helper.status('Сообщение отправлено');
+        $.post('/news', newsItem, { success: function (res) {
+            console.log('news item added')
+        }, error: function (res) {
+            console.log(res)
+        } });
+
+        helper.status('Новость отправлена');
     }
 });
 
+// get data
 $.getJSON("/dots", function (data) {
     BDots = new BDotsModel(data);
     View.map.init();
@@ -179,4 +211,8 @@ $.getJSON("/dots", function (data) {
 
 $.getJSON("/messages", function (data) {
     BMessages = new BMessagesModel(data);
+});
+
+$.getJSON("/news", function (data) {
+    BNews = new BNewsModel(data);
 });

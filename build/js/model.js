@@ -82,6 +82,7 @@ var BDot = Backbone.Model.extend({
 // Main Model
 var BDots;
 var BMessages;
+var BNews;
 
 var BDotsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
@@ -145,6 +146,19 @@ var BDotsModel = Backbone.Model.extend({
 });
 
 var BMessagesModel = Backbone.Model.extend({
+    records: new Backbone.Collection(),
+    initialize: function (data) {
+        for (var jsonItem in data) {
+            var message = data[jsonItem];
+            delete message._id;
+            delete message.__v;
+
+            this.records.add(message);
+        }
+    }
+});
+
+var BNewsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {

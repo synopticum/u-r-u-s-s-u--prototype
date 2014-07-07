@@ -56,7 +56,7 @@ var View = {
             L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
             map.on('load', View.map.hideLoadScreen);
-            map.on('load', View.map.showStartScreen);
+            map.on('load', View.map.showStartScreen());
 
             // set dot
             map.on('dblclick', function (position) {
@@ -90,7 +90,12 @@ var View = {
                 $('.fancybox').fancybox();
             });
         },
-        hideLoadScreen : $('#clouds').fadeOut(2000)
+        hideLoadScreen : $('#clouds').fadeOut(2000),
+        showStartScreen : function () {
+            // show start view
+            var view = new View.startScreen();
+            $.fancybox.open(view.render());
+        }
     },
 
     showDot : Backbone.View.extend({
@@ -388,7 +393,6 @@ var View = {
         className: 'popup',
         template: _.template($('#messagesdot-popup-template').html()),
         render: function() {
-            console.log(this.dot);
             return this.$el.html(this.template(this.dot));
         },
         events: {
@@ -403,7 +407,7 @@ var View = {
 
             $.post('/messages', message, { success: function (res) {
                 console.log('message added')
-            }, error: function () {
+            }, error: function (res) {
                 console.log(res)
             } });
 
@@ -412,18 +416,53 @@ var View = {
         }
     }),
 
+    newsScreen: Backbone.View.extend({
+        messages : {},
+        initialize: function () {
+            var newsFound = BNews.records.where({ approved: true });
+            newsFound = JSON.stringify(newsFound);
+            this.messages = JSON.parse(newsFound);
+        },
+        id: 'news-screen',
+        template: _.template($('#news-template').html()),
+        render: function() {
+            return this.$el.html(this.template(this));
+        },
+        events: {
+            'click .input-submit': 'submit'
+        },
+        'submit': function() {
+            var _this = $(this.$el);
+            var newsItem = {
+                id: this.dotId,
+                text: $('.popup-textarea' ,_this).val()
+            };
+
+            $.post('/news', newsItem, { success: function (res) {
+                console.log('news item added')
+            }, error: function (res) {
+                console.log(res)
+            } });
+
+            helper.status('Новость отправлена');
+        }
+    }),
+
     startScreen: Backbone.View.extend({
         id: 'startscreen-popup',
+        initialize: function () {
+        },
         className: 'popup',
         template: _.template($('#startscreen-popup-template').html()),
         render: function() {
-            return this.$el.html(this.template(this.dot));
+            return this.$el.html(this.template());
         },
         events: {
-//            'click .input-submit': 'submit'
+            'click #tab-news': 'showNews'
         },
-        'submit': function() {
-            helper.status('Сообщение отправлено');
+        'showNews': function() {
+            var view = new View.newsScreen();
+            $('.tabs-wrapper').html(view.render());
         }
     })
 };

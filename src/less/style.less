@@ -240,12 +240,14 @@ a {
   font-size: 0;
   margin-bottom: 20px;
   border-bottom: 1px solid #6B9B2A;
+  overflow: hidden;
 }
 #startScreen .tabs li {
   float: left;
   vertical-align: top;
 }
-#startScreen .tabs .ui-state-default a {
+#startScreen .tabs li span {
+  cursor: pointer;
   display: inline-block;
   vertical-align: top;
   font-size: 14px;
@@ -257,12 +259,18 @@ a {
   border-right: 1px solid #eee;
   transition: .1s;
 }
-#startScreen .tabs .ui-state-default:last-child a {
+#startScreen .tabs li:last-child span {
   border-right: 0;
 }
-#startScreen .tabs .ui-state-active a {
+#startScreen .tabs li.active span {
   background: #6B9B2A;
   color: #fff;
+}
+#startScreen .tabs li .anonymous {
+  background: url("../images/anonymous.png") no-repeat 50% 0 #fff;
+}
+#startScreen .tabs li.active .anonymous {
+  background: url("../images/anonymous.png") no-repeat 50% -50px #000;
 }
 
 .tabs-wrapper {

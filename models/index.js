@@ -80,7 +80,7 @@ var UserSchema = new Schema({
     }
 });
 
-// User
+// Dot Messages
 var MessageSchema = new Schema({
     messageId: {
         type: String,
@@ -118,6 +118,40 @@ var MessageSchema = new Schema({
     }
 });
 
+// News Screen
+var NewsSchema = new Schema({
+    messageId: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    name: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    link: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    text : {
+        type: String,
+        unique: false,
+        required: true
+    },
+    approved : {
+        type: Boolean,
+        unique: false,
+        required: true
+    },
+    created : {
+        type : Date,
+        default : Date.now
+    }
+});
+
 exports.Dot = mongoose.model('Dot', DotSchema);
 exports.User = mongoose.model('User', UserSchema);
 exports.Message = mongoose.model('Message', MessageSchema);
+exports.News = mongoose.model('News', NewsSchema);

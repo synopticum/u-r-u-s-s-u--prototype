@@ -40,113 +40,113 @@
 
 <!-- template's -->
 <div class="templates">
-<!-- dot popup template -->
-<script type="text/html" id="dot-popup-template">
-    <div class="dot-container" id="<%= id %>">
-        <div class="dot-nav">
-            <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
-                    src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
-        </div>
+    <!-- dot popup template -->
+    <script type="text/html" id="dot-popup-template">
+        <div class="dot-container" id="<%= id %>">
+            <div class="dot-nav">
+                <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
+                        src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
+            </div>
 
-        <div class="dot-description">
-            <div class="dot-title"><%= title %></div>
-            <div class="dot-text"><%= text %></div>
+            <div class="dot-description">
+                <div class="dot-title"><%= title %></div>
+                <div class="dot-text"><%= text %></div>
 
-            <table class="dot-contacts">
-                <tr>
-                    <td colspan="2">
-                        <mark>Адрес:</mark>
-                        <%= address %> <%= street %> <%= house %>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <mark>Тел.:</mark>
-                        <%= homePhone %>
-                    </td>
-                    <td class="tr">
-                        <span class="dot-messages">Сообщения &raquo;</span>
-                    </td>
-                </tr>
-            </table>
+                <table class="dot-contacts">
+                    <tr>
+                        <td colspan="2">
+                            <mark>Адрес:</mark>
+                            <%= address %> <%= street %> <%= house %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mark>Тел.:</mark>
+                            <%= homePhone %>
+                        </td>
+                        <td class="tr">
+                            <span class="dot-messages">Сообщения &raquo;</span>
+                        </td>
+                    </tr>
+                </table>
 
-            <div class="dot-gallery">
-                <% if (gallery) { _.each(gallery, function (imageURL, index) { if (index===0) return; %> <a
-                    href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
-                <% }); }; %>
+                <div class="dot-gallery">
+                    <% if (gallery) { _.each(gallery, function (imageURL, index) { if (index===0) return; %> <a
+                        href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
+                    <% }); }; %>
+                </div>
             </div>
         </div>
-    </div>
-</script>
+    </script>
 
-<!-- add dot popup template -->
-<script type="text/html" id="adddot-popup-template">
-    <table>
-        <tr>
-            <td>
-                <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
-            </td>
-            <td colspan="2">
-                <select class="input-layer selectbox">
-                    <option value="usermain">Общая карта</option>
-                    <option value="userplaces">Места</option>
-                    <option value="userevents">События</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <select class="input-address selectbox">
-                    <option value="">?</option>
-                    <option value="ул.">ул.</option>
-                    <option value="пер.">пер.</option>
-                </select>
-            </td>
-            <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
-            <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
-        </tr>
-        <tr>
-            <td colspan="3"><input type="text" class="input-home-phone popup-textbox" placeholder="Телефон"/></td>
-        </tr>
-        <tr>
-            <td class="required">
-                Картинка для точки <mark>(80x80)</mark> <span class="req">*</span>:<br>
-                <input type="file" name="image" class="input-image" />
-            </td>
-            <td colspan="2" class="required">
-                Галерея изображений:<br>
-                <input type="file" name="image2" class="input-gallery" multiple/>
-            </td>
-        </tr>
-        <tr class="last">
-            <td><span class="input-marker">Цвет маркера</span></td>
-            <td colspan="2">
-                <button type="button" class="popup-button input-submit">Добавить метку</button>
-            </td>
-        </tr>
-    </table>
+    <!-- add dot popup template -->
+    <script type="text/html" id="adddot-popup-template">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+                </td>
+                <td colspan="2">
+                    <select class="input-layer selectbox">
+                        <option value="usermain">Общая карта</option>
+                        <option value="userplaces">Места</option>
+                        <option value="userevents">События</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select class="input-address selectbox">
+                        <option value="">?</option>
+                        <option value="ул.">ул.</option>
+                        <option value="пер.">пер.</option>
+                    </select>
+                </td>
+                <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
+                <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="text" class="input-home-phone popup-textbox" placeholder="Телефон"/></td>
+            </tr>
+            <tr>
+                <td class="required">
+                    Картинка для точки
+                    <mark>(80x80)</mark>
+                    <span class="req">*</span>:<br>
+                    <input type="file" name="image" class="input-image"/>
+                </td>
+                <td colspan="2" class="required">
+                    Галерея изображений:<br>
+                    <input type="file" name="image2" class="input-gallery" multiple/>
+                </td>
+            </tr>
+            <tr class="last">
+                <td><span class="input-marker">Цвет маркера</span></td>
+                <td colspan="2">
+                    <button type="button" class="popup-button input-submit">Добавить метку</button>
+                </td>
+            </tr>
+        </table>
 
-    <div id="selectMarkerPopup">
-        <div class="markerset">
-            <input type="radio" id="radio4" name="markerset" value="graypink"><label for="radio4"><img
-                src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
+        <div id="selectMarkerPopup">
+            <div class="markerset">
+                <input type="radio" id="radio4" name="markerset" value="graypink"><label for="radio4"><img
+                    src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
 
-            <input type="radio" id="radio5" name="markerset" value="graygreen" checked="checked"><label for="radio5"><img
-                src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
+                <input type="radio" id="radio5" name="markerset" value="graygreen" checked="checked"><label
+                    for="radio5"><img
+                    src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
 
-            <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
-                src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
+                <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
+                    src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
+            </div>
         </div>
-    </div>
-</script>
-
-<!-- start view popup template -->
-<script type="text/html" id="startscreen-popup-template"></script>
+    </script>
 
     <!-- dot messages popup template -->
     <script type="text/html" id="messagesdot-popup-template">
@@ -168,22 +168,74 @@
                 <% }); }; %>
             </div>
 
-            <div class="rules">Адресные оскорбления запрещены. Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+            <div class="rules">Адресные оскорбления запрещены. Предложения начинаются с Большой буквы и разделяются п р
+                о б е л а м и.<br>
                 Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo; и &laquo;ться&raquo;</a>.
-                Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.</div>
+                Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+            </div>
         </div>
 
         <div class="dot-messages-send">
-            <textarea name="" id="" cols="" rows="" class="popup-textarea" placeholder="Введите сюда текст сообщения"></textarea>
+            <textarea name="" id="" cols="" rows="" class="popup-textarea"
+                      placeholder="Введите сюда текст сообщения"></textarea>
             <button type="submit" class="input-submit popup-button">Отправить</button>
         </div>
     </script>
 
-<!-- edit dot popup template -->
-<script type="text/html" id="editdot-popup-template"></script>
+    <!-- start view popup template -->
+    <script type="text/html" id="startscreen-popup-template">
+        <div id="startScreen">
+            <div class="tabs">
+                <ul>
+                    <li><span id="tab-news">Новости</span></li>
+                    <li><span>Объявления</span></li>
+                    <li><span>Общение</span></li>
+                    <li style="float: right;"><span class="anonymous">&nbsp;</span></li>
+                </ul>
+            </div>
 
-<!-- edit dot popup template -->
-<script type="text/html" id="destroydot-popup-template"></script>
+            <div class="tabs-wrapper">
+                some news
+            </div>
+        </div>
+    </script>
+
+    <!-- news template -->
+    <script type="text/html" id="news-template">
+        <div class="dot-messages-wrapper">
+            <div class="dot-messages-list">
+                <% if (messages) { _.each(messages, function (message) { %>
+                <div class="item">
+                    <div class="view">
+                        <a href="" class="name"><%= message.name %></a><br>
+                        <span class="date"><%= message.created %></span>
+                    </div>
+
+                    <div class="description">
+                        <%= message.text %>
+                    </div>
+                </div>
+                <% }); }; %>
+            </div>
+
+            <div class="rules">Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+                Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo; и &laquo;ться&raquo;</a>.
+                Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+            </div>
+        </div>
+
+        <div class="dot-messages-send">
+            <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+                      placeholder="Введите сюда текст сообщения"></textarea>
+            <button type="submit" class="input-submit popup-button">Отправить</button>
+        </div>
+    </script>
+
+    <!-- edit dot popup template -->
+    <script type="text/html" id="editdot-popup-template"></script>
+
+    <!-- edit dot popup template -->
+    <script type="text/html" id="destroydot-popup-template"></script>
 </div>
 
 <script src="js/helpers.js"></script>

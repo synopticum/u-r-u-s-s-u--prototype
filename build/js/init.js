@@ -8,6 +8,10 @@ $.getJSON("/messages", function (data) {
     BMessages = new BMessagesModel(data);
 });
 
+$.getJSON("/news", function (data) {
+    BNews = new BNewsModel(data);
+});
+
 // socket
 var socket = io('http://localhost');
 socket.on('dotChanges', function (data) {

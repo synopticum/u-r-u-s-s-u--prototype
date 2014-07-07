@@ -40,344 +40,405 @@
 
 <!-- template's -->
 <div class="templates">
-    <!-- dot popup template -->
-    <script type="text/html" id="dot-popup-template">
-        <div class="dot-container" id="<%= id %>">
-            <span class="dot-edit"></span>
-            <span class="dot-destroy"></span>
+<!-- dot popup template -->
+<script type="text/html" id="dot-popup-template">
+    <div class="dot-container" id="<%= id %>">
+        <span class="dot-edit"></span>
+        <span class="dot-destroy"></span>
 
-            <div class="dot-nav">
-                <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
-                        src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
-            </div>
-
-            <div class="dot-description">
-                <div class="dot-title"><%= title %></div>
-                <div class="dot-text"><%= text %></div>
-
-                <table class="dot-contacts">
-                    <tr>
-                        <td colspan="2">
-                            <mark>Адрес:</mark>
-                            <%= address %> <%= street %> <%= house %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <mark>Тел.:</mark>
-                            <%= homePhone %>
-                        </td>
-                        <td class="tr">
-                            <span class="dot-messages">Сообщения &raquo;</span>
-                        </td>
-                    </tr>
-                </table>
-
-                <div class="dot-gallery">
-                    <% if (gallery) { _.each(gallery, function (imageURL, index) { if (index===0) return; %> <a
-                        href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
-                    <% }); }; %>
-                </div>
-            </div>
+        <div class="dot-nav">
+            <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
+                    src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
         </div>
-    </script>
 
-    <!-- add dot popup template -->
-    <script type="text/html" id="adddot-popup-template">
-        <table>
-            <tr>
-                <td>
-                    <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
-                </td>
-                <td colspan="2">
-                    <select class="input-layer selectbox">
-                        <option value="main">Общая карта</option>
-                        <option value="user">Места</option>
-                        <option value="events">События</option>
-                        <option value="old">Старые виды</option>
-                        <option value="usermain">User: Главная карта</option>
-                        <option value="userplaces">User: Карта жителей</option>
-                        <option value="userevents">User: События</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="input-address selectbox">
-                        <option value="">?</option>
-                        <option value="ул.">ул.</option>
-                        <option value="пер.">пер.</option>
-                    </select>
-                </td>
-                <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
-                <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" class="input-home-phone popup-textbox" placeholder="Телефон"/></td>
-            </tr>
-            <tr>
-                <td class="required">
-                    Картинка для точки <mark>(80x80)</mark> <span class="req">*</span>:<br>
-                    <input type="file" name="image" class="input-image" />
-                </td>
-                <td colspan="2" class="required">
-                    Галерея изображений:<br>
-                    <input type="file" name="image2" class="input-gallery" multiple/>
-                </td>
-            </tr>
-            <tr class="last">
-                <td><span class="input-marker">Цвет маркера</span></td>
-                <td colspan="2">
-                    <button type="button" class="popup-button input-submit">Добавить метку</button>
-                </td>
-            </tr>
-        </table>
+        <div class="dot-description">
+            <div class="dot-title"><%= title %></div>
+            <div class="dot-text"><%= text %></div>
 
-        <div id="selectMarkerPopup">
-            <div class="markerset">
-                <input type="radio" id="radio1" name="markerset" value="pink"><label for="radio1"><img
-                    src="js/leaflet/images/markers/marker-icon-pink.png" alt=""/></label>
+            <table class="dot-contacts">
+                <tr>
+                    <td colspan="2">
+                        <mark>Адрес:</mark>
+                        <%= address %> <%= street %> <%= house %>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mark>Тел.:</mark>
+                        <%= homePhone %>
+                    </td>
+                    <td class="tr">
+                        <span class="dot-messages">Сообщения &raquo;</span>
+                    </td>
+                </tr>
+            </table>
 
-                <input type="radio" id="radio2" name="markerset" value="green" checked="checked"><label
-                    for="radio2"><img src="js/leaflet/images/markers/marker-icon-green.png" alt=""/></label>
-
-                <input type="radio" id="radio3" name="markerset" value="blue"><label for="radio3"><img
-                    src="js/leaflet/images/markers/marker-icon-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio4" name="markerset" value="graypink"><label for="radio4"><img
-                    src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio5" name="markerset" value="graygreen"><label for="radio5"><img
-                    src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
-
-                <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
-                    src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio7" name="markerset" value="vertical-pink"><label for="radio7"><img
-                    src="js/leaflet/images/markers/marker-icon-a-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio8" name="markerset" value="vertical-green"><label for="radio8"><img
-                    src="js/leaflet/images/markers/marker-icon-a-green.png" alt=""/></label>
-
-                <input type="radio" id="radio9" name="markerset" value="vertical-blue"><label for="radio9"><img
-                    src="js/leaflet/images/markers/marker-icon-a-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio10" name="markerset" value="message-pink"><label for="radio10"><img
-                    src="js/leaflet/images/markers/marker-icon-m-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio11" name="markerset" value="message-green"><label for="radio11"><img
-                    src="js/leaflet/images/markers/marker-icon-m-green.png" alt=""/></label>
-
-                <input type="radio" id="radio12" name="markerset" value="message-blue"><label for="radio12"><img
-                    src="js/leaflet/images/markers/marker-icon-m-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio13" name="markerset" value="flag-pink"><label for="radio13"><img
-                    src="js/leaflet/images/markers/marker-icon-f-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio14" name="markerset" value="flag-green"><label for="radio14"><img
-                    src="js/leaflet/images/markers/marker-icon-f-green.png" alt=""/></label>
-
-                <input type="radio" id="radio15" name="markerset" value="flag-blue"><label for="radio15"><img
-                    src="js/leaflet/images/markers/marker-icon-f-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio16" name="markerset" value="gold"><label for="radio16"><img
-                    src="js/leaflet/images/markers/marker-icon-gold.png" alt=""/></label>
-            </div>
-        </div>
-    </script>
-
-    <!-- edit dot popup template -->
-    <script type="text/html" id="editdot-popup-template">
-        <table>
-            <tr>
-                <td>
-                    <input type="text" class="input-title popup-textbox" value="<%= title %>" placeholder="Заголовок метки"/>
-                </td>
-                <td colspan="2">
-                    <select class="input-layer selectbox">
-                        <option value="main">Общая карта</option>
-                        <option value="user">Места</option>
-                        <option value="events">События</option>
-                        <option value="old">Старые виды</option>
-                        <option value="usermain">User: Главная карта</option>
-                        <option value="userplaces">User: Карта жителей</option>
-                        <option value="userevents">User: События</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"><%= text %></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <select class="input-address selectbox">
-                        <option value="">?</option>
-                        <option value="ул.">ул.</option>
-                        <option value="пер.">пер.</option>
-                    </select>
-                </td>
-                <td><input type="text" class="input-street popup-textbox" value="<%= street %>" placeholder="Улица"/></td>
-                <td><input type="text" class="input-house popup-textbox" value="<%= house %>" placeholder="Дом"/></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" class="input-home-phone popup-textbox" value="<%= homePhone %>" placeholder="Телефон"/></td>
-            </tr>
-            <tr>
-                <td>
-                    Картинка для точки <mark>(80x80)</mark>:<br>
-                    <input type="file" name="image" class="input-image" placeholder=""/>
-                </td>
-                <td colspan="2">
-                    Галерея изображений:<br>
-                    <input type="file" name="image" class="input-gallery" placeholder="" multiple/>
-                </td>
-            </tr>
-            <tr class="last">
-                <td><span class="input-marker">Цвет маркера</span></td>
-                <td colspan="2">
-                    <button type="button" class="popup-button input-submit">Изменить метку</button>
-                </td>
-            </tr>
-        </table>
-
-        <div id="selectMarkerPopup">
-            <div class="markerset">
-                <input type="radio" id="radio1" name="markerset" value="pink"><label for="radio1"><img
-                    src="js/leaflet/images/markers/marker-icon-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio2" name="markerset" value="green" checked="checked"><label
-                    for="radio2"><img src="js/leaflet/images/markers/marker-icon-green.png" alt=""/></label>
-
-                <input type="radio" id="radio3" name="markerset" value="blue"><label for="radio3"><img
-                    src="js/leaflet/images/markers/marker-icon-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio4" name="markerset" value="graypink"><label for="radio4"><img
-                    src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio5" name="markerset" value="graygreen"><label for="radio5"><img
-                    src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
-
-                <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
-                    src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio7" name="markerset" value="vertical-pink"><label for="radio7"><img
-                    src="js/leaflet/images/markers/marker-icon-a-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio8" name="markerset" value="vertical-green"><label for="radio8"><img
-                    src="js/leaflet/images/markers/marker-icon-a-green.png" alt=""/></label>
-
-                <input type="radio" id="radio9" name="markerset" value="vertical-blue"><label for="radio9"><img
-                    src="js/leaflet/images/markers/marker-icon-a-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio10" name="markerset" value="message-pink"><label for="radio10"><img
-                    src="js/leaflet/images/markers/marker-icon-m-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio11" name="markerset" value="message-green"><label for="radio11"><img
-                    src="js/leaflet/images/markers/marker-icon-m-green.png" alt=""/></label>
-
-                <input type="radio" id="radio12" name="markerset" value="message-blue"><label for="radio12"><img
-                    src="js/leaflet/images/markers/marker-icon-m-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio13" name="markerset" value="flag-pink"><label for="radio13"><img
-                    src="js/leaflet/images/markers/marker-icon-f-pink.png" alt=""/></label>
-
-                <input type="radio" id="radio14" name="markerset" value="flag-green"><label for="radio14"><img
-                    src="js/leaflet/images/markers/marker-icon-f-green.png" alt=""/></label>
-
-                <input type="radio" id="radio15" name="markerset" value="flag-blue"><label for="radio15"><img
-                    src="js/leaflet/images/markers/marker-icon-f-blue.png" alt=""/></label>
-
-                <input type="radio" id="radio16" name="markerset" value="gold"><label for="radio16"><img
-                    src="js/leaflet/images/markers/marker-icon-gold.png" alt=""/></label>
-            </div>
-        </div>
-    </script>
-
-    <!-- remove dot popup template -->
-    <script type="text/html" id="destroydot-popup-template">
-        <button class="popup-button input-submit">Подтвердить удаление</button>
-    </script>
-
-    <!-- dot messages popup template -->
-    <script type="text/html" id="messagesdot-popup-template">
-        <h3>Сообщения точки &laquo;<mark><%= title %></mark>&raquo;</h3>
-
-        <div class="dot-messages-wrapper">
-            <div class="dot-messages-list">
-                <% if (messages) { _.each(messages, function (message) { %>
-                <div class="item">
-                    <div class="view">
-                        <a href="" class="name"><%= message.name %></a><br>
-                        <span class="date"><%= message.created %></span>
-                    </div>
-
-                    <div class="description">
-                        <%= message.text %>
-                    </div>
-                </div>
+            <div class="dot-gallery">
+                <% if (gallery) { _.each(gallery, function (imageURL, index) { if (index===0) return; %> <a
+                    href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
                 <% }); }; %>
             </div>
-
-            <div class="rules">Адресные оскорбления запрещены. Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
-                Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo; и &laquo;ться&raquo;</a>.
-                Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.</div>
         </div>
+    </div>
+</script>
 
-        <div class="dot-messages-send">
-            <textarea name="" id="" cols="" rows="" class="popup-textarea" placeholder="Введите сюда текст сообщения"></textarea>
-            <button type="submit" class="input-submit popup-button">Отправить</button>
+<!-- add dot popup template -->
+<script type="text/html" id="adddot-popup-template">
+    <table>
+        <tr>
+            <td>
+                <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+            </td>
+            <td colspan="2">
+                <select class="input-layer selectbox">
+                    <option value="main">Общая карта</option>
+                    <option value="user">Места</option>
+                    <option value="events">События</option>
+                    <option value="old">Старые виды</option>
+                    <option value="usermain">User: Главная карта</option>
+                    <option value="userplaces">User: Карта жителей</option>
+                    <option value="userevents">User: События</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select class="input-address selectbox">
+                    <option value="">?</option>
+                    <option value="ул.">ул.</option>
+                    <option value="пер.">пер.</option>
+                </select>
+            </td>
+            <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
+            <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
+        </tr>
+        <tr>
+            <td colspan="3"><input type="text" class="input-home-phone popup-textbox" placeholder="Телефон"/></td>
+        </tr>
+        <tr>
+            <td class="required">
+                Картинка для точки
+                <mark>(80x80)</mark>
+                <span class="req">*</span>:<br>
+                <input type="file" name="image" class="input-image"/>
+            </td>
+            <td colspan="2" class="required">
+                Галерея изображений:<br>
+                <input type="file" name="image2" class="input-gallery" multiple/>
+            </td>
+        </tr>
+        <tr class="last">
+            <td><span class="input-marker">Цвет маркера</span></td>
+            <td colspan="2">
+                <button type="button" class="popup-button input-submit">Добавить метку</button>
+            </td>
+        </tr>
+    </table>
+
+    <div id="selectMarkerPopup">
+        <div class="markerset">
+            <input type="radio" id="radio1" name="markerset" value="pink"><label for="radio1"><img
+                src="js/leaflet/images/markers/marker-icon-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio2" name="markerset" value="green" checked="checked"><label
+                for="radio2"><img src="js/leaflet/images/markers/marker-icon-green.png" alt=""/></label>
+
+            <input type="radio" id="radio3" name="markerset" value="blue"><label for="radio3"><img
+                src="js/leaflet/images/markers/marker-icon-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio4" name="markerset" value="graypink"><label for="radio4"><img
+                src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio5" name="markerset" value="graygreen"><label for="radio5"><img
+                src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
+
+            <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
+                src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio7" name="markerset" value="vertical-pink"><label for="radio7"><img
+                src="js/leaflet/images/markers/marker-icon-a-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio8" name="markerset" value="vertical-green"><label for="radio8"><img
+                src="js/leaflet/images/markers/marker-icon-a-green.png" alt=""/></label>
+
+            <input type="radio" id="radio9" name="markerset" value="vertical-blue"><label for="radio9"><img
+                src="js/leaflet/images/markers/marker-icon-a-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio10" name="markerset" value="message-pink"><label for="radio10"><img
+                src="js/leaflet/images/markers/marker-icon-m-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio11" name="markerset" value="message-green"><label for="radio11"><img
+                src="js/leaflet/images/markers/marker-icon-m-green.png" alt=""/></label>
+
+            <input type="radio" id="radio12" name="markerset" value="message-blue"><label for="radio12"><img
+                src="js/leaflet/images/markers/marker-icon-m-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio13" name="markerset" value="flag-pink"><label for="radio13"><img
+                src="js/leaflet/images/markers/marker-icon-f-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio14" name="markerset" value="flag-green"><label for="radio14"><img
+                src="js/leaflet/images/markers/marker-icon-f-green.png" alt=""/></label>
+
+            <input type="radio" id="radio15" name="markerset" value="flag-blue"><label for="radio15"><img
+                src="js/leaflet/images/markers/marker-icon-f-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio16" name="markerset" value="gold"><label for="radio16"><img
+                src="js/leaflet/images/markers/marker-icon-gold.png" alt=""/></label>
         </div>
-    </script>
+    </div>
+</script>
 
-    <!-- start view popup template -->
-    <script type="text/html" id="startscreen-popup-template">
-        <div id="startScreen">
-            <div class="tabs">
-                <ul>
-                    <li><a href="#startScreen-1">Новости</a></li>
-                    <li><a href="#startScreen-2">Объявления</a></li>
-                    <li><a href="#startScreen-3">Слухи</a></li>
-                    <li><a href="#startScreen-4">Общение</a></li>
-                </ul>
-            </div>
+<!-- edit dot popup template -->
+<script type="text/html" id="editdot-popup-template">
+    <table>
+        <tr>
+            <td>
+                <input type="text" class="input-title popup-textbox" value="<%= title %>"
+                       placeholder="Заголовок метки"/>
+            </td>
+            <td colspan="2">
+                <select class="input-layer selectbox">
+                    <option value="main">Общая карта</option>
+                    <option value="user">Места</option>
+                    <option value="events">События</option>
+                    <option value="old">Старые виды</option>
+                    <option value="usermain">User: Главная карта</option>
+                    <option value="userplaces">User: Карта жителей</option>
+                    <option value="userevents">User: События</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"><%= text %></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select class="input-address selectbox">
+                    <option value="">?</option>
+                    <option value="ул.">ул.</option>
+                    <option value="пер.">пер.</option>
+                </select>
+            </td>
+            <td><input type="text" class="input-street popup-textbox" value="<%= street %>" placeholder="Улица"/></td>
+            <td><input type="text" class="input-house popup-textbox" value="<%= house %>" placeholder="Дом"/></td>
+        </tr>
+        <tr>
+            <td colspan="3"><input type="text" class="input-home-phone popup-textbox" value="<%= homePhone %>"
+                                   placeholder="Телефон"/></td>
+        </tr>
+        <tr>
+            <td>
+                Картинка для точки
+                <mark>(80x80)</mark>
+                :<br>
+                <input type="file" name="image" class="input-image" placeholder=""/>
+            </td>
+            <td colspan="2">
+                Галерея изображений:<br>
+                <input type="file" name="image" class="input-gallery" placeholder="" multiple/>
+            </td>
+        </tr>
+        <tr class="last">
+            <td><span class="input-marker">Цвет маркера</span></td>
+            <td colspan="2">
+                <button type="button" class="popup-button input-submit">Изменить метку</button>
+            </td>
+        </tr>
+    </table>
 
-            <div id="startScreen-1" class="tabs-wrapper">zxcizxcion ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-            <div id="startScreen-2" class="tabs-wrapper">Phzxc ornare, felis. Maecenas sczxctum bibendum.</div>
-            <div id="startScreen-3" class="tabs-wrapper">Nam zxc eget, sagittis et, consequat vestibulum, lacus.zxcullamcorper augue.</div>
-            <div id="startScreen-4" class="tabs-wrapper">zzz  cc Phzxc ornare, felis. Maecenas sczxctum bibendum.</div>
+    <div id="selectMarkerPopup">
+        <div class="markerset">
+            <input type="radio" id="radio1" name="markerset" value="pink"><label for="radio1"><img
+                src="js/leaflet/images/markers/marker-icon-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio2" name="markerset" value="green" checked="checked"><label
+                for="radio2"><img src="js/leaflet/images/markers/marker-icon-green.png" alt=""/></label>
+
+            <input type="radio" id="radio3" name="markerset" value="blue"><label for="radio3"><img
+                src="js/leaflet/images/markers/marker-icon-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio4" name="markerset" value="graypink"><label for="radio4"><img
+                src="js/leaflet/images/markers/marker-icon-g-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio5" name="markerset" value="graygreen"><label for="radio5"><img
+                src="js/leaflet/images/markers/marker-icon-g-green.png" alt=""/></label>
+
+            <input type="radio" id="radio6" name="markerset" value="grayblue"><label for="radio6"><img
+                src="js/leaflet/images/markers/marker-icon-g-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio7" name="markerset" value="vertical-pink"><label for="radio7"><img
+                src="js/leaflet/images/markers/marker-icon-a-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio8" name="markerset" value="vertical-green"><label for="radio8"><img
+                src="js/leaflet/images/markers/marker-icon-a-green.png" alt=""/></label>
+
+            <input type="radio" id="radio9" name="markerset" value="vertical-blue"><label for="radio9"><img
+                src="js/leaflet/images/markers/marker-icon-a-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio10" name="markerset" value="message-pink"><label for="radio10"><img
+                src="js/leaflet/images/markers/marker-icon-m-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio11" name="markerset" value="message-green"><label for="radio11"><img
+                src="js/leaflet/images/markers/marker-icon-m-green.png" alt=""/></label>
+
+            <input type="radio" id="radio12" name="markerset" value="message-blue"><label for="radio12"><img
+                src="js/leaflet/images/markers/marker-icon-m-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio13" name="markerset" value="flag-pink"><label for="radio13"><img
+                src="js/leaflet/images/markers/marker-icon-f-pink.png" alt=""/></label>
+
+            <input type="radio" id="radio14" name="markerset" value="flag-green"><label for="radio14"><img
+                src="js/leaflet/images/markers/marker-icon-f-green.png" alt=""/></label>
+
+            <input type="radio" id="radio15" name="markerset" value="flag-blue"><label for="radio15"><img
+                src="js/leaflet/images/markers/marker-icon-f-blue.png" alt=""/></label>
+
+            <input type="radio" id="radio16" name="markerset" value="gold"><label for="radio16"><img
+                src="js/leaflet/images/markers/marker-icon-gold.png" alt=""/></label>
         </div>
-    </script>
+    </div>
+</script>
 
-    <!-- dot messages popup template -->
-    <script type="text/html" id="messagesmod-popup-template">
-        <h3>Непроверенные сообщения</h3>
+<!-- remove dot popup template -->
+<script type="text/html" id="destroydot-popup-template">
+    <button class="popup-button input-submit">Подтвердить удаление</button>
+</script>
 
-        <div class="dot-messages-wrapper">
-            <div class="dot-messages-list">
-                <% if (messages) { _.each(messages, function (message) { %>
-                <div class="item" id="<%= message.messageId %>">
-                    <div class="control">
-                        <div class="approve" onclick="$.ajax({ url: '/messages', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
-                        <div class="remove" onclick="$.ajax({ url: '/messages', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
-                    </div>
-                    <div class="view">
-                        <a href="" class="name"><%= message.name %></a><br>
-                        <span class="date"><%= message.created %></span>
-                    </div>
+<!-- dot messages popup template -->
+<script type="text/html" id="messagesdot-popup-template">
+    <h3>Сообщения точки &laquo;<mark><%= title %></mark>&raquo;</h3>
 
-                    <div class="description" contenteditable="true"><%= message.text %></div>
+    <div class="dot-messages-wrapper">
+        <div class="dot-messages-list">
+            <% if (messages) { _.each(messages, function (message) { %>
+            <div class="item" id="<%= message.messageId %>">
+                <div class="control">
+                    <% if (message.approved === false) { %>
+                    <div class="approve"
+                         onclick="$.ajax({ url: '/messages', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %> .approve').fadeOut() })"></div>
+                    <% }; %>
+                    <div class="remove"
+                         onclick="$.ajax({ url: '/messages', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
                 </div>
-                <% }); } %>
+
+                <div class="view">
+                    <a href="" class="name"><%= message.name %></a><br>
+                    <span class="date"><%= message.created %></span>
+                </div>
+
+                <div class="description">
+                    <%= message.text %>
+                </div>
             </div>
+            <% }); }; %>
         </div>
-    </script>
+
+        <div class="rules">Адресные оскорбления запрещены. Предложения начинаются с Большой буквы и разделяются п р о б
+            е л а м и.<br>
+            Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo;
+                и &laquo;ться&raquo;</a>.
+            Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+        </div>
+    </div>
+
+    <div class="dot-messages-send">
+        <textarea name="" id="" cols="" rows="" class="popup-textarea"
+                  placeholder="Введите сюда текст сообщения"></textarea>
+        <button type="submit" class="input-submit popup-button">Отправить</button>
+    </div>
+</script>
+
+<!-- start view popup template -->
+<script type="text/html" id="startscreen-popup-template">
+    <div id="startScreen">
+        <div class="tabs">
+            <ul>
+                <li><span id="tab-news">Новости</span></li>
+                <li><span>Объявления</span></li>
+                <li><span>Общение</span></li>
+                <li style="float: right;"><span class="anonymous">&nbsp;</span></li>
+            </ul>
+        </div>
+
+        <div class="tabs-wrapper">
+            some news
+        </div>
+    </div>
+</script>
+
+<!-- news template -->
+<script type="text/html" id="news-template">
+    <div class="dot-messages-wrapper">
+        <div class="dot-messages-list">
+            <% if (messages) { _.each(messages, function (message) { %>
+            <div class="item" id="<%= message.messageId %>">
+                <div class="control">
+                    <% if (message.approved === false) { %>
+                    <div class="approve"
+                         onclick="$.ajax({ url: '/news', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %> .approve').fadeOut() })"></div>
+                    <% }; %>
+                    <div class="remove"
+                         onclick="$.ajax({ url: '/news', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                </div>
+                </div>
+                <div class="view">
+                    <a href="" class="name"><%= message.name %></a><br>
+                    <span class="date"><%= message.created %></span>
+                </div>
+
+                <div class="description">
+                    <%= message.text %>
+                </div>
+            </div>
+            <% }); }; %>
+        </div>
+
+        <div class="rules">Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+            Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo;
+                и &laquo;ться&raquo;</a>.
+            Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+        </div>
+    </div>
+
+    <div class="dot-messages-send">
+        <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+                  placeholder="Введите сюда текст сообщения"></textarea>
+        <button type="submit" class="input-submit popup-button">Отправить</button>
+    </div>
+</script>
+
+<!-- dot messages popup template -->
+<script type="text/html" id="messagesmod-popup-template">
+    <h3>Непроверенные сообщения</h3>
+
+    <div class="dot-messages-wrapper">
+        <div class="dot-messages-list">
+            <% if (messages) { _.each(messages, function (message) { %>
+            <div class="item" id="<%= message.messageId %>">
+                <div class="control">
+                    <div class="approve"
+                         onclick="$.ajax({ url: '/messages', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                    <div class="remove"
+                         onclick="$.ajax({ url: '/messages', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                </div>
+                <div class="view">
+                    <a href="" class="name"><%= message.name %></a><br>
+                    <span class="date"><%= message.created %></span>
+                </div>
+
+                <div class="description" contenteditable="true"><%= message.text %></div>
+            </div>
+            <% }); } %>
+        </div>
+    </div>
+</script>
 </div>
 
 <span id="messagesmod">messages</span>
