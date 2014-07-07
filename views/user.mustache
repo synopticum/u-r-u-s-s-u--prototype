@@ -270,11 +270,11 @@
                 <% if (messages) { _.each(messages, function (message) { %>
                 <div class="item">
                     <div class="view">
-                        <a href="" class="name"><%= message.name %></a><br>
+                        <span class="name"><%= message.name %></span><br>
                         <span class="date"><%= message.created %></span>
                     </div>
 
-                    <div class="description" contenteditable="true"><%= message.text %></div>
+                    <div class="description"><%= message.text %></div>
                 </div>
                 <% }); }; %>
             </div>

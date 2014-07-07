@@ -422,10 +422,10 @@ var editAds = function (req, res) {
 
     Ads.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
         if (err) throw err;
-        res.end("Ad updated on server");
+        res.end("Ad approved on server");
     });
 
-    console.log("Ad updated on server");
+    console.log("Ad approved on server");
 };
 
 var removeAds = function (req, res) {
@@ -442,7 +442,7 @@ var removeAds = function (req, res) {
 var addAnonymous = function (req, res) {
     var message = {
         messageId    : 'm' + utils.guid(),
-        name         : req.user.displayName,
+        name         : utils.anonymousName(),
         link         : req.user.username,
         text         : req.body.text,
         approved     : false
@@ -452,7 +452,7 @@ var addAnonymous = function (req, res) {
 
     messageValid.save(function (err, dot) {
         if (err) throw err;
-        res.send('Ad saved');
+        res.send('Anonymous saved');
     });
 };
 
@@ -468,18 +468,18 @@ var editAnonymous = function (req, res) {
 
     Anonymous.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
         if (err) throw err;
-        res.end("Ad updated on server");
+        res.end("Anonymous approved on server");
     });
 
-    console.log("Ad updated on server");
+    console.log("Anonymous approved on server");
 };
 
 var removeAnonymous = function (req, res) {
     // remove from db
     Anonymous.remove({ messageId: req.body.id }, function (err) {
         if (err) throw err;
-        res.end("Ad removed from server");
+        res.end("Anonymous removed from server");
     });
 
-    console.log("Ad removed from server");
+    console.log("Anonymous removed from server");
 };

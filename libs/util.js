@@ -50,3 +50,28 @@ module.exports.deleteFolderRecursive = function(path) {
         fs.rmdirSync(path);
     }
 };
+
+module.exports.anonymousName = function() {
+    var items = [
+        'Ферхунде',
+        'Сафрида',
+        'Мехмед',
+        'Онур',
+        'Агадия',
+        'Асылбубу',
+        'Бибик',
+        'Гвидон',
+        'Гугуш',
+        'Даздраперма',
+        'Замзам',
+        'Уии',
+        'Йолопуки',
+        'Какули',
+        'Момик',
+        'Кунигунда',
+        'Педро',
+        'Калистрат',
+        'Ривчик'
+    ];
+    return items[Math.floor(Math.random()*items.length)];
+};

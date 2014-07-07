@@ -464,7 +464,7 @@
                          onclick="$.ajax({ url: '/anonymous', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
                 </div>
                 <div class="view">
-                    <a href="" class="name"><%= message.name %></a><br>
+                    <span class="name"><%= message.name %></span><br>
                     <span class="date"><%= message.created %></span>
                 </div>
 
