@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs = require('fs'),
+    _ = require('underscore');
 
 /**
  * Make directory if it doesn't exist already.
@@ -73,4 +74,9 @@ module.exports.anonymousName = function() {
         'Ривчик'
     ];
     return items[Math.floor(Math.random()*items.length)];
+};
+
+module.exports.textValid = function(text) {
+    var textValid = _.escape(text);
+    return textValid;
 };

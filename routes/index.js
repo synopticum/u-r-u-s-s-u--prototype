@@ -317,11 +317,11 @@ var removeDot = function (req, res) {
 var addMessage = function (req, res) {
     var message = {
         messageId    : 'm' + utils.guid(),
-        dotId        : req.body.id,
-        name         : req.user.displayName,
-        link         : req.user.username,
-        text         : req.body.text,
-        avatar       : req.user.avatar,
+        dotId        : utils.textValid(req.body.id),
+        name         : utils.textValid(req.user.displayName),
+        link         : utils.textValid(req.user.username),
+        text         : utils.textValid(req.body.text),
+        avatar       : utils.textValid(req.user.avatar),
         approved     : false
     };
 
@@ -342,7 +342,7 @@ var getMessages = function (req, res) {
 
 var editMessage = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Message.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        Message.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
             if (err) throw err;
             res.end("Message updated on server");
         });
@@ -357,7 +357,7 @@ var editMessage = function (req, res) {
 
 var removeMessage = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Message.remove({ messageId: req.body.id }, function (err) {
+        Message.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
             if (err) throw err;
             res.end("Message removed from server");
         });
@@ -374,10 +374,10 @@ var removeMessage = function (req, res) {
 var addNews = function (req, res) {
     var message = {
         messageId    : 'm' + utils.guid(),
-        name         : req.user.displayName,
-        link         : req.user.username,
-        text         : req.body.text,
-        avatar       : req.user.avatar,
+        name         : utils.textValid(req.user.displayName),
+        link         : utils.textValid(req.user.username),
+        text         : utils.textValid(req.body.text),
+        avatar       : utils.textValid(req.user.avatar),
         approved     : false
     };
 
@@ -398,9 +398,7 @@ var getNews = function (req, res) {
 
 var editNews = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        console.log(req.body.id);
-
-        News.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        News.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
             if (err) throw err;
             res.end("Message updated on server");
         });
@@ -415,7 +413,7 @@ var editNews = function (req, res) {
 
 var removeNews = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        News.remove({ messageId: req.body.id }, function (err) {
+        News.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
             if (err) throw err;
             res.end("Message removed from server");
         });
@@ -432,10 +430,10 @@ var removeNews = function (req, res) {
 var addAds = function (req, res) {
     var message = {
         messageId    : 'm' + utils.guid(),
-        name         : req.user.displayName,
-        link         : req.user.username,
-        text         : req.body.text,
-        avatar       : req.user.avatar,
+        name         : utils.textValid(req.user.displayName),
+        link         : utils.textValid(req.user.username),
+        text         : utils.textValid(req.body.text),
+        avatar       : utils.textValid(req.user.avatar),
         approved     : false
     };
 
@@ -458,7 +456,7 @@ var getAds = function (req, res) {
 var editAds = function (req, res) {
     if (req.user.vkontakteId === adminId) {
 
-        Ads.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        Ads.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
             if (err) throw err;
             res.end("Ad approved on server");
         });
@@ -473,7 +471,7 @@ var editAds = function (req, res) {
 
 var removeAds = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Ads.remove({ messageId: req.body.id }, function (err) {
+        Ads.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
             if (err) throw err;
             res.end("Ad removed from server");
         });
@@ -491,8 +489,8 @@ var addAnonymous = function (req, res) {
     var message = {
         messageId    : 'm' + utils.guid(),
         name         : utils.anonymousName(),
-        link         : req.user.username,
-        text         : req.body.text,
+        link         : utils.textValid(req.user.username),
+        text         : utils.textValid(req.body.text),
         approved     : false
     };
 
@@ -513,7 +511,7 @@ var getAnonymous = function (req, res) {
 
 var editAnonymous = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Anonymous.update({ messageId: req.body.id }, { approved: true, text: req.body.text }, function (err) {
+        Anonymous.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
             if (err) throw err;
             res.end("Anonymous approved on server");
         });
@@ -528,7 +526,7 @@ var editAnonymous = function (req, res) {
 
 var removeAnonymous = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Anonymous.remove({ messageId: req.body.id }, function (err) {
+        Anonymous.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
             if (err) throw err;
             res.end("Anonymous removed from server");
         });
