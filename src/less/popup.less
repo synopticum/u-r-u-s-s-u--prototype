@@ -3,6 +3,7 @@
 .fancybox-skin {
   padding: 0 !important;
   border: 2px solid #6B9B2A;
+  transition: .2s;
 }
 
 .fancybox-overlay {
@@ -150,6 +151,10 @@
 }
 .popup-textbox:focus, .popup-textarea:focus {
   border-color: #6B9B2A;
+}
+.popup-textbox.req, .popup-textarea.req {
+  border-color: #f00;
+  color: #000000;
 }
 #selectMarker {
   cursor: pointer;
@@ -349,8 +354,14 @@
 }
 
 .dot-messages-send {
+  position: relative;
   margin: 10px 0 0 0;
   overflow: hidden;
+}
+.dot-messages-send .char-count {
+  position: absolute;
+  left: 570px;
+  top: 80px;
 }
 .dot-messages-send .popup-textarea {
   float: left;
@@ -385,6 +396,9 @@
   width: 150px;
   margin: 0 20px 0 10px;
   color: #999999;
+}
+.dot-messages-list .avatar img {
+  border-radius: 3px;
 }
 .dot-messages-list .description {
   overflow: hidden;

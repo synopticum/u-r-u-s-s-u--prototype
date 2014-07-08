@@ -2,7 +2,7 @@ var map;
 var LeafIcon = L.Icon.extend({ options: { iconSize: [32, 32] } });
 
 var View = {
-    map: {
+    Map: {
         init: function () {
             var mapMinZoom = 4;
             var mapMaxZoom = 5;
@@ -55,35 +55,35 @@ var View = {
             // add layers control (top right page corner)
             L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
-            map.on('load', View.map.hideLoadScreen);
-            map.on('load', View.map.showStartScreen());
+            map.on('load', View.Map.hideLoadScreen);
+            map.on('load', View.Map.showStartScreen());
 
             // set dot
             map.on('dblclick', function (position) {
-                var view = new View.addDot();
+                var view = new View.AddDot();
                 $.fancybox.open(view.render(position));
                 $(".selectbox").selectbox();
                 $(".markerset").buttonset();
             });
 
             // edit dot
-            map.on('popupopen', function (e) {
+            map.on('popupopen', function () {
                 var popupId = $(this._popup._wrapper).find('.dot-container').attr('id');
 
                 $(this._popup._wrapper).find('.dot-edit').click(function () {
-                    var view = new View.editDot({ dotId: popupId });
+                    var view = new View.EditDot({ dotId: popupId });
                     $.fancybox.open(view.render());
                     $(".selectbox").selectbox();
                     $(".markerset").buttonset();
                 });
 
                 $(this._popup._wrapper).find('.dot-destroy').click(function () {
-                    var view = new View.removeDot({ dotId: popupId });
+                    var view = new View.RemoveDot({ dotId: popupId });
                     $.fancybox.open(view.render());
                 });
 
                 $(this._popup._wrapper).find('.dot-messages').click(function () {
-                    var view = new View.messagesDot({ dotId: popupId });
+                    var view = new View.MessagesDot({ dotId: popupId });
                     $.fancybox.open(view.render());
                 });
 
@@ -93,12 +93,12 @@ var View = {
         hideLoadScreen : $('#clouds').fadeOut(2000),
         showStartScreen : function () {
             // show start view
-            var view = new View.startScreen();
+            var view = new View.StartScreen();
             $.fancybox.open(view.render());
         }
     },
 
-    showDot : Backbone.View.extend({
+    ShowDot : Backbone.View.extend({
         initialize: function () {
         },
         template: _.template($('#dot-popup-template').html()),
@@ -110,7 +110,7 @@ var View = {
         }
     }),
 
-    addDot: Backbone.View.extend({
+    AddDot: Backbone.View.extend({
         id: 'adddot-popup',
         className: 'popup',
         position: [],
@@ -137,7 +137,7 @@ var View = {
         'submit': function() {
             // check required fields
             var requiredCheck = 0;
-            $('.required input').each(function (e) {
+            $('.required input').each(function () {
                 if (!this.value) requiredCheck++
             });
             if (requiredCheck) {
@@ -197,7 +197,7 @@ var View = {
 
                 // send
                 dot.sync('post', fd, {
-                    success: function(model, response){
+                    success: function(model){
                         var response = JSON.parse(model);
 
                         delete response.__v;
@@ -207,7 +207,7 @@ var View = {
 
                         BDots.records.add(dotValid);
 
-                        var view = new View.showDot(response);
+                        var view = new View.ShowDot(response);
                         L.marker(response.position, { icon: dot.getIcon() }).bindPopup(view.template(response)).addTo(map);
 
                         console.log('Dot created on server');
@@ -225,7 +225,7 @@ var View = {
         }
     }),
 
-    messagesDot: Backbone.View.extend({
+    MessagesDot: Backbone.View.extend({
         dot: null,
         dotId: null,
         initialize: function (obj) {
@@ -253,18 +253,36 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            $.post('/messages', message, { success: function (res) {
-                console.log('message added')
-            }, error: function (res) {
-                console.log(res)
-            } });
+            // check length
+            var messageText = $('.popup-textarea' ,_this).val();
 
-            $.fancybox.close(_this);
-            helper.status('Сообщение отправлено');
+            if (messageText.length >= 999)
+                return false;
+            else {
+                $.post('/messages', message, { success: function () {
+                    console.log('message added')
+                }, error: function (res) {
+                    console.log(res)
+                } });
+
+                $.fancybox.close(_this);
+                helper.status('Сообщение отправлено');
+            }
+        },
+        'change': function () {
+            var _this = $(this.$el);
+            var messageText = $('.popup-textarea' ,_this).val();
+
+            if (messageText.length > 999) {
+                $('.popup-textarea' ,_this).addClass('req');
+            }
+            else if (messageText.length <= 999) {
+                $('.popup-textarea' ,_this).removeClass('req');
+            }
         }
     }),
 
-    newsScreen: Backbone.View.extend({
+    NewsScreen: Backbone.View.extend({
         messages : {},
         initialize: function () {
             var newsFound = BNews.records.where({ approved: true });
@@ -277,7 +295,8 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'keyup .popup-textarea': 'change'
         },
         'submit': function() {
             var _this = $(this.$el);
@@ -286,18 +305,36 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            $.post('/news', newsItem, { success: function (res) {
-                console.log('news item added')
-            }, error: function (res) {
-                console.log(res)
-            } });
+            // check length
+            var messageText = $('.popup-textarea' ,_this).val();
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            if (messageText.length >= 999)
+                return false;
+            else {
+                $.post('/news', newsItem, { success: function () {
+                    console.log('news item added')
+                }, error: function (res) {
+                    console.log(res)
+                } });
+
+                $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+                $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            }
+        },
+        'change': function () {
+            var _this = $(this.$el);
+            var messageText = $('.popup-textarea' ,_this).val();
+
+            if (messageText.length > 999) {
+                $('.popup-textarea' ,_this).addClass('req');
+            }
+            else if (messageText.length <= 999) {
+                $('.popup-textarea' ,_this).removeClass('req');
+            }
         }
     }),
 
-    adsScreen: Backbone.View.extend({
+    AdsScreen: Backbone.View.extend({
         messages : {},
         initialize: function () {
             var adsFound = BAds.records.where({ approved: true });
@@ -310,27 +347,48 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'keyup .popup-textarea': 'change'
         },
         'submit': function() {
             var _this = $(this.$el);
+
             var adsItem = {
                 id: this.dotId,
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            $.post('/ads', adsItem, { success: function (res) {
-                console.log('news item added')
-            }, error: function (res) {
-                console.log(res)
-            } });
+            // check length
+            var messageText = $('.popup-textarea' ,_this).val();
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            if (messageText.length >= 999)
+                return false;
+            else {
+                console.log('all ok');
+                $.post('/ads', adsItem, { success: function () {
+                    console.log('news item added')
+                }, error: function (res) {
+                    console.log(res)
+                } });
+
+                $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+                $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            }
+        },
+        'change': function () {
+            var _this = $(this.$el);
+            var messageText = $('.popup-textarea' ,_this).val();
+
+            if (messageText.length > 999) {
+                $('.popup-textarea' ,_this).addClass('req');
+            }
+            else if (messageText.length <= 999) {
+                $('.popup-textarea' ,_this).removeClass('req');
+            }
         }
     }),
 
-    anonymousScreen: Backbone.View.extend({
+    AnonymousScreen: Backbone.View.extend({
         messages : {},
         randomWelcome : helper.anonymousRandom(),
         initialize: function () {
@@ -344,7 +402,8 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'keyup .popup-textarea': 'change'
         },
         'submit': function() {
             var _this = $(this.$el);
@@ -353,18 +412,37 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            $.post('/anonymous', anonymousItem, { success: function (res) {
-                console.log('news item added')
-            }, error: function (res) {
-                console.log(res)
-            } });
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            // check length
+            var messageText = $('.popup-textarea' ,_this).val();
+
+            if (messageText.length >= 999)
+                return false;
+            else {
+                $.post('/anonymous', anonymousItem, { success: function () {
+                    console.log('news item added')
+                }, error: function (res) {
+                    console.log(res)
+                } });
+
+                $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+                $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            }
+        },
+        'change': function () {
+            var _this = $(this.$el);
+            var messageText = $('.popup-textarea' ,_this).val();
+
+            if (messageText.length > 999) {
+                $('.popup-textarea' ,_this).addClass('req');
+            }
+            else if (messageText.length <= 999) {
+                $('.popup-textarea' ,_this).removeClass('req');
+            }
         }
     }),
 
-    startScreen: Backbone.View.extend({
+    StartScreen: Backbone.View.extend({
         id: 'startscreen-popup',
         initialize: function () {
         },
@@ -379,7 +457,7 @@ var View = {
             'click #tab-anonymous span': 'showAnonymous'
         },
         'showNews': function() {
-            var view = new View.newsScreen();
+            var view = new View.NewsScreen();
             $('.tabs-wrapper').html(view.render());
 
             $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
@@ -387,7 +465,7 @@ var View = {
             $('#tab-news').addClass('active');
         },
         'showAds': function() {
-            var view = new View.adsScreen();
+            var view = new View.AdsScreen();
             $('.tabs-wrapper').html(view.render());
 
             $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
@@ -395,7 +473,7 @@ var View = {
             $('#tab-ads').addClass('active');
         },
         'showAnonymous': function() {
-            var view = new View.anonymousScreen();
+            var view = new View.AnonymousScreen();
             $('.tabs-wrapper').html(view.render());
 
             $('.fancybox-skin, .tabs').css('border-color', '#000');

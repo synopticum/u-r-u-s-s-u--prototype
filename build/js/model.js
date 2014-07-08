@@ -93,7 +93,7 @@ var BDotsModel = Backbone.Model.extend({
         /* create dots records */
         for (var jsonItem in data) {
             var model = new BDot(data[jsonItem]);
-            var view = new View.showDot();
+            var view = new View.ShowDot();
 
             model.attributes.marker = L.marker(model.attributes.position, { icon: model.getIcon() })
                 .bindPopup(view.template(model.attributes));

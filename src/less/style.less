@@ -242,25 +242,31 @@ a {
   background: #eee;
   font-size: 0;
   margin-bottom: 20px;
-  border-bottom: 1px solid #6B9B2A;
   overflow: hidden;
+  transition: .2s;
 }
 #startScreen .tabs li {
   float: left;
   vertical-align: top;
 }
 #startScreen .tabs li span {
+  margin: 10px 0 10px 10px;
+  border-radius: 5px;
   cursor: pointer;
   display: inline-block;
   vertical-align: top;
   font-size: 14px;
-  padding: 15px 30px;
+  padding: 10px 20px;
   color: #000;
   text-decoration: none;
   background: #fff;
   outline: none;
   border-right: 1px solid #eee;
   transition: .1s;
+}
+#startScreen .tabs li span:hover {
+  background: #fff;
+  color: #555;
 }
 #startScreen .tabs li:last-child span {
   border-right: 0;
@@ -270,10 +276,13 @@ a {
   color: #fff;
 }
 #startScreen .tabs li .anonymous {
-  background: url("../images/anonymous.png") no-repeat 50% 0 #fff;
+  background: url("../images/anonymous.png") no-repeat 50% -5px #fff;
+}
+#startScreen .tabs li .anonymous:hover {
+  background: url("../images/anonymous.png") no-repeat 50% -5px #fff;
 }
 #startScreen .tabs li.active .anonymous {
-  background: url("../images/anonymous.png") no-repeat 50% -50px #000;
+  background: url("../images/anonymous.png") no-repeat 50% -55px #000;
 }
 
 .tabs-wrapper {

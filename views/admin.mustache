@@ -350,7 +350,7 @@
     </div>
 
     <div class="dot-messages-send">
-        <textarea name="" id="" cols="" rows="" class="popup-textarea"
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="popup-textarea"
                   placeholder="Введите сюда текст сообщения"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
     </div>
@@ -394,7 +394,7 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" contenteditable="true"><%= message.text %></div>
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>><%= message.text %></div>
             </div>
             <% }); }; %>
         </div>
@@ -407,7 +407,7 @@
     </div>
 
     <div class="dot-messages-send">
-        <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст новости"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
     </div>
@@ -433,7 +433,7 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" contenteditable="true"><%= message.text %></div>
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>><%= message.text %></div>
             </div>
             <% }); }; %>
         </div>
@@ -446,7 +446,7 @@
     </div>
 
     <div class="dot-messages-send">
-        <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
     </div>
@@ -471,7 +471,7 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" contenteditable="true"><%= message.text %></div>
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>><%= message.text %></div>
             </div>
             <% }); }; %>
         </div>
@@ -480,7 +480,7 @@
     </div>
 
     <div class="dot-messages-send">
-        <textarea name="" id="" cols="" rows="" class="news-textarea popup-textarea"
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введи сюда текст послания"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
     </div>

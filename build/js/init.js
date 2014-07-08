@@ -1,7 +1,7 @@
 // init
 $.getJSON("/dots", function (data) {
     BDots = new BDotsModel(data);
-    View.map.init();
+    View.Map.init();
 });
 
 $.getJSON("/messages", function (data) {
