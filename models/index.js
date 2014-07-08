@@ -80,6 +80,10 @@ var UserSchema = new Schema({
         type: String,
         unique: true
     },
+    avatar : {
+        type: String,
+        unique: true
+    },
     created : {
         type : String,
         default : moment(new Date()).format("MM.DD.YYYY")
@@ -118,6 +122,10 @@ var MessageSchema = new Schema({
         unique: false,
         required: true
     },
+    avatar : {
+        type: String,
+        unique: false
+    },
     created : {
         type : String,
         default : moment(new Date()).format("MM.DD.YYYY"),
@@ -152,6 +160,10 @@ var NewsSchema = new Schema({
         unique: false,
         required: true
     },
+    avatar : {
+        type: String,
+        unique: false
+    },
     created : {
         type : String,
         default : moment(new Date()).format("MM.DD.YYYY"),
@@ -185,6 +197,10 @@ var AdsSchema = new Schema({
         type: Boolean,
         unique: false,
         required: true
+    },
+    avatar : {
+        type: String,
+        unique: false
     },
     created : {
         type : String,
@@ -231,5 +247,5 @@ exports.Dot = mongoose.model('Dot', DotSchema);
 exports.User = mongoose.model('User', UserSchema);
 exports.Message = mongoose.model('Message', MessageSchema);
 exports.News = mongoose.model('News', NewsSchema);
-exports.Ads = mongoose.model('Ads', NewsSchema);
+exports.Ads = mongoose.model('Ads', AdsSchema);
 exports.Anonymous = mongoose.model('Anonymous', AnonymousSchema);

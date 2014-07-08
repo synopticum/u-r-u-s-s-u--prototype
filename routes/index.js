@@ -307,6 +307,7 @@ var addMessage = function (req, res) {
         name         : req.user.displayName,
         link         : req.user.username,
         text         : req.body.text,
+        avatar       : req.user.avatar,
         approved     : false
     };
 
@@ -353,6 +354,7 @@ var addNews = function (req, res) {
         name         : req.user.displayName,
         link         : req.user.username,
         text         : req.body.text,
+        avatar       : req.user.avatar,
         approved     : false
     };
 
@@ -399,10 +401,12 @@ var addAds = function (req, res) {
         name         : req.user.displayName,
         link         : req.user.username,
         text         : req.body.text,
+        avatar       : req.user.avatar,
         approved     : false
     };
 
     var messageValid = new Ads(message);
+    console.log(messageValid);
 
     messageValid.save(function (err, dot) {
         if (err) throw err;

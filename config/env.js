@@ -22,7 +22,8 @@ passport.use(new VKontakteStrategy({
                     username: profile.username,
                     displayName: profile.displayName,
                     provider: 'vkontakte',
-                    vkontakteId: profile.id
+                    vkontakteId: profile.id,
+                    avatar: profile._json.photo
                 });
                 user.save(function(err) {
                     if (err) console.log(err);

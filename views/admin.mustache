@@ -329,6 +329,7 @@
                 </div>
 
                 <div class="view">
+                    <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                     <a href="" class="name"><%= message.name %></a><br>
                     <span class="date"><%= message.created %></span>
                 </div>
@@ -388,6 +389,7 @@
                          onclick="$.ajax({ url: '/news', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
                 </div>
                 <div class="view">
+                    <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                     <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                     <span class="date"><%= message.created %></span>
                 </div>
@@ -426,6 +428,7 @@
                          onclick="$.ajax({ url: '/ads', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
                 </div>
                 <div class="view">
+                    <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                     <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                     <span class="date"><%= message.created %></span>
                 </div>

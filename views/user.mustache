@@ -157,6 +157,7 @@
                 <% if (messages) { _.each(messages, function (message) { %>
                 <div class="item">
                     <div class="view">
+                        <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                         <a href="" class="name"><%= message.name %></a><br>
                         <span class="date"><%= message.created %></span>
                     </div>
@@ -207,6 +208,7 @@
                 <% if (messages) { _.each(messages, function (message) { %>
                 <div class="item">
                     <div class="view">
+                        <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                         <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                         <span class="date"><%= message.created %></span>
                     </div>
@@ -238,6 +240,7 @@
                 <% if (messages) { _.each(messages, function (message) { %>
                 <div class="item">
                     <div class="view">
+                        <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                         <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                         <span class="date"><%= message.created %></span>
                     </div>
