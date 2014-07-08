@@ -391,6 +391,7 @@ View.adsScreen = Backbone.View.extend({
 
 View.anonymousScreen = Backbone.View.extend({
     messages : {},
+    randomWelcome : helper.anonymousRandom(),
     initialize: function () {
         var anonymousFound = BAnonymous.records;
         anonymousFound = JSON.stringify(anonymousFound);

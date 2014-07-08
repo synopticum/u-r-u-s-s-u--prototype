@@ -332,6 +332,7 @@ var View = {
 
     anonymousScreen: Backbone.View.extend({
         messages : {},
+        randomWelcome : helper.anonymousRandom(),
         initialize: function () {
             var anonymousFound = BAnonymous.records.where({ approved: true });
             anonymousFound = JSON.stringify(anonymousFound);

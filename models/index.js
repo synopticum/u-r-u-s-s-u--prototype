@@ -1,6 +1,8 @@
 var mongoose = require('../libs/mongoose'),
     Schema = mongoose.Schema;
 
+var moment = require('moment');
+
 // Dot
 var DotSchema = new Schema({
     id : {
@@ -77,6 +79,10 @@ var UserSchema = new Schema({
     vkontakteId : {
         type: String,
         unique: true
+    },
+    created : {
+        type : String,
+        default : moment(new Date()).format("MM.DD.YYYY")
     }
 });
 
@@ -113,8 +119,9 @@ var MessageSchema = new Schema({
         required: true
     },
     created : {
-        type : Date,
-        default : Date.now
+        type : String,
+        default : moment(new Date()).format("MM.DD.YYYY"),
+        required: true
     }
 });
 
@@ -146,8 +153,9 @@ var NewsSchema = new Schema({
         required: true
     },
     created : {
-        type : Date,
-        default : Date.now
+        type : String,
+        default : moment(new Date()).format("MM.DD.YYYY"),
+        required: true
     }
 });
 
@@ -179,8 +187,9 @@ var AdsSchema = new Schema({
         required: true
     },
     created : {
-        type : Date,
-        default : Date.now
+        type : String,
+        default : moment(new Date()).format("MM.DD.YYYY"),
+        required: true
     }
 });
 
@@ -212,8 +221,9 @@ var AnonymousSchema = new Schema({
         required: true
     },
     created : {
-        type : Date,
-        default : Date.now
+        type : String,
+        default : moment(new Date()).format("MM.DD.YYYY"),
+        required: true
     }
 });
 
