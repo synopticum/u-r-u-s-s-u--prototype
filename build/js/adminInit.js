@@ -62,11 +62,16 @@ View.Map = {
         L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
         map.on('load', $('#clouds').fadeOut(2000));
-        map.on('load', View.Map.showStartScreen());
+//        map.on('load', View.Map.showStartScreen());
 
         // admin controls
         $('#messagesmod').on('click', function () {
             var view = new View.MessagesMod();
+            $.fancybox.open(view.render());
+        });
+
+        $('#panel').on('click', function () {
+            var view = new View.StartScreen();
             $.fancybox.open(view.render());
         });
 
@@ -303,13 +308,15 @@ View.MessagesDot = Backbone.View.extend({
         return this.$el.html(this.template(this.dot));
     },
     events: {
-        'click .input-submit': 'submit'
+        'click .input-submit': 'submit',
+        'change .input-file': 'file'
     },
     'submit': function () {
         var _this = $(this.$el);
         var message = {
             id: this.dotId,
-            text: $('.popup-textarea', _this).val()
+            text: $('.popup-textarea', _this).val(),
+            image: this.image
         };
 
         $.post('/messages', message, { success: function () {
@@ -320,7 +327,8 @@ View.MessagesDot = Backbone.View.extend({
 
         $.fancybox.close(_this);
         helper.status('Сообщение отправлено');
-    }
+    },
+    'file': helper.singleImageUpload
 });
 
 View.NewsScreen = Backbone.View.extend({
@@ -336,13 +344,15 @@ View.NewsScreen = Backbone.View.extend({
         return this.$el.html(this.template(this));
     },
     events: {
-        'click .input-submit': 'submit'
+        'click .input-submit': 'submit',
+        'change .input-file': 'file'
     },
     'submit': function () {
         var _this = $(this.$el);
         var newsItem = {
             id: this.dotId,
-            text: $('.popup-textarea', _this).val()
+            text: $('.popup-textarea', _this).val(),
+            image: this.image
         };
 
         $.post('/news', newsItem, { success: function () {
@@ -354,7 +364,8 @@ View.NewsScreen = Backbone.View.extend({
         $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
-    }
+    },
+    'file': helper.singleImageUpload
 });
 
 View.AdsScreen = Backbone.View.extend({
@@ -370,14 +381,16 @@ View.AdsScreen = Backbone.View.extend({
         return this.$el.html(this.template(this));
     },
     events: {
-        'click .input-submit': 'submit'
+        'click .input-submit': 'submit',
+        'change .input-file': 'file'
     },
     'submit': function () {
         var _this = $(this.$el);
 
         var adsItem = {
             id: this.dotId,
-            text: $('.popup-textarea', _this).val()
+            text: $('.popup-textarea', _this).val(),
+            image: this.image
         };
 
         console.log('all ok');
@@ -390,7 +403,8 @@ View.AdsScreen = Backbone.View.extend({
         $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
-    }
+    },
+    'file': helper.singleImageUpload
 });
 
 View.AnonymousScreen = Backbone.View.extend({
@@ -407,13 +421,15 @@ View.AnonymousScreen = Backbone.View.extend({
         return this.$el.html(this.template(this));
     },
     events: {
-        'click .input-submit': 'submit'
+        'click .input-submit': 'submit',
+        'change .input-file': 'file'
     },
     'submit': function () {
         var _this = $(this.$el);
         var anonymousItem = {
             id: this.dotId,
-            text: $('.popup-textarea', _this).val()
+            text: $('.popup-textarea', _this).val(),
+            image: this.image
         };
 
         $.post('/anonymous', anonymousItem, { success: function () {
@@ -425,7 +441,8 @@ View.AnonymousScreen = Backbone.View.extend({
         $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
-    }
+    },
+    'file': helper.singleImageUpload
 });
 
 // get data

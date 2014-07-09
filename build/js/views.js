@@ -58,6 +58,11 @@ var View = {
             map.on('load', View.Map.hideLoadScreen);
             map.on('load', View.Map.showStartScreen());
 
+            $('#panel').on('click', function () {
+                var view = new View.StartScreen();
+                $.fancybox.open(view.render());
+            });
+
             // set dot
             map.on('dblclick', function (position) {
                 var view = new View.AddDot();
@@ -242,13 +247,15 @@ var View = {
             return this.$el.html(this.template(this.dot));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'change .input-file': 'file'
         },
         'submit': function () {
             var _this = $(this.$el);
             var message = {
                 id: this.dotId,
-                text: $('.popup-textarea', _this).val()
+                text: $('.popup-textarea', _this).val(),
+                image: this.image
             };
 
             $.post('/messages', message, { success: function () {
@@ -259,7 +266,8 @@ var View = {
 
             $.fancybox.close(_this);
             helper.status('Сообщение отправлено и ожидает проверки');
-        }
+        },
+        'file': helper.singleImageUpload
     }),
 
     NewsScreen: Backbone.View.extend({
@@ -276,13 +284,14 @@ var View = {
         },
         events: {
             'click .input-submit': 'submit',
-            'keyup .popup-textarea': 'change'
+            'change .input-file': 'file'
         },
         'submit': function () {
             var _this = $(this.$el);
             var newsItem = {
                 id: this.dotId,
-                text: $('.popup-textarea', _this).val()
+                text: $('.popup-textarea', _this).val(),
+                image: this.image
             };
 
             $.post('/news', newsItem, { success: function () {
@@ -294,7 +303,8 @@ var View = {
             $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
             $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
             helper.status('Сообщение отправлено и ожидает проверки');
-        }
+        },
+        'file': helper.singleImageUpload
     }),
 
     AdsScreen: Backbone.View.extend({
@@ -310,14 +320,16 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'change .input-file': 'file'
         },
         'submit': function () {
             var _this = $(this.$el);
 
             var adsItem = {
                 id: this.dotId,
-                text: $('.popup-textarea', _this).val()
+                text: $('.popup-textarea', _this).val(),
+                image: this.image
             };
 
             console.log('all ok');
@@ -330,7 +342,8 @@ var View = {
             $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
             $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
             helper.status('Сообщение отправлено и ожидает проверки');
-        }
+        },
+        'file': helper.singleImageUpload
     }),
 
     AnonymousScreen: Backbone.View.extend({
@@ -347,13 +360,15 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit'
+            'click .input-submit': 'submit',
+            'change .input-file': 'file'
         },
         'submit': function () {
             var _this = $(this.$el);
             var anonymousItem = {
                 id: this.dotId,
-                text: $('.popup-textarea', _this).val()
+                text: $('.popup-textarea', _this).val(),
+                image: this.image
             };
 
             $.post('/anonymous', anonymousItem, { success: function () {
@@ -365,7 +380,8 @@ var View = {
             $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
             $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
             helper.status('Сообщение отправлено и ожидает проверки');
-        }
+        },
+        'file': helper.singleImageUpload
     }),
 
     StartScreen: Backbone.View.extend({

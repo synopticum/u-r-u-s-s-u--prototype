@@ -2,10 +2,10 @@ var express = require('express'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server),
-    opts = require(__dirname + '/config/opts.js');
+    opts = require(__dirname + '/config/opts');
 
 // Load express configuration
-require(__dirname + '/config/env.js')(express, app);
+require(__dirname + '/config/env')(express, app);
 
 // Load routes
 require(__dirname + '/routes')(app);

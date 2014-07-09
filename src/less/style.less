@@ -294,12 +294,33 @@ a {
   margin-right: 10px;
 }
 
-#messagesmod {
-  color: #ffffff;
+#panel, #messagesmod {
   cursor: pointer;
   position: absolute;
-  left: 20px;
-  bottom: 20px;
+  bottom: 10px;
+  display: block;
   z-index: 999;
   text-decoration: underline;
+  width: 48px;
+  height: 48px;
+}
+#messagesmod {
+  left: 80px;
+  background: url("../images/messages.png") no-repeat;
+}
+#panel {
+  left: 20px;
+  background: url("../images/panel.png") no-repeat;
+}
+
+#fileupload {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: url("../images/preloader.gif") no-repeat 50% 50% rgba(0,0,0,.2);
+  z-index: 9999;
 }

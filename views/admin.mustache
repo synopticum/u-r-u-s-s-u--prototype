@@ -330,12 +330,18 @@
 
                 <div class="view">
                     <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
-                    <a href="" class="name"><%= message.name %></a><br>
+                    <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                     <span class="date"><%= message.created %></span>
                 </div>
 
                 <div class="description">
                     <%= message.text %>
+
+                    <% if (message.image) { %>
+                    <div class="dot-messages-image">
+                        <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                    </div>
+                    <% }; %>
                 </div>
             </div>
             <% }); }; %>
@@ -353,6 +359,7 @@
         <textarea name="" id="" cols="" rows="" maxlength="999" class="popup-textarea"
                   placeholder="Введите сюда текст сообщения"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="file" name="" class="input-file"/>
     </div>
 </script>
 
@@ -394,7 +401,15 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>><%= message.text %></div>
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>>
+                    <%= message.text %>
+
+                    <% if (message.image) { %>
+                    <div class="dot-messages-image" contenteditable="false">
+                        <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                    </div>
+                    <% }; %>
+                </div>
             </div>
             <% }); }; %>
         </div>
@@ -410,6 +425,7 @@
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст новости"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="file" name="" class="input-file"/>
     </div>
 </script>
 
@@ -433,7 +449,15 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>><%= message.text %></div>
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>>
+                    <%= message.text %>
+
+                    <% if (message.image) { %>
+                    <div class="dot-messages-image" contenteditable="false">
+                        <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                    </div>
+                    <% }; %>
+                </div>
             </div>
             <% }); }; %>
         </div>
@@ -449,6 +473,7 @@
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="file" name="" class="input-file"/>
     </div>
 </script>
 
@@ -471,7 +496,15 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>><%= message.text %></div>
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>>
+                    <%= message.text %>
+
+                    <% if (message.image) { %>
+                    <div class="dot-messages-image" contenteditable="false">
+                        <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                    </div>
+                    <% }; %>
+                </div>
             </div>
             <% }); }; %>
         </div>
@@ -483,10 +516,11 @@
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введи сюда текст послания"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="file" name="" class="input-file"/>
     </div>
 </script>
 
-<!-- dot messages popup template -->
+<!-- mod messages popup template -->
 <script type="text/html" id="messagesmod-popup-template">
     <h3>Непроверенные сообщения</h3>
 
@@ -513,7 +547,10 @@
 </script>
 </div>
 
-<span id="messagesmod">messages</span>
+<span id="panel"></span>
+<span id="messagesmod"></span>
+
+<div id="fileupload"></div>
 
 <script src="js/helpers.js"></script>
 <script src="js/model.js"></script>

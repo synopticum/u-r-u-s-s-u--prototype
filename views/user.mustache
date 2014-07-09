@@ -158,12 +158,18 @@
                 <div class="item">
                     <div class="view">
                         <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
-                        <a href="" class="name"><%= message.name %></a><br>
+                        <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
                         <span class="date"><%= message.created %></span>
                     </div>
 
                     <div class="description">
                         <%= message.text %>
+
+                        <% if (message.image) { %>
+                        <div class="dot-messages-image" contenteditable="false">
+                            <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                        </div>
+                        <% }; %>
                     </div>
                 </div>
                 <% }); }; %>
@@ -180,6 +186,7 @@
             <textarea name="" id="" cols="" rows="" class="popup-textarea"
                       placeholder="Введите сюда текст сообщения"></textarea>
             <button type="submit" class="input-submit popup-button">Отправить</button>
+            <input type="file" name="" class="input-file"/>
         </div>
     </script>
 
@@ -215,6 +222,12 @@
 
                     <div class="description">
                         <%= message.text %>
+
+                        <% if (message.image) { %>
+                        <div class="dot-messages-image" contenteditable="false">
+                            <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                        </div>
+                        <% }; %>
                     </div>
                 </div>
                 <% }); }; %>
@@ -230,6 +243,7 @@
             <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                       placeholder="Введите сюда текст сообщения"></textarea>
             <button type="submit" class="input-submit popup-button">Отправить</button>
+            <input type="file" name="" class="input-file"/>
         </div>
     </script>
 
@@ -247,6 +261,12 @@
 
                     <div class="description">
                         <%= message.text %>
+
+                        <% if (message.image) { %>
+                        <div class="dot-messages-image" contenteditable="false">
+                            <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                        </div>
+                        <% }; %>
                     </div>
                 </div>
                 <% }); }; %>
@@ -263,6 +283,7 @@
             <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                       placeholder="Введите сюда текст объявления"></textarea>
             <button type="submit" class="input-submit popup-button">Отправить</button>
+            <input type="file" name="" class="input-file"/>
         </div>
     </script>
 
@@ -277,7 +298,15 @@
                         <span class="date"><%= message.created %></span>
                     </div>
 
-                    <div class="description"><%= message.text %></div>
+                    <div class="description">
+                        <%= message.text %>
+
+                        <% if (message.image) { %>
+                        <div class="dot-messages-image" contenteditable="false">
+                            <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
+                        </div>
+                        <% }; %>
+                    </div>
                 </div>
                 <% }); }; %>
             </div>
@@ -289,15 +318,14 @@
             <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                       placeholder="Введи сюда текст послания"></textarea>
             <button type="submit" class="input-submit popup-button">Отправить</button>
+            <input type="file" name="" class="input-file"/>
         </div>
     </script>
-
-    <!-- edit dot popup template -->
-    <script type="text/html" id="editdot-popup-template"></script>
-
-    <!-- edit dot popup template -->
-    <script type="text/html" id="destroydot-popup-template"></script>
 </div>
+
+<span id="panel"></span>
+
+<div id="fileupload"></div>
 
 <script src="js/helpers.js"></script>
 <script src="js/model.js"></script>

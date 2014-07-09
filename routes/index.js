@@ -2,7 +2,7 @@ var multipart = require('connect-multiparty'),
     fs = require('fs'),
     multipartMiddleware = multipart( { uploadDir: 'public/tmp' }),
     passport = require('passport'),
-    utils = require('../libs/util.js');
+    utils = require('../libs/util');
 
 var Dot  = require('../models').Dot;
 var Message  = require('../models').Message;
@@ -19,6 +19,9 @@ var adminId = '257378450',
 module.exports = function (app) {
     app.get('/', logged);
     app.get('/join', join);
+
+    // upload
+    app.post('/uploads', multipartMiddleware, uploadFiles);
 
     // init, send all dots
     app.get('/dots', sendDots);
@@ -350,6 +353,8 @@ var removeDot = function (req, res) {
 
 // messages
 var addMessage = function (req, res) {
+    console.log(req.body.image);
+
     var message = {
         messageId    : 'm' + utils.guid(),
         dotId        : utils.textValid(req.body.id),
@@ -357,6 +362,7 @@ var addMessage = function (req, res) {
         link         : utils.textValid(req.user.username),
         text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
+        image        : req.body.image,
         approved     : false
     };
 
@@ -413,6 +419,7 @@ var addNews = function (req, res) {
         link         : utils.textValid(req.user.username),
         text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
+        image        : req.body.image,
         approved     : false
     };
 
@@ -469,6 +476,7 @@ var addAds = function (req, res) {
         link         : utils.textValid(req.user.username),
         text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
+        image        : req.body.image,
         approved     : false
     };
 
@@ -526,6 +534,7 @@ var addAnonymous = function (req, res) {
         name         : utils.anonymousName(),
         link         : utils.textValid(req.user.username),
         text         : utils.textValid(req.body.text) || defaultText,
+        image        : req.body.image,
         approved     : false
     };
 
@@ -572,4 +581,30 @@ var removeAnonymous = function (req, res) {
         res.end("Access denied");
         console.log("User access error");
     }
+};
+
+var uploadFiles = function (req, res) {
+    if (!utils.isEmpty(req.files)) {
+        if (req.files.image) {
+            var tmpFilePath = req.files.image.ws.path;
+
+            fs.readFile(tmpFilePath, function (err, result) {
+                if (err) throw err;
+
+                var fileName = utils.makeFileName() + '.jpg';
+
+                fs.writeFile('public/msgimages/' + fileName, result, function (err) {
+                    if (err) throw err;
+
+                    fs.unlink(tmpFilePath, function (err) {
+                        if (err) throw err;
+                        console.log('Temporary msg image file deleted');
+                        res.end(fileName);
+                    })
+                });
+            });
+        }
+        else res.end('Accept file error');
+    }
+    else res.end('Accept file error');
 };

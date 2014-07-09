@@ -126,6 +126,10 @@ var MessageSchema = new Schema({
         type: String,
         unique: false
     },
+    image : {
+        type: String,
+        unique: false
+    },
     created : {
         type : String,
         default : moment(new Date()).format("MM.DD.YYYY"),
@@ -161,6 +165,10 @@ var NewsSchema = new Schema({
         required: true
     },
     avatar : {
+        type: String,
+        unique: false
+    },
+    image : {
         type: String,
         unique: false
     },
@@ -202,6 +210,10 @@ var AdsSchema = new Schema({
         type: String,
         unique: false
     },
+    image : {
+        type: String,
+        unique: false
+    },
     created : {
         type : String,
         default : moment(new Date()).format("MM.DD.YYYY"),
@@ -235,6 +247,10 @@ var AnonymousSchema = new Schema({
         type: Boolean,
         unique: false,
         required: true
+    },
+    image : {
+        type: String,
+        unique: false
     },
     created : {
         type : String,

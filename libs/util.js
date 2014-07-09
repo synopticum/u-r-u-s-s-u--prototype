@@ -80,3 +80,13 @@ module.exports.textValid = function(text, count) {
     if (!count) count = 998;
     return _.escape(text.substring(0, count));
 };
+
+module.exports.makeFileName = function () {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+};
