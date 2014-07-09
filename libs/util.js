@@ -76,7 +76,7 @@ module.exports.anonymousName = function() {
     return items[Math.floor(Math.random()*items.length)];
 };
 
-module.exports.textValid = function(text) {
-    var textValid = _.escape(text);
-    return textValid;
+module.exports.textValid = function(text, count) {
+    if (!count) count = 998;
+    return _.escape(text.substring(0, count));
 };

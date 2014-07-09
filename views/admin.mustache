@@ -87,7 +87,7 @@
     <table>
         <tr>
             <td>
-                <input type="text" class="input-title popup-textbox" placeholder="Заголовок метки"/>
+                <input type="text" class="input-title popup-textbox" maxlength="50" placeholder="Заголовок метки"/>
             </td>
             <td colspan="2">
                 <select class="input-layer selectbox">
@@ -103,7 +103,7 @@
         </tr>
         <tr>
             <td colspan="3">
-                <textarea class="input-short-text popup-textarea" placeholder="Краткое описание"></textarea>
+                <textarea class="input-short-text popup-textarea" maxlength="150" placeholder="Краткое описание"></textarea>
             </td>
         </tr>
         <tr>
@@ -114,11 +114,11 @@
                     <option value="пер.">пер.</option>
                 </select>
             </td>
-            <td><input type="text" class="input-street popup-textbox" placeholder="Улица"/></td>
-            <td><input type="text" class="input-house popup-textbox" placeholder="Дом"/></td>
+            <td><input type="text" class="input-street popup-textbox" maxlength="40" placeholder="Улица"/></td>
+            <td><input type="text" class="input-house popup-textbox" maxlength="4" placeholder="Дом"/></td>
         </tr>
         <tr>
-            <td colspan="3"><input type="text" class="input-home-phone popup-textbox" placeholder="Телефон"/></td>
+            <td colspan="3"><input type="text" class="input-home-phone popup-textbox" maxlength="50" placeholder="Телефон"/></td>
         </tr>
         <tr>
             <td class="required">

@@ -253,12 +253,6 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            // check length
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length >= 999)
-                return false;
-            else {
                 $.post('/messages', message, { success: function () {
                     console.log('message added')
                 }, error: function (res) {
@@ -267,18 +261,6 @@ var View = {
 
                 $.fancybox.close(_this);
                 helper.status('Сообщение отправлено');
-            }
-        },
-        'change': function () {
-            var _this = $(this.$el);
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length > 999) {
-                $('.popup-textarea' ,_this).addClass('req');
-            }
-            else if (messageText.length <= 999) {
-                $('.popup-textarea' ,_this).removeClass('req');
-            }
         }
     }),
 
@@ -305,12 +287,6 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            // check length
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length >= 999)
-                return false;
-            else {
                 $.post('/news', newsItem, { success: function () {
                     console.log('news item added')
                 }, error: function (res) {
@@ -319,18 +295,6 @@ var View = {
 
                 $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
                 $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
-            }
-        },
-        'change': function () {
-            var _this = $(this.$el);
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length > 999) {
-                $('.popup-textarea' ,_this).addClass('req');
-            }
-            else if (messageText.length <= 999) {
-                $('.popup-textarea' ,_this).removeClass('req');
-            }
         }
     }),
 
@@ -347,8 +311,7 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit',
-            'keyup .popup-textarea': 'change'
+            'click .input-submit': 'submit'
         },
         'submit': function() {
             var _this = $(this.$el);
@@ -358,12 +321,6 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-            // check length
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length >= 999)
-                return false;
-            else {
                 console.log('all ok');
                 $.post('/ads', adsItem, { success: function () {
                     console.log('news item added')
@@ -373,18 +330,6 @@ var View = {
 
                 $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
                 $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
-            }
-        },
-        'change': function () {
-            var _this = $(this.$el);
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length > 999) {
-                $('.popup-textarea' ,_this).addClass('req');
-            }
-            else if (messageText.length <= 999) {
-                $('.popup-textarea' ,_this).removeClass('req');
-            }
         }
     }),
 
@@ -402,8 +347,7 @@ var View = {
             return this.$el.html(this.template(this));
         },
         events: {
-            'click .input-submit': 'submit',
-            'keyup .popup-textarea': 'change'
+            'click .input-submit': 'submit'
         },
         'submit': function() {
             var _this = $(this.$el);
@@ -412,13 +356,6 @@ var View = {
                 text: $('.popup-textarea' ,_this).val()
             };
 
-
-            // check length
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length >= 999)
-                return false;
-            else {
                 $.post('/anonymous', anonymousItem, { success: function () {
                     console.log('news item added')
                 }, error: function (res) {
@@ -427,18 +364,6 @@ var View = {
 
                 $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
                 $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
-            }
-        },
-        'change': function () {
-            var _this = $(this.$el);
-            var messageText = $('.popup-textarea' ,_this).val();
-
-            if (messageText.length > 999) {
-                $('.popup-textarea' ,_this).addClass('req');
-            }
-            else if (messageText.length <= 999) {
-                $('.popup-textarea' ,_this).removeClass('req');
-            }
         }
     }),
 

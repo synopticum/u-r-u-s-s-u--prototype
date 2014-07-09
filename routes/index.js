@@ -98,10 +98,25 @@ var sendDots = function (req, res) {
 var addDot = function (req, res) {
     var dotValues = JSON.parse(req.body.json);
     dotValues.id = utils.guid();
-    dotValues.image = 'marker-images/' + dotValues.id + '.png';
+
+    var dotValidValues = {
+        id          : utils.textValid(dotValues.id),
+        layer       : utils.textValid(dotValues.layer, 50),
+        position    : dotValues.position,
+        title       : utils.textValid(dotValues.title, 50),
+        text        : utils.textValid(dotValues.text, 150),
+        image       : 'marker-images/' + utils.textValid(dotValues.id) + '.png',
+        icon        : utils.textValid(dotValues.icon, 20),
+        address     : utils.textValid(dotValues.address, 10),
+        street      : utils.textValid(dotValues.street, 40),
+        house       : utils.textValid(dotValues.house, 4),
+        homePhone   : utils.textValid(dotValues.homePhone, 20),
+        mobilePhone : utils.textValid(dotValues.mobilePhone, 20),
+        gallery     : dotValues.gallery
+    };
 
     // save in db
-    var dotValid = new Dot(dotValues);
+    var dotValid = new Dot(dotValidValues);
 
     // create image
     if (!utils.isEmpty(req.files)) {
@@ -112,7 +127,7 @@ var addDot = function (req, res) {
             fs.readFile(tmpFilePath, function (err, result) {
                 if (err) throw err;
 
-                fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
+                fs.writeFile('public/marker-images/' + dotValidValues.id + '.png', result, function (err) {
                     if (err) throw err;
 
                     fs.unlink(tmpFilePath, function (err) {
@@ -123,11 +138,11 @@ var addDot = function (req, res) {
             });
         }
         else {
-            dotValues.image = 'images/q.gif';
+            dotValidValues.image = 'images/q.gif';
         }
 
         // create gallery dir
-        var galleryPath = 'public/galleries/' + dotValues.id;
+        var galleryPath = 'public/galleries/' + dotValidValues.id;
         utils.mkdir(galleryPath);
 
         delete req.files.markerimage;
@@ -139,14 +154,14 @@ var addDot = function (req, res) {
 
             fs.readFile(tmpGalleryPath, function (err, result) {
                 var imageName = (Math.random()*31337 | 0) + '.jpg';
-                var imagePath = 'galleries/' + dotValues.id + '/' + imageName;
+                var imagePath = 'galleries/' + dotValidValues.id + '/' + imageName;
 
                 update.gallery.push(imagePath);
 
-                fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
+                fs.writeFile('public/galleries/' + dotValidValues.id + '/' + imageName, result, function (err) {
                     if (err) throw err;
 
-                    Dot.findOneAndUpdate({id: dotValues.id}, update, function (err) {
+                    Dot.findOneAndUpdate({id: dotValidValues.id}, update, function (err) {
                         if (err) throw err;
                     });
                 });
@@ -178,7 +193,23 @@ var addDot = function (req, res) {
 var editDot = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         var dotValues = JSON.parse(req.body.json);
-        dotValues.image = 'marker-images/' + dotValues.id + '.png';
+
+        var dotValidValues = {
+            id          : utils.textValid(dotValues.id),
+            layer       : utils.textValid(dotValues.layer, 50),
+            position    : dotValues.position,
+            title       : utils.textValid(dotValues.title, 50),
+            text        : utils.textValid(dotValues.text, 150),
+            image       : 'marker-images/' + utils.textValid(dotValues.id) + '.png',
+            icon        : utils.textValid(dotValues.icon, 20),
+            address     : utils.textValid(dotValues.address, 10),
+            street      : utils.textValid(dotValues.street, 40),
+            house       : utils.textValid(dotValues.house, 4),
+            homePhone   : utils.textValid(dotValues.homePhone, 20),
+            mobilePhone : utils.textValid(dotValues.mobilePhone, 20),
+            gallery     : dotValues.gallery
+        };
+        console.log(dotValidValues);
 
         // check files exists
         if (!utils.isEmpty(req.files)) {
@@ -190,7 +221,7 @@ var editDot = function (req, res) {
                 fs.readFile(tmpFilePath, function (err, result) {
                     if (err) throw err;
 
-                    fs.writeFile('public/marker-images/' + dotValues.id + '.png', result, function (err) {
+                    fs.writeFile('public/marker-images/' + dotValidValues.id + '.png', result, function (err) {
                         if (err) throw err;
 
                         fs.unlink(tmpFilePath, function (err) {
@@ -202,7 +233,7 @@ var editDot = function (req, res) {
             }
 
             // create gallery files
-            var galleryPath = 'public/galleries/' + dotValues.id;
+            var galleryPath = 'public/galleries/' + dotValidValues.id;
 
             delete req.files.markerimage;
 
@@ -214,19 +245,19 @@ var editDot = function (req, res) {
 
                 for (var galleryImage in req.files) {
                     var tmpGalleryPath = req.files[galleryImage].ws.path;
-                    var update = { gallery: dotValues.gallery };
+                    var update = { gallery: dotValidValues.gallery };
                     utils.mkdir('public/tmp');
 
                     fs.readFile(tmpGalleryPath, function (err, result) {
                         var imageName = (Math.random() * 31337 | 0) + '.jpg';
-                        var imagePath = 'galleries/' + dotValues.id + '/' + imageName;
+                        var imagePath = 'galleries/' + dotValidValues.id + '/' + imageName;
 
                         update.gallery.push(imagePath);
 
-                        fs.writeFile('public/galleries/' + dotValues.id + '/' + imageName, result, function (err) {
+                        fs.writeFile('public/galleries/' + dotValidValues.id + '/' + imageName, result, function (err) {
                             if (err) throw err;
 
-                            Dot.findOneAndUpdate({id: dotValues.id}, update, function (err, result) {
+                            Dot.findOneAndUpdate({id: dotValidValues.id}, update, function (err, result) {
                                 if (err) throw err;
                                 console.log('Marker gallery updated');
                                 res.end(JSON.stringify(result));
@@ -242,7 +273,7 @@ var editDot = function (req, res) {
             });
 
             // save in db
-            Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err, result) {
+            Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
                 if (err) throw err;
                 res.end(JSON.stringify(result));
             });
@@ -251,9 +282,9 @@ var editDot = function (req, res) {
         }
         else {
             console.log('Dot update dont have files');
-            delete dotValues.gallery;
+            delete dotValidValues.gallery;
 
-            Dot.findOneAndUpdate({id: dotValues.id}, dotValues, function (err, result) {
+            Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
                 if (err) throw err;
                 res.end(JSON.stringify(result));
             });
