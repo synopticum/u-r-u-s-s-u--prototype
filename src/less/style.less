@@ -107,7 +107,7 @@
   bottom: 20px;
   width: 100%;
   color: #ffffff;
-  z-index: 666;
+  z-index: 9999;
   text-align: center;
 }
 #status span {
@@ -259,13 +259,13 @@ a {
   padding: 10px 20px;
   color: #000;
   text-decoration: none;
-  background: #fff;
+  background: #F9F9F9;
   outline: none;
   border-right: 1px solid #eee;
   transition: .1s;
 }
 #startScreen .tabs li span:hover {
-  background: #fff;
+  background: #F9F9F9;
   color: #555;
 }
 #startScreen .tabs li:last-child span {
@@ -276,10 +276,10 @@ a {
   color: #fff;
 }
 #startScreen .tabs li .anonymous {
-  background: url("../images/anonymous.png") no-repeat 50% -5px #fff;
+  background: url("../images/anonymous.png") no-repeat 50% -5px #F9F9F9;
 }
 #startScreen .tabs li .anonymous:hover {
-  background: url("../images/anonymous.png") no-repeat 50% -5px #fff;
+  background: url("../images/anonymous.png") no-repeat 50% -5px #F9F9F9;
 }
 #startScreen .tabs li.active .anonymous {
   background: url("../images/anonymous.png") no-repeat 50% -55px #000;
@@ -287,6 +287,11 @@ a {
 
 .tabs-wrapper {
   padding: 0 20px;
+}
+
+#startScreen .tabs #tab-anonymous {
+  float: right;
+  margin-right: 10px;
 }
 
 #messagesmod {

@@ -90,22 +90,22 @@ var View = {
                 $('.fancybox').fancybox();
             });
         },
-        hideLoadScreen : $('#clouds').fadeOut(2000),
-        showStartScreen : function () {
+        hideLoadScreen: $('#clouds').fadeOut(2000),
+        showStartScreen: function () {
             // show start view
             var view = new View.StartScreen();
             $.fancybox.open(view.render());
         }
     },
 
-    ShowDot : Backbone.View.extend({
+    ShowDot: Backbone.View.extend({
         initialize: function () {
         },
         template: _.template($('#dot-popup-template').html()),
         events: {
             'click .dot-title': 'open'
         },
-        open: function() {
+        open: function () {
             console.log('clicked');
         }
     }),
@@ -118,8 +118,8 @@ var View = {
 //            console.log('init')
         },
         template: _.template($('#adddot-popup-template').html()),
-        render: function(position) {
-            this.position = [position.latlng.lat+0.21, position.latlng.lng];
+        render: function (position) {
+            this.position = [position.latlng.lat + 0.21, position.latlng.lng];
             return this.$el.html(this.template());
         },
         events: {
@@ -134,7 +134,7 @@ var View = {
         'select-marker-close': function () {
             $('#selectMarkerPopup').fadeOut('fast');
         },
-        'submit': function() {
+        'submit': function () {
             // check required fields
             var requiredCheck = 0;
             $('.required input').each(function () {
@@ -148,46 +148,44 @@ var View = {
             // send json
             var _this = $(this.$el);
 
-            _this.position    = this.position;
-            _this.layer       = $(".input-layer", _this).val();
-            _this.title       = $(".input-title", _this).val();
-            _this.text        = $(".input-short-text", _this).val();
-            _this.image       = $(".input-image", _this).val();
-            _this.icon        = $("input[name='markerset']:checked", _this).val();
-            _this.address     = $(".input-address", _this).val();
-            _this.street      = $(".input-street", _this).val();
-            _this.house       = $(".input-house", _this).val();
-            _this.homePhone   = $(".input-home-phone", _this).val();
-            _this.mobilePhone = $(".input-mobile-phone", _this).val();
+            _this.position = this.position;
+            _this.layer = $(".input-layer", _this).val();
+            _this.title = $(".input-title", _this).val();
+            _this.text = $(".input-short-text", _this).val();
+            _this.image = $(".input-image", _this).val();
+            _this.icon = $("input[name='markerset']:checked", _this).val();
+            _this.address = $(".input-address", _this).val();
+            _this.street = $(".input-street", _this).val();
+            _this.house = $(".input-house", _this).val();
+            _this.homePhone = $(".input-home-phone", _this).val();
 
             if (BDots.records) {
                 var dot = new BDot({
-                    template    : null,
-                    byUser      : null,
-                    layer       : _this.layer,
-                    position    : _this.position,
-                    title       : _this.title || "-",
-                    text        : _this.text || "-",
-                    image       : _this.image,
-                    icon        : _this.icon,
-                    address     : _this.address || "-",
-                    street      : _this.street || "-",
-                    house       : _this.house || "-",
-                    homePhone   : _this.homePhone || "-",
-                    mobilePhone : _this.mobilePhone || "-",
-                    gallery     : [] || null
+                    template: null,
+                    byUser: null,
+                    layer: _this.layer,
+                    position: _this.position,
+                    title: _this.title,
+                    text: _this.text,
+                    image: _this.image,
+                    icon: _this.icon,
+                    address: _this.address,
+                    street: _this.street,
+                    house: _this.house,
+                    homePhone: _this.homePhone,
+                    gallery: [] || null
                 });
 
                 // create FormData Object with files/json
                 var fd = new FormData();
 
                 var file_data = $('.input-image')[0].files;
-                for(var i = 0; i < file_data.length; i++){
+                for (var i = 0; i < file_data.length; i++) {
                     fd.append("markerimage", file_data[i]);
                 }
 
                 var gallery_data = $('.input-gallery')[0].files;
-                for(var j = 0; j < gallery_data.length; j++){
+                for (var j = 0; j < gallery_data.length; j++) {
                     fd.append("gallery_" + j, gallery_data[j]);
                 }
 
@@ -197,7 +195,7 @@ var View = {
 
                 // send
                 dot.sync('post', fd, {
-                    success: function(model){
+                    success: function (model) {
                         var response = JSON.parse(model);
 
                         delete response.__v;
@@ -212,7 +210,7 @@ var View = {
 
                         console.log('Dot created on server');
                     },
-                    error: function(model, response){
+                    error: function (model, response) {
                         console.log('Dot creation server error!');
                         console.log(response.responseText);
                     }
@@ -233,39 +231,39 @@ var View = {
             this.dot = BDots.records.get(this.dotId).attributes;
 
             // dot messages search
-            var messagesFound = BMessages.records.where({ dotId: this.dotId, approved : true });
+            var messagesFound = BMessages.records.where({ dotId: this.dotId, approved: true });
             messagesFound = JSON.stringify(messagesFound);
             this.dot.messages = JSON.parse(messagesFound);
         },
         id: 'messagesdot-popup',
         className: 'popup',
         template: _.template($('#messagesdot-popup-template').html()),
-        render: function() {
+        render: function () {
             return this.$el.html(this.template(this.dot));
         },
         events: {
             'click .input-submit': 'submit'
         },
-        'submit': function() {
+        'submit': function () {
             var _this = $(this.$el);
             var message = {
                 id: this.dotId,
-                text: $('.popup-textarea' ,_this).val()
+                text: $('.popup-textarea', _this).val()
             };
 
-                $.post('/messages', message, { success: function () {
-                    console.log('message added')
-                }, error: function (res) {
-                    console.log(res)
-                } });
+            $.post('/messages', message, { success: function () {
+                console.log('message added')
+            }, error: function (res) {
+                console.log(res)
+            } });
 
-                $.fancybox.close(_this);
-                helper.status('Сообщение отправлено');
+            $.fancybox.close(_this);
+            helper.status('Сообщение отправлено и ожидает проверки');
         }
     }),
 
     NewsScreen: Backbone.View.extend({
-        messages : {},
+        messages: {},
         initialize: function () {
             var newsFound = BNews.records.where({ approved: true });
             newsFound = JSON.stringify(newsFound);
@@ -273,33 +271,34 @@ var View = {
         },
         id: 'news-screen',
         template: _.template($('#news-template').html()),
-        render: function() {
+        render: function () {
             return this.$el.html(this.template(this));
         },
         events: {
             'click .input-submit': 'submit',
             'keyup .popup-textarea': 'change'
         },
-        'submit': function() {
+        'submit': function () {
             var _this = $(this.$el);
             var newsItem = {
                 id: this.dotId,
-                text: $('.popup-textarea' ,_this).val()
+                text: $('.popup-textarea', _this).val()
             };
 
-                $.post('/news', newsItem, { success: function () {
-                    console.log('news item added')
-                }, error: function (res) {
-                    console.log(res)
-                } });
+            $.post('/news', newsItem, { success: function () {
+                console.log('news item added')
+            }, error: function (res) {
+                console.log(res)
+            } });
 
-                $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-                $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.status('Сообщение отправлено и ожидает проверки');
         }
     }),
 
     AdsScreen: Backbone.View.extend({
-        messages : {},
+        messages: {},
         initialize: function () {
             var adsFound = BAds.records.where({ approved: true });
             adsFound = JSON.stringify(adsFound);
@@ -307,35 +306,36 @@ var View = {
         },
         id: 'ads-screen',
         template: _.template($('#ads-template').html()),
-        render: function() {
+        render: function () {
             return this.$el.html(this.template(this));
         },
         events: {
             'click .input-submit': 'submit'
         },
-        'submit': function() {
+        'submit': function () {
             var _this = $(this.$el);
 
             var adsItem = {
                 id: this.dotId,
-                text: $('.popup-textarea' ,_this).val()
+                text: $('.popup-textarea', _this).val()
             };
 
-                console.log('all ok');
-                $.post('/ads', adsItem, { success: function () {
-                    console.log('news item added')
-                }, error: function (res) {
-                    console.log(res)
-                } });
+            console.log('all ok');
+            $.post('/ads', adsItem, { success: function () {
+                console.log('news item added')
+            }, error: function (res) {
+                console.log(res)
+            } });
 
-                $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-                $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.status('Сообщение отправлено и ожидает проверки');
         }
     }),
 
     AnonymousScreen: Backbone.View.extend({
-        messages : {},
-        randomWelcome : helper.anonymousRandom(),
+        messages: {},
+        randomWelcome: helper.anonymousRandom(),
         initialize: function () {
             var anonymousFound = BAnonymous.records.where({ approved: true });
             anonymousFound = JSON.stringify(anonymousFound);
@@ -343,27 +343,28 @@ var View = {
         },
         id: 'anonymous-screen',
         template: _.template($('#anonymous-template').html()),
-        render: function() {
+        render: function () {
             return this.$el.html(this.template(this));
         },
         events: {
             'click .input-submit': 'submit'
         },
-        'submit': function() {
+        'submit': function () {
             var _this = $(this.$el);
             var anonymousItem = {
                 id: this.dotId,
-                text: $('.popup-textarea' ,_this).val()
+                text: $('.popup-textarea', _this).val()
             };
 
-                $.post('/anonymous', anonymousItem, { success: function () {
-                    console.log('news item added')
-                }, error: function (res) {
-                    console.log(res)
-                } });
+            $.post('/anonymous', anonymousItem, { success: function () {
+                console.log('news item added')
+            }, error: function (res) {
+                console.log(res)
+            } });
 
-                $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-                $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.status('Сообщение отправлено и ожидает проверки');
         }
     }),
 
@@ -373,7 +374,7 @@ var View = {
         },
         className: 'popup',
         template: _.template($('#startscreen-popup-template').html()),
-        render: function() {
+        render: function () {
             return this.$el.html(this.template());
         },
         events: {
@@ -381,7 +382,7 @@ var View = {
             'click #tab-ads span': 'showAds',
             'click #tab-anonymous span': 'showAnonymous'
         },
-        'showNews': function() {
+        'showNews': function () {
             var view = new View.NewsScreen();
             $('.tabs-wrapper').html(view.render());
 
@@ -389,7 +390,7 @@ var View = {
             $('.tabs li').removeClass('active');
             $('#tab-news').addClass('active');
         },
-        'showAds': function() {
+        'showAds': function () {
             var view = new View.AdsScreen();
             $('.tabs-wrapper').html(view.render());
 
@@ -397,7 +398,7 @@ var View = {
             $('.tabs li').removeClass('active');
             $('#tab-ads').addClass('active');
         },
-        'showAnonymous': function() {
+        'showAnonymous': function () {
             var view = new View.AnonymousScreen();
             $('.tabs-wrapper').html(view.render());
 

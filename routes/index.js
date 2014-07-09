@@ -10,7 +10,11 @@ var News  = require('../models').News;
 var Ads  = require('../models').Ads;
 var Anonymous  = require('../models').Anonymous;
 
-var adminId = '257378450';
+var adminId = '257378450',
+    defaultText = 'Автор поленился набрать текст',
+    defaultLayer = 'main',
+    defaultTitle = 'Это бывший заголовок',
+    defaultIcon = 'green';
 
 module.exports = function (app) {
     app.get('/', logged);
@@ -101,17 +105,17 @@ var addDot = function (req, res) {
 
     var dotValidValues = {
         id          : utils.textValid(dotValues.id),
-        layer       : utils.textValid(dotValues.layer, 50),
-        position    : dotValues.position,
-        title       : utils.textValid(dotValues.title, 50),
-        text        : utils.textValid(dotValues.text, 150),
+        layer       : utils.textValid(dotValues.layer, 50) || defaultLayer,
+        position    : dotValues.position || [0,0],
+        title       : utils.textValid(dotValues.title, 50) || defaultTitle,
+        text        : utils.textValid(dotValues.text, 150) || defaultText,
         image       : 'marker-images/' + utils.textValid(dotValues.id) + '.png',
-        icon        : utils.textValid(dotValues.icon, 20),
-        address     : utils.textValid(dotValues.address, 10),
-        street      : utils.textValid(dotValues.street, 40),
-        house       : utils.textValid(dotValues.house, 4),
-        homePhone   : utils.textValid(dotValues.homePhone, 20),
-        mobilePhone : utils.textValid(dotValues.mobilePhone, 20),
+        icon        : utils.textValid(dotValues.icon, 20) || defaultIcon,
+        address     : utils.textValid(dotValues.address, 10) || '-',
+        street      : utils.textValid(dotValues.street, 40) || '-',
+        house       : utils.textValid(dotValues.house, 4) || '-',
+        homePhone   : utils.textValid(dotValues.homePhone, 20) || 'Не указан',
+        mobilePhone : 'Не указан',
         gallery     : dotValues.gallery
     };
 
@@ -196,17 +200,17 @@ var editDot = function (req, res) {
 
         var dotValidValues = {
             id          : utils.textValid(dotValues.id),
-            layer       : utils.textValid(dotValues.layer, 50),
-            position    : dotValues.position,
-            title       : utils.textValid(dotValues.title, 50),
-            text        : utils.textValid(dotValues.text, 150),
+            layer       : utils.textValid(dotValues.layer, 50) || defaultLayer,
+            position    : dotValues.position || [0,0],
+            title       : utils.textValid(dotValues.title, 50) || defaultTitle,
+            text        : utils.textValid(dotValues.text, 150) || defaultText,
             image       : 'marker-images/' + utils.textValid(dotValues.id) + '.png',
-            icon        : utils.textValid(dotValues.icon, 20),
-            address     : utils.textValid(dotValues.address, 10),
-            street      : utils.textValid(dotValues.street, 40),
-            house       : utils.textValid(dotValues.house, 4),
-            homePhone   : utils.textValid(dotValues.homePhone, 20),
-            mobilePhone : utils.textValid(dotValues.mobilePhone, 20),
+            icon        : utils.textValid(dotValues.icon, 20) || defaultIcon,
+            address     : utils.textValid(dotValues.address, 10) || '-',
+            street      : utils.textValid(dotValues.street, 40) || '-',
+            house       : utils.textValid(dotValues.house, 4) || '-',
+            homePhone   : utils.textValid(dotValues.homePhone, 20) || 'Не указан',
+            mobilePhone : 'Не указан',
             gallery     : dotValues.gallery
         };
         console.log(dotValidValues);
@@ -351,7 +355,7 @@ var addMessage = function (req, res) {
         dotId        : utils.textValid(req.body.id),
         name         : utils.textValid(req.user.displayName),
         link         : utils.textValid(req.user.username),
-        text         : utils.textValid(req.body.text),
+        text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
         approved     : false
     };
@@ -373,7 +377,7 @@ var getMessages = function (req, res) {
 
 var editMessage = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Message.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+        Message.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
             if (err) throw err;
             res.end("Message updated on server");
         });
@@ -407,7 +411,7 @@ var addNews = function (req, res) {
         messageId    : 'm' + utils.guid(),
         name         : utils.textValid(req.user.displayName),
         link         : utils.textValid(req.user.username),
-        text         : utils.textValid(req.body.text),
+        text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
         approved     : false
     };
@@ -429,7 +433,7 @@ var getNews = function (req, res) {
 
 var editNews = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        News.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+        News.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
             if (err) throw err;
             res.end("Message updated on server");
         });
@@ -463,7 +467,7 @@ var addAds = function (req, res) {
         messageId    : 'm' + utils.guid(),
         name         : utils.textValid(req.user.displayName),
         link         : utils.textValid(req.user.username),
-        text         : utils.textValid(req.body.text),
+        text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
         approved     : false
     };
@@ -521,7 +525,7 @@ var addAnonymous = function (req, res) {
         messageId    : 'm' + utils.guid(),
         name         : utils.anonymousName(),
         link         : utils.textValid(req.user.username),
-        text         : utils.textValid(req.body.text),
+        text         : utils.textValid(req.body.text) || defaultText,
         approved     : false
     };
 
@@ -542,7 +546,7 @@ var getAnonymous = function (req, res) {
 
 var editAnonymous = function (req, res) {
     if (req.user.vkontakteId === adminId) {
-        Anonymous.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+        Anonymous.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
             if (err) throw err;
             res.end("Anonymous approved on server");
         });
