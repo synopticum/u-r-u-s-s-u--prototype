@@ -61,8 +61,11 @@ View.Map = {
         // add layers control (top right page corner)
         L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
-        map.on('load', $('#clouds').fadeOut(2000));
-//        map.on('load', View.Map.showStartScreen());
+        map.on('load', (function () {
+            $('#clouds').fadeOut(2000);
+            View.Map.showStartScreen();
+            console.log('look')
+        })());
 
         // admin controls
         $('#messagesmod').on('click', function () {
@@ -97,6 +100,20 @@ View.Map = {
             $(this._popup._wrapper).find('.dot-destroy').click(function () {
                 var view = new View.RemoveDot({ dotId: popupId });
                 $.fancybox.open(view.render());
+            });
+
+            $(this._popup._wrapper).find('.dot-play').click(function () {
+                $(this).toggleClass('active');
+                var audio = document.getElementById('dot-track');
+
+                if ($(this).attr('data-audio') === 'playing') {
+                    $(this).attr('data-audio', 'paused');
+                    audio.pause();
+                }
+                else {
+                    $(this).attr('data-audio', 'playing');
+                    audio.play();
+                }
             });
 
             $(this._popup._wrapper).find('.dot-messages').click(function () {

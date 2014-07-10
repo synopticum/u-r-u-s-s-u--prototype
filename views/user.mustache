@@ -43,6 +43,11 @@
     <!-- dot popup template -->
     <script type="text/html" id="dot-popup-template">
         <div class="dot-container" id="<%= id %>">
+            <span class="dot-play"></span>
+            <% if (track) { %>
+            <audio src="<%= track %>" id="dot-track"></audio>
+            <% } %>
+
             <div class="dot-nav">
                 <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
                         src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>

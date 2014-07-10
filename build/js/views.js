@@ -55,8 +55,11 @@ var View = {
             // add layers control (top right page corner)
             L.control.layers(staticLayers, dynamicLayers).addTo(map);
 
-            map.on('load', View.Map.hideLoadScreen);
-            map.on('load', View.Map.showStartScreen());
+            map.on('load', (function () {
+                $('#clouds').fadeOut(2000);
+                View.Map.showStartScreen();
+                $('body').addClass('user');
+            })());
 
             $('#panel').on('click', function () {
                 var view = new View.StartScreen();
@@ -87,6 +90,20 @@ var View = {
                     $.fancybox.open(view.render());
                 });
 
+                $(this._popup._wrapper).find('.dot-play').click(function () {
+                    $(this).toggleClass('active');
+                    var audio = document.getElementById('dot-track');
+
+                    if ($(this).attr('data-audio') === 'playing') {
+                        $(this).attr('data-audio', 'paused');
+                        audio.pause();
+                    }
+                    else {
+                        $(this).attr('data-audio', 'playing');
+                        audio.play();
+                    }
+                });
+
                 $(this._popup._wrapper).find('.dot-messages').click(function () {
                     var view = new View.MessagesDot({ dotId: popupId });
                     $.fancybox.open(view.render());
@@ -95,7 +112,6 @@ var View = {
                 $('.fancybox').fancybox();
             });
         },
-        hideLoadScreen: $('#clouds').fadeOut(2000),
         showStartScreen: function () {
             // show start view
             var view = new View.StartScreen();
@@ -164,6 +180,7 @@ var View = {
             _this.street = $(".input-street", _this).val();
             _this.house = $(".input-house", _this).val();
             _this.homePhone = $(".input-home-phone", _this).val();
+            _this.track = $(".input-track", _this).val();
 
             console.log(this.image);
 
@@ -181,6 +198,7 @@ var View = {
                     street: _this.street,
                     house: _this.house,
                     homePhone: _this.homePhone,
+                    track: _this.track,
                     gallery: [] || null
                 });
 

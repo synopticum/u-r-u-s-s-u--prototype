@@ -2,15 +2,16 @@ var multipart = require('connect-multiparty'),
     mmw = multipart({ uploadDir: 'public/tmp' }),
     passport = require('passport');
 
-var auth      = require('../modules/auth');
-var dot       = require('../modules/dot');
-var upload    = require('../modules/upload');
-var messages  = require('../modules/messages');
-var news      = require('../modules/news');
-var ads       = require('../modules/ads');
-var anonymous = require('../modules/anonymous');
-var lead      = require('../modules/lead');
-var claims    = require('../modules/claims');
+// modules
+var auth      = require('../modules/auth'),
+    dot       = require('../modules/dot'),
+    upload    = require('../modules/upload'),
+    messages  = require('../modules/messages'),
+    news      = require('../modules/news'),
+    ads       = require('../modules/ads'),
+    anonymous = require('../modules/anonymous'),
+    lead      = require('../modules/lead'),
+    claims    = require('../modules/claims');
 
 module.exports = function (app) {
     app.post('/uploads', mmw, upload.singleImage);

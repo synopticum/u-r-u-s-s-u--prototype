@@ -159,11 +159,27 @@
   background: url("../images/remove.png") no-repeat;
 }
 
-.leaflet-container a.leaflet-popup-close-button, .dot-edit, .dot-destroy {
+.dot-play {
+  cursor: pointer;
+  position: absolute;
+  right: 70px;
+  top: 11px;
+  width: 14px;
+  height: 14px;
+  background: url("../images/play.png") no-repeat;
+}
+.dot-play.active {
+  background-position: 0 -14px;
+}
+.user .dot-play {
+  right: 30px;
+}
+
+.leaflet-container a.leaflet-popup-close-button, .dot-edit, .dot-destroy, .dot-play {
   transition: .3s;
 }
 
-.leaflet-container a.leaflet-popup-close-button:hover, .dot-edit:hover, .dot-destroy:hover {
+.leaflet-container a.leaflet-popup-close-button:hover, .dot-edit:hover, .dot-destroy:hover, .dot-play:hover {
   opacity: .5;
 }
 
@@ -268,6 +284,8 @@ a {
   background: #F9F9F9;
   color: #555;
 }
+#startScreen .tabs li span:active {
+}
 #startScreen .tabs li:last-child span {
   border-right: 0;
 }
@@ -301,7 +319,6 @@ a {
   background: -ms-linear-gradient(top,  #9a142e 0%,#e50000 100%);
   background: linear-gradient(to bottom,  #9a142e 0%,#e50000 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9a142e', endColorstr='#e50000',GradientType=0 );
-  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .tabs-wrapper {
@@ -324,7 +341,7 @@ a {
   height: 48px;
 }
 #messagesmod {
-  left: 80px;
+  left: 140px;
   background: url("../images/messages.png") no-repeat;
 }
 #panel {

@@ -54,9 +54,9 @@ var DotSchema = new Schema({
         type : String,
         required : true
     },
-    mobilePhone : {
+    track : {
         type : String,
-        required : true
+        required : false
     },
     gallery : {
         type : Array,
@@ -343,11 +343,11 @@ var ClaimsSchema = new Schema({
     }
 });
 
-exports.Dot = mongoose.model('Dot', DotSchema);
-exports.User = mongoose.model('User', UserSchema);
-exports.Message = mongoose.model('Message', MessageSchema);
-exports.News = mongoose.model('News', NewsSchema);
-exports.Ads = mongoose.model('Ads', AdsSchema);
+exports.Dot       = mongoose.model('Dot', DotSchema);
+exports.User      = mongoose.model('User', UserSchema);
+exports.Message   = mongoose.model('Message', MessageSchema);
+exports.News      = mongoose.model('News', NewsSchema);
+exports.Ads       = mongoose.model('Ads', AdsSchema);
 exports.Anonymous = mongoose.model('Anonymous', AnonymousSchema);
-exports.Lead = mongoose.model('Lead', LeadSchema);
-exports.Claims = mongoose.model('Claims', ClaimsSchema);
+exports.Lead      = mongoose.model('Lead', LeadSchema);
+exports.Claims    = mongoose.model('Claims', ClaimsSchema);

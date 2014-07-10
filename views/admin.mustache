@@ -45,6 +45,10 @@
     <div class="dot-container" id="<%= id %>">
         <span class="dot-edit"></span>
         <span class="dot-destroy"></span>
+        <span class="dot-play"></span>
+        <% if (track) { %>
+            <audio src="<%= track %>" id="dot-track"></audio>
+        <% } %>
 
         <div class="dot-nav">
             <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
@@ -117,7 +121,8 @@
             <td><input type="text" class="input-house popup-textbox" maxlength="4" placeholder="Дом"/></td>
         </tr>
         <tr>
-            <td colspan="3"><input type="text" class="input-home-phone popup-textbox" maxlength="50" placeholder="Телефон"/></td>
+            <td colspan="2"><input type="text" class="input-home-phone popup-textbox" maxlength="50" placeholder="Телефон"/></td>
+            <td><input type="text" class="input-track popup-textbox" placeholder="Трек"/></td>
         </tr>
         <tr>
             <td class="required">
