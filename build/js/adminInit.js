@@ -130,7 +130,8 @@ View.EditDot = Backbone.View.extend({
     events: {
         'click .input-submit': 'submit',
         'click .input-marker': 'select-marker-open',
-        'click #selectMarkerPopup input': 'select-marker-close'
+        'click #selectMarkerPopup input': 'select-marker-close',
+        'change .input-file': 'file'
     },
     'select-marker-open': function (e) {
         $('#selectMarkerPopup').fadeIn('fast');
@@ -148,7 +149,7 @@ View.EditDot = Backbone.View.extend({
         _this.layer = $(".input-layer", _this).val();
         _this.title = $(".input-title", _this).val();
         _this.text = $(".input-short-text", _this).val();
-        _this.image = $(".input-image", _this).val();
+        _this.image = this.image;
         _this.icon = $("input[name='markerset']:checked", _this).val();
         _this.address = $(".input-address", _this).val();
         _this.street = $(".input-street", _this).val();
@@ -176,14 +177,8 @@ View.EditDot = Backbone.View.extend({
         });
 
         if (BDots.records) {
-
             // create FormData Object with files/json
             var fd = new FormData();
-
-            var file_data = $('.input-image')[0].files;
-            for (var i = 0; i < file_data.length; i++) {
-                fd.append("markerimage", file_data[i]);
-            }
 
             var gallery_data = $('.input-gallery')[0].files;
             for (var j = 0; j < gallery_data.length; j++) {
@@ -221,7 +216,8 @@ View.EditDot = Backbone.View.extend({
 
         $.fancybox.close(_this);
         helper.status('Точка изменена');
-    }
+    },
+    'file': helper.markerImageUpload
 });
 
 View.RemoveDot = Backbone.View.extend({

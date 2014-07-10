@@ -46,8 +46,46 @@ var helper = {
             contentType: false,
             processData: false,
             type: 'post',
-            success: function (e) { self.image = e; $('#fileupload').fadeOut(); },
-            error:   function (e) { alert('File upload error!'); $('#fileupload').fadeOut(); }
+            success: function (e) {
+                self.image = e;
+                $('#fileupload').fadeOut();
+            },
+            error:   function (e) {
+                alert(e.responseText);
+                $('#fileupload').fadeOut();
+                $('.input-file').val('');
+            }
+        });
+    },
+    markerImageUpload: function () {
+        var _this = $(this.$el);
+        $('#fileupload').fadeIn();
+
+        // create FormData Object with files/json
+        var fd = new FormData();
+
+        var file_data = $('.input-file', _this)[0].files;
+
+        for (var i = 0; i < file_data.length; i++) {
+            fd.append("image", file_data[i]);
+        }
+
+        var self = this;
+        $.ajax({
+            url: '/uploadmarker',
+            data: fd,
+            contentType: false,
+            processData: false,
+            type: 'post',
+            success: function (e) {
+                self.image = e;
+                $('#fileupload').fadeOut();
+            },
+            error:   function (e) {
+                alert(e.responseText);
+                $('#fileupload').fadeOut();
+                $('.input-file').val('');
+            }
         });
     }
 };

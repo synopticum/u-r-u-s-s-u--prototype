@@ -83,15 +83,8 @@
     <script type="text/html" id="adddot-popup-template">
         <table>
             <tr>
-                <td>
+                <td colspan="3">
                     <input type="text" class="input-title popup-textbox" maxlength="50" placeholder="Заголовок метки"/>
-                </td>
-                <td colspan="2">
-                    <select class="input-layer selectbox">
-                        <option value="usermain">Общая карта</option>
-                        <option value="userplaces">Места</option>
-                        <option value="userevents">События</option>
-                    </select>
                 </td>
             </tr>
             <tr>
@@ -102,7 +95,6 @@
             <tr>
                 <td>
                     <select class="input-address selectbox">
-                        <option value="">?</option>
                         <option value="ул.">ул.</option>
                         <option value="пер.">пер.</option>
                     </select>
@@ -111,14 +103,20 @@
                 <td><input type="text" class="input-house popup-textbox" maxlength="4" placeholder="Дом"/></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" class="input-home-phone popup-textbox" maxlength="50" placeholder="Телефон"/></td>
+                <td><input type="text" class="input-home-phone popup-textbox" maxlength="50" placeholder="Телефон"/></td>
+                <td colspan="2">
+                    <select class="input-layer selectbox">
+                        <option value="usermain">Общая карта</option>
+                        <option value="userplaces">Места</option>
+                        <option value="userevents">События</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td class="required">
                     Картинка для точки
-                    <mark>(80x80)</mark>
-                    <span class="req">*</span>:<br>
-                    <input type="file" name="image" class="input-image"/>
+                    <mark>(квадратная)</mark>:<br>
+                    <input type="file" name="image" class="input-file"/>
                 </td>
                 <td colspan="2" class="required">
                     Галерея изображений:<br>

@@ -1,5 +1,6 @@
 var multipart = require('connect-multiparty'),
     fs = require('fs'),
+    gm = require('gm'),
     multipartMiddleware = multipart( { uploadDir: 'public/tmp' }),
     passport = require('passport'),
     utils = require('../libs/util');
@@ -16,12 +17,14 @@ var adminId = '257378450',
     defaultTitle = 'Это бывший заголовок',
     defaultIcon = 'green';
 
+
 module.exports = function (app) {
     app.get('/', logged);
     app.get('/join', join);
 
     // upload
     app.post('/uploads', multipartMiddleware, uploadFiles);
+    app.post('/uploadmarker', multipartMiddleware, uploadMarkerImage);
 
     // init, send all dots
     app.get('/dots', sendDots);
@@ -112,7 +115,7 @@ var addDot = function (req, res) {
         position    : dotValues.position || [0,0],
         title       : utils.textValid(dotValues.title, 50) || defaultTitle,
         text        : utils.textValid(dotValues.text, 150) || defaultText,
-        image       : 'marker-images/' + utils.textValid(dotValues.id) + '.png',
+        image       : 'marker-images/' + dotValues.image,
         icon        : utils.textValid(dotValues.icon, 20) || defaultIcon,
         address     : utils.textValid(dotValues.address, 10) || '-',
         street      : utils.textValid(dotValues.street, 40) || '-',
@@ -125,29 +128,10 @@ var addDot = function (req, res) {
     // save in db
     var dotValid = new Dot(dotValidValues);
 
+    dotValidValues.image = dotValues.image || 'images/q.gif';
+
     // create image
     if (!utils.isEmpty(req.files)) {
-        // add image
-        if (req.files.markerimage) {
-            var tmpFilePath = req.files.markerimage.ws.path;
-
-            fs.readFile(tmpFilePath, function (err, result) {
-                if (err) throw err;
-
-                fs.writeFile('public/marker-images/' + dotValidValues.id + '.png', result, function (err) {
-                    if (err) throw err;
-
-                    fs.unlink(tmpFilePath, function (err) {
-                        if (err) throw err;
-                        console.log('Temporary marker file deleted');
-                    })
-                });
-            });
-        }
-        else {
-            dotValidValues.image = 'images/q.gif';
-        }
-
         // create gallery dir
         var galleryPath = 'public/galleries/' + dotValidValues.id;
         utils.mkdir(galleryPath);
@@ -207,7 +191,6 @@ var editDot = function (req, res) {
             position    : dotValues.position || [0,0],
             title       : utils.textValid(dotValues.title, 50) || defaultTitle,
             text        : utils.textValid(dotValues.text, 150) || defaultText,
-            image       : 'marker-images/' + utils.textValid(dotValues.id) + '.png',
             icon        : utils.textValid(dotValues.icon, 20) || defaultIcon,
             address     : utils.textValid(dotValues.address, 10) || '-',
             street      : utils.textValid(dotValues.street, 40) || '-',
@@ -216,7 +199,10 @@ var editDot = function (req, res) {
             mobilePhone : 'Не указан',
             gallery     : dotValues.gallery
         };
-        console.log(dotValidValues);
+
+        if (dotValues.image) {
+            dotValidValues.image = 'marker-images/' + dotValues.image;
+        }
 
         // check files exists
         if (!utils.isEmpty(req.files)) {
@@ -298,7 +284,7 @@ var editDot = function (req, res) {
         }
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 
@@ -343,7 +329,7 @@ var removeDot = function (req, res) {
             });
         }
         else {
-            res.end("Access denied");
+            res.send(403, "Access denied");
             console.log("User access error");
         }
     });
@@ -391,7 +377,7 @@ var editMessage = function (req, res) {
         console.log("Message updated on server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -406,7 +392,7 @@ var removeMessage = function (req, res) {
         console.log("Message removed from server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -448,7 +434,7 @@ var editNews = function (req, res) {
         console.log("Message updated on server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -463,7 +449,7 @@ var removeNews = function (req, res) {
         console.log("Message removed from server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -507,7 +493,7 @@ var editAds = function (req, res) {
         console.log("Ad approved on server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -522,7 +508,7 @@ var removeAds = function (req, res) {
         console.log("Ad removed from server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -563,7 +549,7 @@ var editAnonymous = function (req, res) {
         console.log("Anonymous approved on server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -578,7 +564,7 @@ var removeAnonymous = function (req, res) {
         console.log("Anonymous removed from server");
     }
     else {
-        res.end("Access denied");
+        res.send(403, "Access denied");
         console.log("User access error");
     }
 };
@@ -586,25 +572,47 @@ var removeAnonymous = function (req, res) {
 var uploadFiles = function (req, res) {
     if (!utils.isEmpty(req.files)) {
         if (req.files.image) {
-            var tmpFilePath = req.files.image.ws.path;
-
-            fs.readFile(tmpFilePath, function (err, result) {
-                if (err) throw err;
-
+            if (req.files.image.type === 'image/jpeg') {
+                var tmpFilePath = req.files.image.ws.path;
                 var fileName = utils.makeFileName() + '.jpg';
 
-                fs.writeFile('public/msgimages/' + fileName, result, function (err) {
-                    if (err) throw err;
-
-                    fs.unlink(tmpFilePath, function (err) {
+                gm(tmpFilePath)
+                    .options({imageMagick: true})
+                    .resize(1280, 800)
+                    .autoOrient()
+                    .write('public/msgimages/' + fileName, function (err) {
                         if (err) throw err;
-                        console.log('Temporary msg image file deleted');
+                        console.log('marker image converted');
                         res.end(fileName);
-                    })
                 });
-            });
+            }
+            else res.send(403, 'Принимаются только ихображения в формате JPG.');
         }
-        else res.end('Accept file error');
+        else res.send(403, 'Accept file error');
     }
-    else res.end('Accept file error');
+    else res.send(403, 'Accept file error');
+};
+
+var uploadMarkerImage = function (req, res) {
+    if (!utils.isEmpty(req.files)) {
+        if (req.files.image) {
+            if (req.files.image.type === 'image/jpeg') {
+                var tmpFilePath = req.files.image.ws.path;
+                var fileName = utils.makeFileName() + '.jpg';
+
+                gm(tmpFilePath)
+                    .options({imageMagick: true})
+                    .resize(80, 80)
+                    .autoOrient()
+                    .write('public/marker-images/' + fileName, function (err) {
+                        if (err) throw err;
+                        console.log('marker image converted');
+                        res.end(fileName);
+                    });
+            }
+            else res.send(403, 'Принимаются только изображения в формате JPG.');
+        }
+        else res.send(403, 'Accept file error');
+    }
+    else res.send(403, 'Accept file error');
 };
