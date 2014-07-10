@@ -132,7 +132,7 @@ var MessageSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("DD.MM.YYYY")
+        default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
     }
 });
@@ -174,7 +174,7 @@ var NewsSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("DD.MM.YYYY")
+        default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
     }
 });
@@ -216,7 +216,7 @@ var AdsSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("DD.MM.YYYY")
+        default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
     }
 });
@@ -254,7 +254,91 @@ var AnonymousSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("DD.MM.YYYY")
+        default : moment(new Date()).format("DD.MM.YYYY"),
+        required: true
+    }
+});
+
+// Lead Screen
+var LeadSchema = new Schema({
+    messageId: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    name: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    link: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    text : {
+        type: String,
+        unique: false,
+        required: true
+    },
+    approved : {
+        type: Boolean,
+        unique: false,
+        required: true
+    },
+    avatar : {
+        type: String,
+        unique: false
+    },
+    image : {
+        type: String,
+        unique: false
+    },
+    created : {
+        type : String,
+        default : moment(new Date()).format("DD.MM.YYYY"),
+        required: true
+    }
+});
+
+// Claims Screen
+var ClaimsSchema = new Schema({
+    messageId: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    name: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    link: {
+        type: String,
+        unique: false,
+        required: true
+    },
+    text : {
+        type: String,
+        unique: false,
+        required: true
+    },
+    approved : {
+        type: Boolean,
+        unique: false,
+        required: true
+    },
+    avatar : {
+        type: String,
+        unique: false
+    },
+    image : {
+        type: String,
+        unique: false
+    },
+    created : {
+        type : String,
+        default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
     }
 });
@@ -265,3 +349,5 @@ exports.Message = mongoose.model('Message', MessageSchema);
 exports.News = mongoose.model('News', NewsSchema);
 exports.Ads = mongoose.model('Ads', AdsSchema);
 exports.Anonymous = mongoose.model('Anonymous', AnonymousSchema);
+exports.Lead = mongoose.model('Lead', LeadSchema);
+exports.Claims = mongoose.model('Claims', ClaimsSchema);

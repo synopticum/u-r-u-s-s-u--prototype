@@ -10,6 +10,8 @@ var Message  = require('../models').Message;
 var News  = require('../models').News;
 var Ads  = require('../models').Ads;
 var Anonymous  = require('../models').Anonymous;
+var Lead  = require('../models').Lead;
+var Claims  = require('../models').Claims;
 
 var adminId = '257378450',
     defaultText = 'Автор поленился набрать текст',
@@ -57,6 +59,18 @@ module.exports = function (app) {
     app.post('/anonymous', multipartMiddleware, addAnonymous);
     app.put('/anonymous', multipartMiddleware, editAnonymous);
     app.delete('/anonymous', multipartMiddleware, removeAnonymous);
+
+    // lead
+    app.get('/lead', multipartMiddleware, getLead);
+    app.post('/lead', multipartMiddleware, addLead);
+    app.put('/lead', multipartMiddleware, editLead);
+    app.delete('/lead', multipartMiddleware, removeLead);
+
+    // claims
+    app.get('/claims', multipartMiddleware, getClaims);
+    app.post('/claims', multipartMiddleware, addClaims);
+    app.put('/claims', multipartMiddleware, editClaims);
+    app.delete('/claims', multipartMiddleware, removeClaims);
 
     // auth
     app.get('/auth',
@@ -569,6 +583,125 @@ var removeAnonymous = function (req, res) {
     }
 };
 
+// lead
+var addLead = function (req, res) {
+    var message = {
+        messageId    : 'm' + utils.guid(),
+        name         : utils.textValid(req.user.displayName),
+        link         : utils.textValid(req.user.username),
+        text         : utils.textValid(req.body.text) || defaultText,
+        avatar       : utils.textValid(req.user.avatar),
+        image        : req.body.image,
+        approved     : false
+    };
+
+    var messageValid = new Lead(message);
+    console.log(messageValid);
+
+    messageValid.save(function (err) {
+        if (err) throw err;
+        res.send('Lead saved');
+    });
+};
+
+var getLead = function (req, res) {
+    Lead.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+};
+
+var editLead = function (req, res) {
+    if (req.user.vkontakteId === adminId) {
+
+        Lead.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+            if (err) throw err;
+            res.end("Lead approved on server");
+        });
+
+        console.log("Lead approved on server");
+    }
+    else {
+        res.send(403, "Access denied");
+        console.log("User access error");
+    }
+};
+
+var removeLead = function (req, res) {
+    if (req.user.vkontakteId === adminId) {
+        Lead.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
+            if (err) throw err;
+            res.end("Lead removed from server");
+        });
+
+        console.log("Lead removed from server");
+    }
+    else {
+        res.send(403, "Access denied");
+        console.log("User access error");
+    }
+};
+
+// claims
+var addClaims = function (req, res) {
+    var message = {
+        messageId    : 'm' + utils.guid(),
+        name         : utils.textValid(req.user.displayName),
+        link         : utils.textValid(req.user.username),
+        text         : utils.textValid(req.body.text) || defaultText,
+        avatar       : utils.textValid(req.user.avatar),
+        image        : req.body.image,
+        approved     : false
+    };
+
+    var messageValid = new Claims(message);
+    console.log(messageValid);
+
+    messageValid.save(function (err) {
+        if (err) throw err;
+        res.send('Claims saved');
+    });
+};
+
+var getClaims = function (req, res) {
+    Claims.find(function (err, result) {
+        if (err) throw err;
+        res.end(JSON.stringify(result));
+    });
+};
+
+var editClaims = function (req, res) {
+    if (req.user.vkontakteId === adminId) {
+
+        Claims.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+            if (err) throw err;
+            res.end("Claims approved on server");
+        });
+
+        console.log("Claims approved on server");
+    }
+    else {
+        res.send(403, "Access denied");
+        console.log("User access error");
+    }
+};
+
+var removeClaims = function (req, res) {
+    if (req.user.vkontakteId === adminId) {
+        Claims.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
+            if (err) throw err;
+            res.end("Claims removed from server");
+        });
+
+        console.log("Claims removed from server");
+    }
+    else {
+        res.send(403, "Access denied");
+        console.log("User access error");
+    }
+};
+
+// upload
 var uploadFiles = function (req, res) {
     if (!utils.isEmpty(req.files)) {
         if (req.files.image) {

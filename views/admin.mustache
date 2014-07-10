@@ -366,6 +366,8 @@
             <ul>
                 <li id="tab-news"><span>Новости</span></li>
                 <li id="tab-ads"><span>Объявления</span></li>
+                <li id="tab-lead"><span>Инициативы</span></li>
+                <li id="tab-claims"><span class="claims">Жалобы</span></li>
                 <li><span>Общение</span></li>
                 <li id="tab-anonymous"><span class="anonymous">&nbsp;</span></li>
             </ul>
@@ -511,6 +513,102 @@
     <div class="dot-messages-send">
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введи сюда текст послания"></textarea>
+        <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="file" name="" class="input-file"/>
+    </div>
+</script>
+
+<!-- lead template -->
+<script type="text/html" id="lead-template">
+    <div class="dot-messages-wrapper">
+        <div class="dot-messages-list">
+            <% if (messages) { _.each(messages, function (message) { %>
+            <div class="item" id="<%= message.messageId %>">
+                <div class="control">
+                    <% if (message.approved === false) { %>
+                    <div class="approve"
+                         onclick="$.ajax({ url: '/lead', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %> .approve').fadeOut() })"></div>
+                    <% }; %>
+                    <div class="remove"
+                         onclick="$.ajax({ url: '/lead', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                </div>
+                <div class="view">
+                    <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
+                    <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
+                    <span class="date"><%= message.created %></span>
+                </div>
+
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>>
+                <%= message.text %>
+
+                <% if (message.image) { %>
+                <div class="dot-messages-image" contenteditable="false">
+                    <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                </div>
+                <% }; %>
+            </div>
+        </div>
+        <% }); }; %>
+    </div>
+
+    <div class="rules">Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+        Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo;
+            и &laquo;ться&raquo;</a>.
+        Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+    </div>
+    </div>
+
+    <div class="dot-messages-send">
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
+                  placeholder="Введите сюда текст объявления"></textarea>
+        <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="file" name="" class="input-file"/>
+    </div>
+</script>
+
+<!-- claims template -->
+<script type="text/html" id="claims-template">
+    <div class="dot-messages-wrapper">
+        <div class="dot-messages-list">
+            <% if (messages) { _.each(messages, function (message) { %>
+            <div class="item" id="<%= message.messageId %>">
+                <div class="control">
+                    <% if (message.approved === false) { %>
+                    <div class="approve"
+                         onclick="$.ajax({ url: '/claims', method: 'put', data : { id: '<%= message.messageId %>', text : $('#<%= message.messageId %> .description').text() }}).done(function () { $('#<%= message.messageId %> .approve').fadeOut() })"></div>
+                    <% }; %>
+                    <div class="remove"
+                         onclick="$.ajax({ url: '/claims', method: 'delete', data : { id: '<%= message.messageId %>' }}).done(function () { $('#<%= message.messageId %>').fadeOut() })"></div>
+                </div>
+                <div class="view">
+                    <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
+                    <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
+                    <span class="date"><%= message.created %></span>
+                </div>
+
+                <div class="description" <% if (message.approved === false) { %>contenteditable="true"<% }; %>>
+                <%= message.text %>
+
+                <% if (message.image) { %>
+                <div class="dot-messages-image" contenteditable="false">
+                    <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                </div>
+                <% }; %>
+            </div>
+        </div>
+        <% }); }; %>
+    </div>
+
+    <div class="rules">Предложения начинаются с Большой буквы и разделяются п р о б е л а м и.<br>
+        Надевают одежду, одевают Надежду. <a href="http://tsya.ru/" target="_blank">&laquo;Тся&raquo;
+            и &laquo;ться&raquo;</a>.
+        Только сегодня &laquo;-то&raquo;, &laquo;-либо&raquo;, &laquo;-нибудь&raquo; и прекрасная &laquo;-кое&raquo;.
+    </div>
+    </div>
+
+    <div class="dot-messages-send">
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
+                  placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
         <input type="file" name="" class="input-file"/>
     </div>

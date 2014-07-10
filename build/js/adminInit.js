@@ -441,6 +441,84 @@ View.AnonymousScreen = Backbone.View.extend({
     'file': helper.singleImageUpload
 });
 
+View.LeadScreen = Backbone.View.extend({
+    messages: {},
+    initialize: function () {
+        var leadFound = BLead.records;
+        leadFound = JSON.stringify(leadFound);
+        this.messages = JSON.parse(leadFound);
+    },
+    id: 'lead-screen',
+    template: _.template($('#lead-template').html()),
+    render: function () {
+        return this.$el.html(this.template(this));
+    },
+    events: {
+        'click .input-submit': 'submit',
+        'change .input-file': 'file'
+    },
+    'submit': function () {
+        var _this = $(this.$el);
+
+        var leadItem = {
+            id: this.dotId,
+            text: $('.popup-textarea', _this).val(),
+            image: this.image
+        };
+
+        console.log('all ok');
+        $.post('/lead', leadItem, { success: function () {
+            console.log('news item added')
+        }, error: function (res) {
+            console.log(res)
+        } });
+
+        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+        helper.status('Сообщение отправлено');
+    },
+    'file': helper.singleImageUpload
+});
+
+View.ClaimsScreen = Backbone.View.extend({
+    messages: {},
+    initialize: function () {
+        var claimsFound = BClaims.records;
+        claimsFound = JSON.stringify(claimsFound);
+        this.messages = JSON.parse(claimsFound);
+    },
+    id: 'claims-screen',
+    template: _.template($('#claims-template').html()),
+    render: function () {
+        return this.$el.html(this.template(this));
+    },
+    events: {
+        'click .input-submit': 'submit',
+        'change .input-file': 'file'
+    },
+    'submit': function () {
+        var _this = $(this.$el);
+
+        var claimsItem = {
+            id: this.dotId,
+            text: $('.popup-textarea', _this).val(),
+            image: this.image
+        };
+
+        console.log('all ok');
+        $.post('/claims', claimsItem, { success: function () {
+            console.log('news item added')
+        }, error: function (res) {
+            console.log(res)
+        } });
+
+        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+        helper.status('Жалоба отправлена');
+    },
+    'file': helper.singleImageUpload
+});
+
 // get data
 $.getJSON("/dots", function (data) {
     BDots = new BDotsModel(data);
@@ -461,4 +539,12 @@ $.getJSON("/ads", function (data) {
 
 $.getJSON("/anonymous", function (data) {
     BAnonymous = new BAnonymousModel(data);
+});
+
+$.getJSON("/lead", function (data) {
+    BLead = new BLeadModel(data);
+});
+
+$.getJSON("/claims", function (data) {
+    BClaims = new BClaimsModel(data);
 });

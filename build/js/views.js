@@ -383,6 +383,84 @@ var View = {
         'file': helper.singleImageUpload
     }),
 
+    LeadScreen: Backbone.View.extend({
+        messages: {},
+        initialize: function () {
+            var leadFound = BLead.records.where({ approved: true });
+            leadFound = JSON.stringify(leadFound);
+            this.messages = JSON.parse(leadFound);
+        },
+        id: 'lead-screen',
+        template: _.template($('#lead-template').html()),
+        render: function () {
+            return this.$el.html(this.template(this));
+        },
+        events: {
+            'click .input-submit': 'submit',
+            'change .input-file': 'file'
+        },
+        'submit': function () {
+            var _this = $(this.$el);
+
+            var leadItem = {
+                id: this.dotId,
+                text: $('.popup-textarea', _this).val(),
+                image: this.image
+            };
+
+            console.log('all ok');
+            $.post('/lead', leadItem, { success: function () {
+                console.log('news item added')
+            }, error: function (res) {
+                console.log(res)
+            } });
+
+            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.status('Сообщение отправлено и ожидает проверки');
+        },
+        'file': helper.singleImageUpload
+    }),
+
+    ClaimsScreen: Backbone.View.extend({
+        messages: {},
+        initialize: function () {
+            var claimsFound = BClaims.records.where({ approved: true });
+            claimsFound = JSON.stringify(claimsFound);
+            this.messages = JSON.parse(claimsFound);
+        },
+        id: 'claims-screen',
+        template: _.template($('#claims-template').html()),
+        render: function () {
+            return this.$el.html(this.template(this));
+        },
+        events: {
+            'click .input-submit': 'submit',
+            'change .input-file': 'file'
+        },
+        'submit': function () {
+            var _this = $(this.$el);
+
+            var claimsItem = {
+                id: this.dotId,
+                text: $('.popup-textarea', _this).val(),
+                image: this.image
+            };
+
+            console.log('all ok');
+            $.post('/claims', claimsItem, { success: function () {
+                console.log('news item added')
+            }, error: function (res) {
+                console.log(res)
+            } });
+
+            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
+            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.status('Жалоба отправлена и ожидает проверки');
+        },
+        'file': helper.singleImageUpload
+    }),
+
     StartScreen: Backbone.View.extend({
         id: 'startscreen-popup',
         initialize: function () {
@@ -395,7 +473,9 @@ var View = {
         events: {
             'click #tab-news span': 'showNews',
             'click #tab-ads span': 'showAds',
-            'click #tab-anonymous span': 'showAnonymous'
+            'click #tab-anonymous span': 'showAnonymous',
+            'click #tab-lead span': 'showLead',
+            'click #tab-claims span': 'showClaims'
         },
         'showNews': function () {
             var view = new View.NewsScreen();
@@ -420,6 +500,22 @@ var View = {
             $('.fancybox-skin, .tabs').css('border-color', '#000');
             $('.tabs li').removeClass('active');
             $('#tab-anonymous').addClass('active');
+        },
+        'showLead': function () {
+            var view = new View.LeadScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-lead').addClass('active');
+        },
+        'showClaims': function () {
+            var view = new View.ClaimsScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-claims').addClass('active');
         }
     })
 };
