@@ -86,7 +86,7 @@ var UserSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("MM.DD.YYYY")
+        default : moment(new Date()).format("DD.MM.YYYY")
     }
 });
 
@@ -132,7 +132,7 @@ var MessageSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("MM.DD.YYYY"),
+        default : moment(new Date()).format("DD.MM.YYYY")
         required: true
     }
 });
@@ -174,7 +174,7 @@ var NewsSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("MM.DD.YYYY"),
+        default : moment(new Date()).format("DD.MM.YYYY")
         required: true
     }
 });
@@ -216,7 +216,7 @@ var AdsSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("MM.DD.YYYY"),
+        default : moment(new Date()).format("DD.MM.YYYY")
         required: true
     }
 });
@@ -254,7 +254,7 @@ var AnonymousSchema = new Schema({
     },
     created : {
         type : String,
-        default : moment(new Date()).format("MM.DD.YYYY"),
+        default : moment(new Date()).format("DD.MM.YYYY")
         required: true
     }
 });
