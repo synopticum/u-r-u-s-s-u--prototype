@@ -147,7 +147,8 @@ var View = {
             'click .input-submit': 'submit',
             'click .input-marker': 'select-marker-open',
             'click #selectMarkerPopup input': 'select-marker-close',
-            'change .input-file': 'file'
+            'change .input-file': 'file',
+            'change .input-gallery': 'gallery'
         },
         'select-marker-open': function (e) {
             $('#selectMarkerPopup').fadeIn('fast');
@@ -181,6 +182,7 @@ var View = {
             _this.house = $(".input-house", _this).val();
             _this.homePhone = $(".input-home-phone", _this).val();
             _this.track = $(".input-track", _this).val();
+            _this.gallery = this.gallery;
 
             console.log(this.image);
 
@@ -199,7 +201,7 @@ var View = {
                     house: _this.house,
                     homePhone: _this.homePhone,
                     track: _this.track,
-                    gallery: [] || null
+                    gallery: _this.gallery
                 });
 
                 // create FormData Object with files/json
@@ -242,7 +244,8 @@ var View = {
             $.fancybox.close(_this);
             helper.status('Точка добавлена');
         },
-        'file': helper.markerImageUpload
+        'file': helper.markerImageUpload,
+        'gallery': helper.galleryUpload
     }),
 
     MessagesDot: Backbone.View.extend({

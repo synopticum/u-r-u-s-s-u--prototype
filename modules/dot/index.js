@@ -10,7 +10,10 @@ var adminId = '257378450',
 
 var send = function (req, res) {
     Dot.find(function (err, result) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Dots Send Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -41,58 +44,6 @@ var add = function (req, res) {
 
     dotValidValues.image = dotValues.image || 'images/q.gif';
 
-    // create image
-    if (!utils.isEmpty(req.files)) {
-        // create gallery dir
-        var galleryPath = 'public/galleries/' + dotValidValues.id;
-        utils.mkdir(galleryPath);
-
-        delete req.files.markerimage;
-
-        // create gallery files
-        for (var galleryImage in req.files) {
-            var tmpGalleryPath = req.files[galleryImage].ws.path;
-            var update = { gallery: [] };
-
-            fs.readFile(tmpGalleryPath, function (err, result) {
-                var imageName = (Math.random()*31337 | 0) + '.jpg';
-                var imagePath = 'galleries/' + dotValidValues.id + '/' + imageName;
-
-                update.gallery.push(imagePath);
-
-                fs.writeFile('public/galleries/' + dotValidValues.id + '/' + imageName, result, function (err) {
-                    if (err) {
-                        utils.errorHandler(err, 'Dot Add Error (gallery file write)');
-                    }
-
-                    Dot.findOneAndUpdate({id: dotValidValues.id}, update, function (err) {
-                        if (err) {
-                            utils.errorHandler(err, 'Dot Gallery Update Error');
-                            res.send(400, 'Bad Request');
-                        }
-                    });
-                });
-            });
-
-            fs.unlink(tmpGalleryPath, function (err) {
-                if (err) {
-                    utils.errorHandler(err, 'Gallery File Unlink Error');
-                }
-                console.log('Temporary gallery image deleted');
-            })
-        }
-
-        dotValid.save(function (err, dot) {
-            if (err) {
-                utils.errorHandler(err, 'Dot Add Error (with files)');
-                res.send(400, 'Bad Request');
-            }
-            res.send(JSON.stringify(dot));
-        });
-    }
-    else {
-        dotValid.image = 'images/q.gif';
-
         dotValid.save(function (err, dot) {
             if (err) {
                 utils.errorHandler(err, 'Dot Add Error (without files)');
@@ -100,7 +51,6 @@ var add = function (req, res) {
             }
             res.end(JSON.stringify(dot));
         });
-    }
 
     console.log("Dot added on server");
 };
@@ -131,34 +81,9 @@ var edit = function (req, res) {
         // check files exists
         if (!utils.isEmpty(req.files)) {
             console.log('Dot update have files');
-            // add image
-            if (req.files.markerimage) {
-                var tmpFilePath = req.files.markerimage.ws.path;
-
-                fs.readFile(tmpFilePath, function (err, result) {
-                    if (err) {
-                        utils.errorHandler(err, 'Dot Edit Error (read marker file)');
-                    }
-
-                    fs.writeFile('public/marker-images/' + dotValidValues.id + '.png', result, function (err) {
-                        if (err) {
-                            utils.errorHandler(err, 'Dot Edit Error (marker file write)');
-                        }
-
-                        fs.unlink(tmpFilePath, function (err) {
-                            if (err) {
-                                utils.errorHandler(err, 'Dot Edit Error (marker file unlink)');
-                            }
-                            console.log('tmp file deleted');
-                        })
-                    });
-                });
-            }
 
             // create gallery files
             var galleryPath = 'public/galleries/' + dotValidValues.id;
-
-            delete req.files.markerimage;
 
             fs.stat(galleryPath, function (err) {
                 if (err) {

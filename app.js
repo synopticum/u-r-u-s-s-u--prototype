@@ -20,8 +20,7 @@ serverDomain.run(function () {
 
     // Start the server
     server.listen(opts.port, function () {
-        console.log("Express server listening on port %d in %s mode",
-            opts.port, app.settings.env);
+        console.log("Express server listening on port %d in %s mode", opts.port, app.settings.env);
     });
 });
 

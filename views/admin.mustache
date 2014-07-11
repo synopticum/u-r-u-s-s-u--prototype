@@ -51,7 +51,7 @@
         <% } %>
 
         <div class="dot-nav">
-            <a href="<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
+            <a href="/galleries/<%= gallery[0] %>" class="fancybox" data-fancybox-group="<%= id %>"><img
                     src="<%= image %>" width="80" height="80" alt="" class="dot-image"/></a>
         </div>
 
@@ -79,7 +79,7 @@
 
             <div class="dot-gallery">
                 <% if (gallery) { _.each(gallery, function (imageURL, index) { if (index===0) return; %> <a
-                    href="<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
+                    href="/galleries/<%= imageURL %>" class="fancybox" data-fancybox-group="<%= id %>"></a>
                 <% }); }; %>
             </div>
         </div>
@@ -638,7 +638,15 @@
                     <span class="date"><%= message.created %></span>
                 </div>
 
-                <div class="description" contenteditable="true"><%= message.text %></div>
+                <div class="description" contenteditable="true">
+                    <%= message.text %>
+
+                    <% if (message.image) { %>
+                    <div class="dot-messages-image" contenteditable="false">
+                        <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                    </div>
+                    <% } %>
+                </div>
             </div>
             <% }); } %>
         </div>

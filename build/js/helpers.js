@@ -87,5 +87,36 @@ var helper = {
                 $('.input-file').val('');
             }
         });
+    },
+    galleryUpload: function () {
+        var _this = $(this.$el);
+        $('#fileupload').fadeIn();
+
+        // create FormData Object with files/json
+        var fd = new FormData();
+
+        var file_data = $('.input-gallery', _this)[0].files;
+
+        for (var i = 0; i < file_data.length; i++) {
+            fd.append("galleryImages", file_data[i]);
+        }
+
+        var self = this;
+        $.ajax({
+            url: '/uploadgallery',
+            data: fd,
+            contentType: false,
+            processData: false,
+            type: 'post',
+            success: function (e) {
+                self.gallery = JSON.parse(e);
+                $('#fileupload').fadeOut();
+            },
+            error:   function (e) {
+                alert(e.responseText);
+                $('#fileupload').fadeOut();
+                $('.input-gallery').val('');
+            }
+        });
     }
 };

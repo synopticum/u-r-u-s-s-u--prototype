@@ -64,7 +64,6 @@ View.Map = {
         map.on('load', (function () {
             $('#clouds').fadeOut(2000);
             View.Map.showStartScreen();
-            console.log('look')
         })());
 
         // admin controls

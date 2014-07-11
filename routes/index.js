@@ -19,6 +19,7 @@ module.exports = function (app) {
 
     app.post('/uploads', mmw, upload.singleImage);
     app.post('/uploadmarker', mmw, upload.markerImage);
+    app.post('/uploadgallery', mmw, upload.galleryImages);
 
     app.get('/dots', dot.send);
     app.post('/dot', mmw, dot.add);
