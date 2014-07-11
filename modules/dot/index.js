@@ -61,22 +61,32 @@ var add = function (req, res) {
                 update.gallery.push(imagePath);
 
                 fs.writeFile('public/galleries/' + dotValidValues.id + '/' + imageName, result, function (err) {
-                    if (err) throw err;
+                    if (err) {
+                        utils.errorHandler(err, 'Dot Add Error (gallery file write)');
+                    }
 
                     Dot.findOneAndUpdate({id: dotValidValues.id}, update, function (err) {
-                        if (err) throw err;
+                        if (err) {
+                            utils.errorHandler(err, 'Dot Gallery Update Error');
+                            res.send(400, 'Bad Request');
+                        }
                     });
                 });
             });
 
             fs.unlink(tmpGalleryPath, function (err) {
-                if (err) throw err;
+                if (err) {
+                    utils.errorHandler(err, 'Gallery File Unlink Error');
+                }
                 console.log('Temporary gallery image deleted');
             })
         }
 
         dotValid.save(function (err, dot) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Dot Add Error (with files)');
+                res.send(400, 'Bad Request');
+            }
             res.send(JSON.stringify(dot));
         });
     }
@@ -84,7 +94,10 @@ var add = function (req, res) {
         dotValid.image = 'images/q.gif';
 
         dotValid.save(function (err, dot) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Dot Add Error (without files)');
+                res.send(400, 'Bad Request');
+            }
             res.end(JSON.stringify(dot));
         });
     }
@@ -123,13 +136,19 @@ var edit = function (req, res) {
                 var tmpFilePath = req.files.markerimage.ws.path;
 
                 fs.readFile(tmpFilePath, function (err, result) {
-                    if (err) throw err;
+                    if (err) {
+                        utils.errorHandler(err, 'Dot Edit Error (read marker file)');
+                    }
 
                     fs.writeFile('public/marker-images/' + dotValidValues.id + '.png', result, function (err) {
-                        if (err) throw err;
+                        if (err) {
+                            utils.errorHandler(err, 'Dot Edit Error (marker file write)');
+                        }
 
                         fs.unlink(tmpFilePath, function (err) {
-                            if (err) throw err;
+                            if (err) {
+                                utils.errorHandler(err, 'Dot Edit Error (marker file unlink)');
+                            }
                             console.log('tmp file deleted');
                         })
                     });
@@ -159,10 +178,15 @@ var edit = function (req, res) {
                         update.gallery.push(imagePath);
 
                         fs.writeFile('public/galleries/' + dotValidValues.id + '/' + imageName, result, function (err) {
-                            if (err) throw err;
+                            if (err) {
+                                utils.errorHandler(err, 'Dot Edit Error (gallery file write)');
+                            }
 
                             Dot.findOneAndUpdate({id: dotValidValues.id}, update, function (err, result) {
-                                if (err) throw err;
+                                if (err) {
+                                    utils.errorHandler(err, 'Dot Edit Error (gallery update error)');
+                                    res.send(400, 'Bad Request');
+                                }
                                 console.log('Marker gallery updated');
                                 res.end(JSON.stringify(result));
                             });
@@ -170,7 +194,9 @@ var edit = function (req, res) {
                     });
 
                     fs.unlink(tmpGalleryPath, function (err) {
-                        if (err) throw err;
+                        if (err) {
+                            utils.errorHandler(err, 'Dot Edit Error (gallery file unlink)');
+                        }
                         console.log('Temporary gallery image deleted');
                     })
                 }
@@ -178,7 +204,10 @@ var edit = function (req, res) {
 
             // save in db
             Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
-                if (err) throw err;
+                if (err) {
+                    utils.errorHandler(err, 'Dot Edit Error (with files)');
+                    res.send(400, 'Bad Request');
+                }
                 res.end(JSON.stringify(result));
             });
 
@@ -189,7 +218,10 @@ var edit = function (req, res) {
             delete dotValidValues.gallery;
 
             Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
-                if (err) throw err;
+                if (err) {
+                    utils.errorHandler(err, 'Dot Edit Error (without files)');
+                    res.send(400, 'Bad Request');
+                }
                 res.end(JSON.stringify(result));
             });
         }
@@ -209,7 +241,10 @@ var remove = function (req, res) {
 
             // remove from db
             Dot.remove({ id: dotId }, function (err) {
-                if (err) throw err;
+                if (err) {
+                    utils.errorHandler(err, 'Dot Remove Error');
+                    res.send(400, 'Bad Request');
+                }
                 res.end("Dot removed from server");
             });
 
@@ -223,7 +258,9 @@ var remove = function (req, res) {
                     return;
                 }
                 utils.deleteFolderRecursive(galleryPath, function (err) {
-                    if (err) throw err;
+                    if (err) {
+                        utils.errorHandler(err, 'Dot Remove Error (gallery folder unlink)');
+                    }
                     console.log('Dot gallery deleted');
                 });
             });
@@ -234,7 +271,10 @@ var remove = function (req, res) {
                     return;
                 }
                 fs.unlink(markerPath, function (err) {
-                    if (err) throw err;
+                    if (err) {
+                        utils.errorHandler(err, 'Dot Remove Error (marker unlink)');
+                        res.send(400, 'Bad Request');
+                    }
                     console.log('Dot marker image deleted');
                 });
             });

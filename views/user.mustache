@@ -43,9 +43,9 @@
     <!-- dot popup template -->
     <script type="text/html" id="dot-popup-template">
         <div class="dot-container" id="<%= id %>">
-            <span class="dot-play"></span>
             <% if (track) { %>
-            <audio src="<%= track %>" id="dot-track"></audio>
+                <span class="dot-play"></span>
+                <audio src="<%= track %>" id="dot-track"></audio>
             <% } %>
 
             <div class="dot-nav">

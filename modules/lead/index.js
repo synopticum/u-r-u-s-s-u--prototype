@@ -19,14 +19,20 @@ var add = function (req, res) {
     var messageValid = new Lead(message);
 
     messageValid.save(function (err) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Lead Add Error');
+            res.send(400, 'Bad Request');
+        }
         res.send('Lead saved');
     });
 };
 
 var get = function (req, res) {
     Lead.find(function (err, result) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Lead Get Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -35,7 +41,10 @@ var edit = function (req, res) {
     if (req.user.vkontakteId === adminId) {
 
         Lead.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Lead Edit Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Lead approved on server");
         });
 
@@ -50,7 +59,10 @@ var edit = function (req, res) {
 var remove = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Lead.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Lead Remove Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Lead removed from server");
         });
 

@@ -536,32 +536,14 @@ View.ClaimsScreen = Backbone.View.extend({
     'file': helper.singleImageUpload
 });
 
-// get data
-$.getJSON("/dots", function (data) {
-    BDots = new BDotsModel(data);
+$.getJSON("/all", function (data) {
+    BDots      = new BDotsModel(data.dots);
+    BMessages  = new BMessagesModel(data.messages);
+    BNews      = new BNewsModel(data.news);
+    BAds       = new BAdsModel(data.ads);
+    BAnonymous = new BAnonymousModel(data.anonymous);
+    BLead      = new BLeadModel(data.lead);
+    BClaims    = new BClaimsModel(data.claims);
+
     View.Map.init();
-});
-
-$.getJSON("/messages", function (data) {
-    BMessages = new BMessagesModel(data);
-});
-
-$.getJSON("/news", function (data) {
-    BNews = new BNewsModel(data);
-});
-
-$.getJSON("/ads", function (data) {
-    BAds = new BAdsModel(data);
-});
-
-$.getJSON("/anonymous", function (data) {
-    BAnonymous = new BAnonymousModel(data);
-});
-
-$.getJSON("/lead", function (data) {
-    BLead = new BLeadModel(data);
-});
-
-$.getJSON("/claims", function (data) {
-    BClaims = new BClaimsModel(data);
 });

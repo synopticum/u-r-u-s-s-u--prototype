@@ -40,11 +40,13 @@ module.exports.deleteFolderRecursive = function(path) {
     var files = [];
     if( fs.existsSync(path) ) {
         files = fs.readdirSync(path);
-        files.forEach(function(file,index){
+
+        files.forEach(function(file){
             var curPath = path + "/" + file;
-            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+            if(fs.lstatSync(curPath).isDirectory()) {
                 deleteFolderRecursive(curPath);
-            } else { // delete file
+            }
+            else {
                 fs.unlinkSync(curPath);
             }
         });
@@ -89,4 +91,14 @@ module.exports.makeFileName = function () {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
+};
+
+module.exports.errorHandler = function (err, text) {
+    var error = new Date() + ': ' + text + ': ' + err + '\n';
+    console.error(error);
+
+    fs.appendFile('log.txt', error, function (err) {
+        if (err) throw err;
+        console.log('Error log updated');
+    });
 };

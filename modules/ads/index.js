@@ -19,14 +19,20 @@ var add = function (req, res) {
     var messageValid = new Ads(message);
 
     messageValid.save(function (err) {
-        if (err) throw err;
+        if (err)  {
+            utils.errorHandler(err, 'Ads Add Error');
+            res.send(400, 'Bad Request');
+        }
         res.send('Ad saved');
     });
 };
 
 var get = function (req, res) {
     Ads.find(function (err, result) {
-        if (err) throw err;
+        if (err)  {
+            utils.errorHandler(err, 'Ads Get Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -35,7 +41,10 @@ var edit = function (req, res) {
     if (req.user.vkontakteId === adminId) {
 
         Ads.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
-            if (err) throw err;
+            if (err)  {
+                utils.errorHandler(err, 'Ads Edit Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Ad approved on server");
         });
 
@@ -50,7 +59,10 @@ var edit = function (req, res) {
 var remove = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Ads.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) throw err;
+            if (err)  {
+                utils.errorHandler(err, 'Ads Remove Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Ad removed from server");
         });
 

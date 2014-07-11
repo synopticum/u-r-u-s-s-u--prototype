@@ -21,14 +21,20 @@ var add = function (req, res) {
     var messageValid = new Message(message);
 
     messageValid.save(function (err) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Messages Add Error');
+            res.send(400, 'Bad Request');
+        }
         res.send('saved');
     });
 };
 
 var get = function (req, res) {
     Message.find(function (err, result) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Messages Get Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -36,7 +42,10 @@ var get = function (req, res) {
 var edit = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Message.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Messages Edit Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Message updated on server");
         });
 
@@ -51,7 +60,10 @@ var edit = function (req, res) {
 var remove = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Message.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Messages Remove Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Message removed from server");
         });
 

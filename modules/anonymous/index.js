@@ -17,14 +17,20 @@ var add = function (req, res) {
     var messageValid = new Anonymous(message);
 
     messageValid.save(function (err) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Anonymous Add Error');
+            res.send(400, 'Bad Request');
+        }
         res.send('Anonymous saved');
     });
 };
 
 var get = function (req, res) {
     Anonymous.find(function (err, result) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Anonymous Get Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -32,7 +38,10 @@ var get = function (req, res) {
 var edit = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Anonymous.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Anonymous Edit Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Anonymous approved on server");
         });
 
@@ -47,7 +56,10 @@ var edit = function (req, res) {
 var remove = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Anonymous.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Anonymous Remove Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Anonymous removed from server");
         });
 

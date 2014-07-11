@@ -19,14 +19,20 @@ var add = function (req, res) {
     var messageValid = new News(message);
 
     messageValid.save(function (err) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'News Add Error');
+            res.send(400, 'Bad Request');
+        }
         res.send('saved');
     });
 };
 
 var get = function (req, res) {
-    News.find(function (err, result) {
-        if (err) throw err;
+    News.find({ $query: {} }, function (err, result) {
+        if (err) {
+            utils.errorHandler(err, 'News Get Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -34,7 +40,10 @@ var get = function (req, res) {
 var edit = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         News.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'News Edit Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Message updated on server");
         });
 
@@ -49,7 +58,10 @@ var edit = function (req, res) {
 var remove = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         News.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) throw err;
+            if (err)  {
+                utils.errorHandler(err, 'News Remove Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Message removed from server");
         });
 

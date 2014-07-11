@@ -18,14 +18,20 @@ var add = function (req, res) {
     var messageValid = new Claims(message);
 
     messageValid.save(function (err) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Claims Add Error');
+            res.send(400, 'Bad Request');
+        }
         res.send('Claims saved');
     });
 };
 
 var get = function (req, res) {
     Claims.find(function (err, result) {
-        if (err) throw err;
+        if (err) {
+            utils.errorHandler(err, 'Claims Get Error');
+            res.send(400, 'Bad Request');
+        }
         res.end(JSON.stringify(result));
     });
 };
@@ -34,7 +40,10 @@ var edit = function (req, res) {
     if (req.user.vkontakteId === adminId) {
 
         Claims.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Claims Edit Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Claims approved on server");
         });
 
@@ -49,7 +58,10 @@ var edit = function (req, res) {
 var remove = function (req, res) {
     if (req.user.vkontakteId === adminId) {
         Claims.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) throw err;
+            if (err) {
+                utils.errorHandler(err, 'Claims Remove Error');
+                res.send(400, 'Bad Request');
+            }
             res.end("Claims removed from server");
         });
 
