@@ -87,6 +87,10 @@ var UserSchema = new Schema({
     created : {
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY")
+    },
+    status : {
+        type : String,
+        default : 'premod'
     }
 });
 

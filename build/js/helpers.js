@@ -118,5 +118,16 @@ var helper = {
                 $('.input-gallery').val('');
             }
         });
+    },
+    singleImage: function (e) {
+        var image = $(this).attr('href');
+        $('#singleimage').addClass('active').append('<img src="' + image + '"/>').append('<span class="close"/>');
+
+        $('#singleimage .close').click(function () {
+            $('#singleimage img, #singleimage .close').remove();
+            $('#singleimage').removeClass('active');
+        });
+
+        e.preventDefault();
     }
 };

@@ -340,7 +340,7 @@
 
                     <% if (message.image) { %>
                     <div class="dot-messages-image">
-                        <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                        <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
                     </div>
                     <% }; %>
                 </div>
@@ -409,7 +409,7 @@
 
                     <% if (message.image) { %>
                     <div class="dot-messages-image" contenteditable="false">
-                        <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                        <a href="/msgimages/<%= message.image %>" class="fancybox">Приложенное изображение</a>
                     </div>
                     <% }; %>
                 </div>
@@ -457,7 +457,7 @@
 
                     <% if (message.image) { %>
                     <div class="dot-messages-image" contenteditable="false">
-                        <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                        <a href="/msgimages/<%= message.image %>">Приложенное изображение</a>
                     </div>
                     <% }; %>
                 </div>
@@ -504,7 +504,7 @@
 
                     <% if (message.image) { %>
                     <div class="dot-messages-image" contenteditable="false">
-                        <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                        <a href="/msgimages/<%= message.image %>">Приложенное изображение</a>
                     </div>
                     <% }; %>
                 </div>
@@ -548,7 +548,7 @@
 
                 <% if (message.image) { %>
                 <div class="dot-messages-image" contenteditable="false">
-                    <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                    <a href="/msgimages/<%= message.image %>">Приложенное изображение</a>
                 </div>
                 <% }; %>
             </div>
@@ -596,7 +596,7 @@
 
                 <% if (message.image) { %>
                 <div class="dot-messages-image" contenteditable="false">
-                    <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                    <a href="/msgimages/<%= message.image %>">Приложенное изображение</a>
                 </div>
                 <% }; %>
             </div>
@@ -643,7 +643,7 @@
 
                     <% if (message.image) { %>
                     <div class="dot-messages-image" contenteditable="false">
-                        <a href="/msgimages/<%= message.image %>" class="fancybox" target="_blank">Приложенное изображение</a>
+                        <a href="/msgimages/<%= message.image %>">Приложенное изображение</a>
                     </div>
                     <% } %>
                 </div>
@@ -654,10 +654,31 @@
 </script>
 </div>
 
+<!-- mod users popup template -->
+<script type="text/html" id="usersmod-popup-template">
+    <h3>Пользователи</h3>
+
+    <div class="users">
+    <table>
+        <% if (users) { _.each(users, function (user) { %>
+        <tr>
+            <td><a href="http://vk.com/<%= user.usernaname %>" target="_blank"><%= user.displayName %></a></td>
+            <td class="vkid">id: <%= user.vkontakteId %></td>
+            <td class="joined"><%= user.created %></td>
+            <td><%= user.status %></td>
+        </tr>
+        <% }); } %>
+    </table>
+    </div>
+</script>
+</div>
+
 <span id="panel"></span>
 <span id="messagesmod"></span>
+<span id="usersmod"></span>
 
 <div id="fileupload"></div>
+<div id="singleimage"></div>
 
 <script src="js/helpers.js"></script>
 <script src="js/model.js"></script>

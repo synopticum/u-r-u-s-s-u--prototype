@@ -5,6 +5,7 @@ var multipart = require('connect-multiparty'),
 // modules
 var auth      = require('../modules/auth'),
     send      = require('../modules/send'),
+    users     = require('../modules/users'),
     dot       = require('../modules/dot'),
     upload    = require('../modules/upload'),
     messages  = require('../modules/messages'),
@@ -15,7 +16,8 @@ var auth      = require('../modules/auth'),
     claims    = require('../modules/claims');
 
 module.exports = function (app) {
-    app.all('/all', mmw, send.all);
+    app.get('/all', mmw, send.all);
+    app.get('/users', mmw, users.all);
 
     app.post('/uploads', mmw, upload.singleImage);
     app.post('/uploadmarker', mmw, upload.markerImage);

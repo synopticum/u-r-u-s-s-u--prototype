@@ -72,6 +72,11 @@ View.Map = {
             $.fancybox.open(view.render());
         });
 
+        $('#usersmod').on('click', function () {
+            var view = new View.UsersMod();
+            $.fancybox.open(view.render());
+        });
+
         $('#panel').on('click', function () {
             var view = new View.StartScreen();
             $.fancybox.open(view.render());
@@ -287,6 +292,29 @@ View.MessagesMod = Backbone.View.extend({
     id: 'messagesdot-popup',
     className: 'popup',
     template: _.template($('#messagesmod-popup-template').html()),
+    render: function () {
+        return this.$el.html(this.template(this));
+    },
+    events: {
+        'click .input-submit': 'submit'
+    },
+    'submit': function () {
+        var _this = $(this.$el);
+
+        $.fancybox.close(_this);
+        helper.status('Сообщение отправлено');
+    }
+});
+
+View.UsersMod = Backbone.View.extend({
+    users: {},
+    initialize: function () {
+        var users = JSON.stringify(BUsers.records);
+        this.users = JSON.parse(users);
+    },
+    id: 'usersmod-popup',
+    className: 'popup',
+    template: _.template($('#usersmod-popup-template').html()),
     render: function () {
         return this.$el.html(this.template(this));
     },
@@ -545,4 +573,8 @@ $.getJSON("/all", function (data) {
     BClaims    = new BClaimsModel(data.claims);
 
     View.Map.init();
+});
+
+$.getJSON("/users", function (data) {
+    BUsers = new BUsersModel(data);
 });

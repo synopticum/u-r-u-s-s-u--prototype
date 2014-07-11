@@ -505,6 +505,8 @@ var View = {
             $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
             $('.tabs li').removeClass('active');
             $('#tab-news').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
         },
         'showAds': function () {
             var view = new View.AdsScreen();
@@ -513,6 +515,8 @@ var View = {
             $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
             $('.tabs li').removeClass('active');
             $('#tab-ads').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
         },
         'showAnonymous': function () {
             var view = new View.AnonymousScreen();
@@ -521,6 +525,8 @@ var View = {
             $('.fancybox-skin, .tabs').css('border-color', '#000');
             $('.tabs li').removeClass('active');
             $('#tab-anonymous').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
         },
         'showLead': function () {
             var view = new View.LeadScreen();
@@ -529,6 +535,8 @@ var View = {
             $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
             $('.tabs li').removeClass('active');
             $('#tab-lead').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
         },
         'showClaims': function () {
             var view = new View.ClaimsScreen();
@@ -537,6 +545,8 @@ var View = {
             $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
             $('.tabs li').removeClass('active');
             $('#tab-claims').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
         }
     })
 };

@@ -87,6 +87,7 @@ var BAds;
 var BAnonymous;
 var BLead;
 var BClaims;
+var BUsers;
 
 var BDotsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
@@ -220,6 +221,19 @@ var BLeadModel = Backbone.Model.extend({
 });
 
 var BClaimsModel = Backbone.Model.extend({
+    records: new Backbone.Collection(),
+    initialize: function (data) {
+        for (var jsonItem in data) {
+            var message = data[jsonItem];
+            delete message._id;
+            delete message.__v;
+
+            this.records.add(message);
+        }
+    }
+});
+
+var BUsersModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
