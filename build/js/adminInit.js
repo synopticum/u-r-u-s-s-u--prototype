@@ -385,7 +385,8 @@ View.NewsScreen = Backbone.View.extend({
     },
     events: {
         'click .input-submit': 'submit',
-        'change .input-file': 'file'
+        'change .input-file': 'file',
+        'click #update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
@@ -405,7 +406,19 @@ View.NewsScreen = Backbone.View.extend({
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
     },
-    'file': helper.singleImageUpload
+    'file': helper.singleImageUpload,
+    'update': function () {
+        BNews.records.fetch({ url : "/news", success: function () {
+            var view = new View.NewsScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-news').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
+        }});
+    }
 });
 
 View.AdsScreen = Backbone.View.extend({
@@ -422,7 +435,8 @@ View.AdsScreen = Backbone.View.extend({
     },
     events: {
         'click .input-submit': 'submit',
-        'change .input-file': 'file'
+        'change .input-file': 'file',
+        'click #update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
@@ -444,7 +458,19 @@ View.AdsScreen = Backbone.View.extend({
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
     },
-    'file': helper.singleImageUpload
+    'file': helper.singleImageUpload,
+    'update': function () {
+        BAds.records.fetch({ url : "/ads", success: function () {
+            var view = new View.AdsScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-ads').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
+        }});
+    }
 });
 
 View.AnonymousScreen = Backbone.View.extend({
@@ -462,7 +488,8 @@ View.AnonymousScreen = Backbone.View.extend({
     },
     events: {
         'click .input-submit': 'submit',
-        'change .input-file': 'file'
+        'change .input-file': 'file',
+        'click #update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
@@ -482,7 +509,19 @@ View.AnonymousScreen = Backbone.View.extend({
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
     },
-    'file': helper.singleImageUpload
+    'file': helper.singleImageUpload,
+    'update': function () {
+        BAnonymous.records.fetch({ url : "/anonymous", success: function () {
+            var view = new View.AnonymousScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-anonymous').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
+        }});
+    }
 });
 
 View.LeadScreen = Backbone.View.extend({
@@ -499,7 +538,8 @@ View.LeadScreen = Backbone.View.extend({
     },
     events: {
         'click .input-submit': 'submit',
-        'change .input-file': 'file'
+        'change .input-file': 'file',
+        'click #update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
@@ -521,7 +561,19 @@ View.LeadScreen = Backbone.View.extend({
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Сообщение отправлено');
     },
-    'file': helper.singleImageUpload
+    'file': helper.singleImageUpload,
+    'update': function () {
+        BLead.records.fetch({ url : "/lead", success: function () {
+            var view = new View.LeadScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-lead').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
+        }});
+    }
 });
 
 View.ClaimsScreen = Backbone.View.extend({
@@ -538,7 +590,8 @@ View.ClaimsScreen = Backbone.View.extend({
     },
     events: {
         'click .input-submit': 'submit',
-        'change .input-file': 'file'
+        'change .input-file': 'file',
+        'click #update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
@@ -560,7 +613,19 @@ View.ClaimsScreen = Backbone.View.extend({
         $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
         helper.status('Жалоба отправлена');
     },
-    'file': helper.singleImageUpload
+    'file': helper.singleImageUpload,
+    'update': function () {
+        BClaims.records.fetch({ url : "/claims", success: function () {
+            var view = new View.ClaimsScreen();
+            $('.tabs-wrapper').html(view.render());
+
+            $('.fancybox-skin, .tabs').css('border-color', '#6B9B2A');
+            $('.tabs li').removeClass('active');
+            $('#tab-claims').addClass('active');
+
+            $('.dot-messages-image a').click(helper.singleImage);
+        }});
+    }
 });
 
 $.getJSON("/all", function (data) {

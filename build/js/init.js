@@ -1,5 +1,6 @@
 // init
 $.getJSON("/all", function (data) {
+    console.log(JSON.stringify(data));
     BDots      = new BDotsModel(data.dots);
     BMessages  = new BMessagesModel(data.messages);
     BNews      = new BNewsModel(data.news);

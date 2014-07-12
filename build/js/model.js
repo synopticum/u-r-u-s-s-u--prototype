@@ -142,16 +142,11 @@ var BDotsModel = Backbone.Model.extend({
             }
         }
 
-        // update
+        // update every 5 min
         setInterval(function() {
             BDots.records.fetch({ url : "/dots" });
             BMessages.records.fetch({ url : "/messages" });
-            BNews.records.fetch({ url : "/news" });
-            BAds.records.fetch({ url : "/ads" });
-            BAnonymous.records.fetch({ url : "/anonymous" });
-            BLead.records.fetch({ url : "/lead" });
-            BClaims.records.fetch({ url : "/claims" });
-        }, 10000);
+        }, 300000);
     }
 });
 

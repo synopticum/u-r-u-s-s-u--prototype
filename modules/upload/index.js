@@ -69,7 +69,7 @@ var galleryImages = function (req, res) {
 
                 gm(tmpFilePath)
                     .options({imageMagick: true})
-                    .resize(80, 80)
+                    .resize(1280, 800)
                     .autoOrient()
                     .write('public/galleries/' + fileName, function (err) {
                         if (err) {
