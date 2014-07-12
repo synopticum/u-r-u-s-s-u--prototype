@@ -176,7 +176,7 @@ View.EditDot = Backbone.View.extend({
         _this.street = $(".input-street", _this).val();
         _this.house = $(".input-house", _this).val();
         _this.homePhone = $(".input-home-phone", _this).val();
-        _this.mobilePhone = $(".input-mobile-phone", _this).val();
+        _this.track = $(".input-track", _this).val();
         _this.gallery = this.dot.gallery;
 
         var dot = new BDot({
@@ -193,7 +193,7 @@ View.EditDot = Backbone.View.extend({
             street: _this.street,
             house: _this.house,
             homePhone: _this.homePhone,
-            mobilePhone: _this.mobilePhone,
+            track: _this.track,
             gallery: _this.gallery
         });
 

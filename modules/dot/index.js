@@ -70,6 +70,7 @@ var edit = function (req, res) {
             street      : utils.textValid(dotValues.street, 40) || '-',
             house       : utils.textValid(dotValues.house, 4) || '-',
             homePhone   : utils.textValid(dotValues.homePhone, 20) || 'Не указан',
+            track       : dotValues.track || null,
             mobilePhone : 'Не указан',
             gallery     : dotValues.gallery
         };

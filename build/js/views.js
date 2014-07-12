@@ -229,7 +229,7 @@ var View = {
                         BDots.records.add(dotValid);
 
                         var view = new View.ShowDot(response);
-                        L.marker(response.position, { icon: dot.getIcon() }).bindPopup(view.template(response)).addTo(map);
+                        L.marker(response.position, { icon: dot.getIcon() }).addTo(map);
 
                         console.log('Dot created on server');
                     },
@@ -578,7 +578,9 @@ var View = {
             'mouseover .nuser': function () { $('.n-user').addClass('active'); },
             'mouseout .nuser': function () { $('.n-user').removeClass('active'); },
             'mouseover .npremod': function () { $('.n-premod').addClass('active'); },
-            'mouseout .npremod': function () { $('.n-premod').removeClass('active'); }
+            'mouseout .npremod': function () { $('.n-premod').removeClass('active'); },
+            'mouseover .nvk': function () { $('.n-vk').addClass('active'); },
+            'mouseout .nvk': function () { $('.n-vk').removeClass('active'); }
         },
         'showNews': function () {
             var view = new View.NewsScreen();
