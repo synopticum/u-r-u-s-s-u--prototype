@@ -13,6 +13,7 @@ var add = function (req, res) {
         text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
         image        : req.body.image,
+        phone        : utils.textValid(req.body.phone),
         approved     : false
     };
 

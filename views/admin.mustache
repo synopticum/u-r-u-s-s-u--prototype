@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="js/selectbox/jquery.selectbox.css">
     <script src="js/selectbox/jquery.selectbox-0.2.min.js"></script>
 
+    <!-- phone mask -->
+    <script type="text/javascript" src="js/inputmask/jquery.inputmask.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -369,8 +372,8 @@
     <div id="startScreen">
         <div class="tabs">
             <ul>
-                <li id="tab-news"><span>Новости</span></li>
-                <li id="tab-ads"><span>Объявления</span></li>
+                <li id="tab-news"><span class="news">Новости</span></li>
+                <li id="tab-ads"><span class="ads">Объявления</span></li>
                 <li id="tab-lead"><span>Инициативы</span></li>
                 <li id="tab-claims"><span class="claims">Жалобы</span></li>
                 <li><span>Общение</span></li>
@@ -379,7 +382,15 @@
         </div>
 
         <div class="tabs-wrapper">
-            some news
+            <table class="welcome">
+                <col width="33%"/>
+                <col width="33%"/>
+                <col width="33%"/>
+                <tr>
+                    <td colspan="2" class="first">a</td>
+                    <td class="last">c</td>
+                </tr>
+            </table>
         </div>
     </div>
 </script>
@@ -451,6 +462,9 @@
                 <div class="view">
                     <div class="avatar"><img src="<%= message.avatar %>" width="50" height="50" alt=""/></div>
                     <a href="http://vk.com/<%= message.link %>" class="name" target="_blank"><%= message.name %></a><br>
+                    <% if (message.phone) { %>
+                    <span class="dot-messages-phone"><%= message.phone %></span><br>
+                    <% }; %>
                     <span class="date"><%= message.created %></span>
                 </div>
 
@@ -475,9 +489,10 @@
     </div>
 
     <div class="dot-messages-send">
-        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="ads-textarea popup-textarea"
                   placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
+        <input type="text" name="" class="input-ads-phone popup-textbox" placeholder="Телефон (необязательно)"/>
         <input type="file" name="" class="input-file"/>
     </div>
 

@@ -218,6 +218,11 @@ var AdsSchema = new Schema({
         type: String,
         unique: false
     },
+    phone : {
+        type: String,
+        required: false,
+        unique: false
+    },
     created : {
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),

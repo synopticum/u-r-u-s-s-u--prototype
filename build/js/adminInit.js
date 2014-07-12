@@ -444,7 +444,8 @@ View.AdsScreen = Backbone.View.extend({
         var adsItem = {
             id: this.dotId,
             text: $('.popup-textarea', _this).val(),
-            image: this.image
+            image: this.image,
+            phone: $('.input-ads-phone', _this).val()
         };
 
         console.log('all ok');
@@ -469,6 +470,7 @@ View.AdsScreen = Backbone.View.extend({
             $('#tab-ads').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
+            $(".input-ads-phone").inputmask("+7 (999) 999-99-99");
         }});
     }
 });

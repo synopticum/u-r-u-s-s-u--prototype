@@ -320,6 +320,27 @@ a {
   background: linear-gradient(to bottom,  #9a142e 0%,#e50000 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9a142e', endColorstr='#e50000',GradientType=0 );
 }
+#startScreen .tabs li.active .ads {
+  background: #cc6500;
+  background: -moz-linear-gradient(top,  #cc6500 0%, #d97a00 26%, #d87900 29%, #db7d00 34%, #ea9300 60%, #f49f00 86%, #fbaa00 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cc6500), color-stop(26%,#d97a00), color-stop(29%,#d87900), color-stop(34%,#db7d00), color-stop(60%,#ea9300), color-stop(86%,#f49f00), color-stop(100%,#fbaa00));
+  background: -webkit-linear-gradient(top,  #cc6500 0%,#d97a00 26%,#d87900 29%,#db7d00 34%,#ea9300 60%,#f49f00 86%,#fbaa00 100%);
+  background: -o-linear-gradient(top,  #cc6500 0%,#d97a00 26%,#d87900 29%,#db7d00 34%,#ea9300 60%,#f49f00 86%,#fbaa00 100%);
+  background: -ms-linear-gradient(top,  #cc6500 0%,#d97a00 26%,#d87900 29%,#db7d00 34%,#ea9300 60%,#f49f00 86%,#fbaa00 100%);
+  background: linear-gradient(to bottom,  #cc6500 0%,#d97a00 26%,#d87900 29%,#db7d00 34%,#ea9300 60%,#f49f00 86%,#fbaa00 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc6500', endColorstr='#fbaa00',GradientType=0 );
+}
+#startScreen .tabs li.active .news {
+  background: #199683;
+  background: -moz-linear-gradient(top,  #199683 0%, #0ec8c9 74%, #09d2da 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#199683), color-stop(74%,#0ec8c9), color-stop(100%,#09d2da));
+  background: -webkit-linear-gradient(top,  #199683 0%,#0ec8c9 74%,#09d2da 100%);
+  background: -o-linear-gradient(top,  #199683 0%,#0ec8c9 74%,#09d2da 100%);
+  background: -ms-linear-gradient(top,  #199683 0%,#0ec8c9 74%,#09d2da 100%);
+  background: linear-gradient(to bottom,  #199683 0%,#0ec8c9 74%,#09d2da 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#199683', endColorstr='#09d2da',GradientType=0 );
+
+}
 
 .users {
   max-height: 400px;
@@ -432,7 +453,7 @@ a {
   cursor: pointer;
   position: absolute;
   right: 70px;
-  top: 18px;
+  top: 19px;
   display: block;
   width: 20px;
   height: 20px;
@@ -442,4 +463,18 @@ a {
 }
 #update:hover {
   opacity: .75;
+}
+
+.welcome {
+  width: 100%;
+}
+.welcome td {
+  vertical-align: top;
+}
+.welcome .first {
+  padding: 0 20px 0 0;
+  border-right: 1px solid #eee;
+}
+.welcome .last {
+  padding: 0 0 0 20px;
 }

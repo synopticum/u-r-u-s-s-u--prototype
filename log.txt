@@ -1,2 +1,12 @@
 ﻿Fri Jul 11 2014 04:13:31 GMT+0400 (Московское время (зима)): Message Add Error: ValidationError: Path `text` is required.
 Fri Jul 11 2014 05:56:25 GMT+0400 (Московское время (зима)): News Add Error: ValidationError: Path `text` is required.
+Sat Jul 12 2014 08:54:38 GMT+0400 (Московское время (зима)): Ads Add Error: MongoError: insertDocument :: caused by :: 17280 Btree::insert: key too large to index, failing mongomapdb.ads.$text_1 1197 { : "редложения начинаются с Большой буквы и разделяются п р о б е л а м и.
+Надевают одеж..." }
+Sat Jul 12 2014 08:54:42 GMT+0400 (Московское время (зима)): Ads Add Error: MongoError: insertDocument :: caused by :: 17280 Btree::insert: key too large to index, failing mongomapdb.ads.$text_1 1197 { : "редложения начинаются с Большой буквы и разделяются п р о б е л а м и.
+Надевают одеж..." }
+Sat Jul 12 2014 08:54:54 GMT+0400 (Московское время (зима)): Ads Add Error: MongoError: insertDocument :: caused by :: 17280 Btree::insert: key too large to index, failing mongomapdb.ads.$text_1 1197 { : "редложения начинаются с Большой буквы и разделяются п р о б е л а м и.
+Надевают одеж..." }
+Sat Jul 12 2014 08:55:14 GMT+0400 (Московское время (зима)): Ads Add Error: MongoError: insertDocument :: caused by :: 17280 Btree::insert: key too large to index, failing mongomapdb.ads.$text_1 1775 { : "редложения начинаются с Большой буквы и разделяются п р о б е л а м и.
+Надевают одеж..." }
+Sat Jul 12 2014 09:00:29 GMT+0400 (Московское время (зима)): News Add Error: MongoError: insertDocument :: caused by :: 17280 Btree::insert: key too large to index, failing mongomapdb.news.$text_1 1029 { : "едложения начинаются с Большой буквы и разделяются п р о б е л а м и.
+Надевают одежд..." }
