@@ -285,6 +285,8 @@ var View = {
             } });
 
             $.fancybox.close(_this);
+
+            helper.playSend();
             helper.status('Сообщение отправлено и ожидает проверки');
         },
         'file': helper.singleImageUpload
@@ -321,8 +323,8 @@ var View = {
                 console.log(res)
             } });
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.disableInputs();
+            helper.playSend();
             helper.status('Сообщение отправлено и ожидает проверки');
         },
         'file': helper.singleImageUpload,
@@ -374,8 +376,8 @@ var View = {
                 console.log(res)
             } });
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.disableInputs();
+            helper.playSend();
             helper.status('Сообщение отправлено и ожидает проверки');
         },
         'file': helper.singleImageUpload,
@@ -426,8 +428,8 @@ var View = {
                 console.log(res)
             } });
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.disableInputs();
+            helper.playSend();
             helper.status('Сообщение отправлено и ожидает проверки');
         },
         'file': helper.singleImageUpload,
@@ -478,8 +480,8 @@ var View = {
                 console.log(res)
             } });
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.disableInputs();
+            helper.playSend();
             helper.status('Сообщение отправлено и ожидает проверки');
         },
         'file': helper.singleImageUpload,
@@ -530,8 +532,8 @@ var View = {
                 console.log(res)
             } });
 
-            $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-            $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+            helper.disableInputs();
+            helper.playSend();
             helper.status('Жалоба отправлена и ожидает проверки');
         },
         'file': helper.singleImageUpload,
@@ -564,7 +566,19 @@ var View = {
             'click #tab-anonymous span': 'showAnonymous',
             'click #tab-lead span': 'showLead',
             'click #tab-claims span': 'showClaims',
-            'click #update': 'updateModel'
+            'click #update': 'updateModel',
+            'mouseover .nrefresh': function () { $('.n-refresh, #update').addClass('active'); },
+            'mouseout .nrefresh': function () { $('.n-refresh, #update').removeClass('active'); },
+            'mouseover .nmain': function () { $('.n-main').addClass('active'); },
+            'mouseout .nmain': function () { $('.n-main').removeClass('active'); },
+            'mouseover .nanon': function () { $('.n-anon').addClass('active'); },
+            'mouseout .nanon': function () { $('.n-anon').removeClass('active'); },
+            'mouseover .nscheme': function () { $('.n-scheme').addClass('active'); },
+            'mouseout .nscheme': function () { $('.n-scheme').removeClass('active'); },
+            'mouseover .nuser': function () { $('.n-user').addClass('active'); },
+            'mouseout .nuser': function () { $('.n-user').removeClass('active'); },
+            'mouseover .npremod': function () { $('.n-premod').addClass('active'); },
+            'mouseout .npremod': function () { $('.n-premod').removeClass('active'); }
         },
         'showNews': function () {
             var view = new View.NewsScreen();
@@ -575,6 +589,8 @@ var View = {
             $('#tab-news').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
+
+            helper.playClick();
         },
         'showAds': function () {
             var view = new View.AdsScreen();
@@ -586,6 +602,8 @@ var View = {
 
             $('.dot-messages-image a').click(helper.singleImage);
             $(".input-ads-phone").inputmask("+7 (999) 999-99-99");
+
+            helper.playClick();
         },
         'showAnonymous': function () {
             var view = new View.AnonymousScreen();
@@ -596,6 +614,7 @@ var View = {
             $('#tab-anonymous').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
+            helper.playClick();
         },
         'showLead': function () {
             var view = new View.LeadScreen();
@@ -606,6 +625,8 @@ var View = {
             $('#tab-lead').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
+
+            helper.playClick();
         },
         'showClaims': function () {
             var view = new View.ClaimsScreen();
@@ -616,6 +637,8 @@ var View = {
             $('#tab-claims').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
+
+            helper.playClick();
         }
     })
 };

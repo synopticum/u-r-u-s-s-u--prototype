@@ -402,8 +402,9 @@ View.NewsScreen = Backbone.View.extend({
             console.log(res)
         } });
 
-        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+
+        helper.disableInputs();
+        helper.playSend();
         helper.status('Сообщение отправлено');
     },
     'file': helper.singleImageUpload,
@@ -455,8 +456,9 @@ View.AdsScreen = Backbone.View.extend({
             console.log(res)
         } });
 
-        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+
+        helper.disableInputs();
+        helper.playSend();
         helper.status('Сообщение отправлено');
     },
     'file': helper.singleImageUpload,
@@ -507,8 +509,9 @@ View.AnonymousScreen = Backbone.View.extend({
             console.log(res)
         } });
 
-        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+
+        helper.disableInputs();
+        helper.playSend();
         helper.status('Сообщение отправлено');
     },
     'file': helper.singleImageUpload,
@@ -559,8 +562,9 @@ View.LeadScreen = Backbone.View.extend({
             console.log(res)
         } });
 
-        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+
+        helper.disableInputs();
+        helper.playSend();
         helper.status('Сообщение отправлено');
     },
     'file': helper.singleImageUpload,
@@ -611,8 +615,9 @@ View.ClaimsScreen = Backbone.View.extend({
             console.log(res)
         } });
 
-        $('.popup-textarea', _this).attr('disabled', 'disabled').val('');
-        $('.input-submit', _this).attr('disabled', 'disabled').addClass('popup-button-disabled');
+
+        helper.disableInputs();
+        helper.playSend();
         helper.status('Жалоба отправлена');
     },
     'file': helper.singleImageUpload,

@@ -129,5 +129,19 @@ var helper = {
         });
 
         e.preventDefault();
+    },
+    playSend: function () {
+        var click = document.createElement('audio');
+        $(click).attr('src', '/sounds/send.mp3');
+        click.play();
+    },
+    playClick: function () {
+        var click = document.createElement('audio');
+        $(click).attr('src', '/sounds/click.mp3');
+        click.play();
+    },
+    disableInputs: function () {
+        $('.popup-textarea').attr('disabled', 'disabled').val('');
+        $('.input-submit').attr('disabled', 'disabled').addClass('popup-button-disabled');
     }
 };
