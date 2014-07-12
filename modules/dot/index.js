@@ -1,6 +1,6 @@
 var utils = require('../../libs/util'),
     fs = require('fs'),
-    Dot  = require('../../models').Dot;
+    Dot = require('../../models').Dot;
 
 var adminId = '257378450',
     defaultText = 'Автор поленился набрать текст',
@@ -23,20 +23,20 @@ var add = function (req, res) {
     dotValues.id = utils.guid();
 
     var dotValidValues = {
-        id          : utils.textValid(dotValues.id),
-        layer       : utils.textValid(dotValues.layer, 50) || defaultLayer,
-        position    : dotValues.position || [0,0],
-        title       : utils.textValid(dotValues.title, 50) || defaultTitle,
-        text        : utils.textValid(dotValues.text, 150) || defaultText,
-        image       : 'marker-images/' + dotValues.image,
-        icon        : utils.textValid(dotValues.icon, 20) || defaultIcon,
-        address     : utils.textValid(dotValues.address, 10) || '-',
-        street      : utils.textValid(dotValues.street, 40) || '-',
-        house       : utils.textValid(dotValues.house, 4) || '-',
-        homePhone   : utils.textValid(dotValues.homePhone, 20) || 'Не указан',
-        track       : dotValues.track || null,
-        mobilePhone : 'Не указан',
-        gallery     : dotValues.gallery
+        id: utils.textValid(dotValues.id),
+        layer: utils.textValid(dotValues.layer, 50) || defaultLayer,
+        position: dotValues.position || [0, 0],
+        title: utils.textValid(dotValues.title, 50) || defaultTitle,
+        text: utils.textValid(dotValues.text, 150) || defaultText,
+        image: 'marker-images/' + dotValues.image,
+        icon: utils.textValid(dotValues.icon, 20) || defaultIcon,
+        address: utils.textValid(dotValues.address, 10) || '-',
+        street: utils.textValid(dotValues.street, 40) || '-',
+        house: utils.textValid(dotValues.house, 4) || '-',
+        homePhone: utils.textValid(dotValues.homePhone, 20) || 'Не указан',
+        track: dotValues.track || null,
+        mobilePhone: 'Не указан',
+        gallery: dotValues.gallery
     };
 
     // save in db
@@ -44,13 +44,13 @@ var add = function (req, res) {
 
     dotValidValues.image = dotValues.image || 'images/q.gif';
 
-        dotValid.save(function (err, dot) {
-            if (err) {
-                utils.errorHandler(err, 'Dot Add Error (without files)');
-                res.send(400, 'Bad Request');
-            }
-            res.end(JSON.stringify(dot));
-        });
+    dotValid.save(function (err, dot) {
+        if (err) {
+            utils.errorHandler(err, 'Dot Add Error (without files)');
+            res.send(400, 'Bad Request');
+        }
+        res.end(JSON.stringify(dot));
+    });
 
     console.log("Dot added on server");
 };
@@ -60,19 +60,19 @@ var edit = function (req, res) {
         var dotValues = JSON.parse(req.body.json);
 
         var dotValidValues = {
-            id          : utils.textValid(dotValues.id),
-            layer       : utils.textValid(dotValues.layer, 50) || defaultLayer,
-            position    : dotValues.position || [0,0],
-            title       : utils.textValid(dotValues.title, 50) || defaultTitle,
-            text        : utils.textValid(dotValues.text, 150) || defaultText,
-            icon        : utils.textValid(dotValues.icon, 20) || defaultIcon,
-            address     : utils.textValid(dotValues.address, 10) || '-',
-            street      : utils.textValid(dotValues.street, 40) || '-',
-            house       : utils.textValid(dotValues.house, 4) || '-',
-            homePhone   : utils.textValid(dotValues.homePhone, 20) || 'Не указан',
-            track       : dotValues.track || null,
-            mobilePhone : 'Не указан',
-            gallery     : dotValues.gallery
+            id: utils.textValid(dotValues.id),
+            layer: utils.textValid(dotValues.layer, 50) || defaultLayer,
+            position: dotValues.position || [0, 0],
+            title: utils.textValid(dotValues.title, 50) || defaultTitle,
+            text: utils.textValid(dotValues.text, 150) || defaultText,
+            icon: utils.textValid(dotValues.icon, 20) || defaultIcon,
+            address: utils.textValid(dotValues.address, 10) || '-',
+            street: utils.textValid(dotValues.street, 40) || '-',
+            house: utils.textValid(dotValues.house, 4) || '-',
+            homePhone: utils.textValid(dotValues.homePhone, 20) || 'Не указан',
+            track: dotValues.track || null,
+            mobilePhone: 'Не указан',
+            gallery: dotValues.gallery
         };
 
         if (dotValues.image) {
@@ -161,57 +161,34 @@ var edit = function (req, res) {
 };
 
 var remove = function (req, res) {
-    req.on("data", function (data) {
-        if (req.user.vkontakteId === adminId) {
-            var dotId = data.toString();
+    if (req.user.vkontakteId === adminId) {
+        var dotId = req.body.id;
 
-            // remove from db
-            Dot.remove({ id: dotId }, function (err) {
-                if (err) {
-                    utils.errorHandler(err, 'Dot Remove Error');
-                    res.send(400, 'Bad Request');
-                }
-                res.end("Dot removed from server");
-            });
+        // remove from db
+        Dot.remove({ id: dotId }, function (err) {
+            if (err) {
+                utils.errorHandler(err, 'Dot Remove Error');
+                res.send(400, 'Bad Request');
+            }
+            res.end("Dot removed from server");
+        });
 
-            // remove dot files if exists
-            var markerPath = 'public/marker-images/' + dotId + '.png';
-            var galleryPath = 'public/galleries/' + dotId;
+        // remove gallery files
+        var galleryFiles = req.body.galleryFiles.split(',');
 
-            fs.stat(galleryPath, function (err) {
-                if (err) {
-                    console.log('Marker gallery don\'t exists');
-                    return;
-                }
-                utils.deleteFolderRecursive(galleryPath, function (err) {
-                    if (err) {
-                        utils.errorHandler(err, 'Dot Remove Error (gallery folder unlink)');
-                    }
-                    console.log('Dot gallery deleted');
-                });
-            });
+        for (var i = 0; i < galleryFiles.length; i++) {
+            var filePath = 'public/galleries/' + galleryFiles[i];
 
-            fs.stat(markerPath, function (err) {
-                if (err) {
-                    console.log('Marker image don\'t exists');
-                    return;
-                }
-                fs.unlink(markerPath, function (err) {
-                    if (err) {
-                        utils.errorHandler(err, 'Dot Remove Error (marker unlink)');
-                        res.send(400, 'Bad Request');
-                    }
-                    console.log('Dot marker image deleted');
-                });
-            });
+            if (fs.existsSync(filePath)) {
+                fs.unlink(filePath);
+            }
+            else console.log('gallery file not found');
         }
-        else {
-            res.send(403, "Access denied");
-            console.log("User access error");
-        }
-    });
-
-    console.log("Dot removed from server");
+    }
+    else {
+        res.send(403, "Access denied");
+        console.log("User access error");
+    }
 };
 
 // exports

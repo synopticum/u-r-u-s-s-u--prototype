@@ -242,6 +242,8 @@ var View = {
             else throw Error('BDots.records don t exist');
 
             $.fancybox.close(_this);
+
+            helper.playSend();
             helper.status('Точка добавлена');
         },
         'file': helper.markerImageUpload,

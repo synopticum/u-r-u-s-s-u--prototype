@@ -23,11 +23,3 @@ serverDomain.run(function () {
         console.log("Express server listening on port %d in %s mode", opts.port, app.settings.env);
     });
 });
-
-// socket
-//io.on('connection', function (socket) {
-//    socket.emit('dotChanges', { hello: 'world' });
-//    socket.on('my other event', function (data) {
-//        console.log(data);
-//    });
-//});

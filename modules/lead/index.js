@@ -28,7 +28,7 @@ var add = function (req, res) {
 };
 
 var get = function (req, res) {
-    Lead.find(function (err, result) {
+    Lead.find({}).sort('-date').exec(function (err, result) {
         if (err) {
             utils.errorHandler(err, 'Lead Get Error');
             res.send(400, 'Bad Request');

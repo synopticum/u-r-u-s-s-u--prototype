@@ -262,8 +262,13 @@ View.RemoveDot = Backbone.View.extend({
 
         if (BDots.records) {
             var record = BDots.records.get(this.dotId);
+            var galleryFiles = record.get('gallery');
 
-            record.destroy(this.dotId, {
+            var fd = new FormData();
+            fd.append('id', this.dotId);
+            fd.append('galleryFiles', galleryFiles);
+
+            record.destroy(fd, {
                 success: function (model, response) {
                     console.log(response);
                     BDots.records.remove(record);
@@ -296,13 +301,17 @@ View.MessagesMod = Backbone.View.extend({
         return this.$el.html(this.template(this));
     },
     events: {
-        'click .input-submit': 'submit'
+        'click .input-submit': 'submit',
+        'click .messagesmod-update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
 
         $.fancybox.close(_this);
         helper.status('Сообщение отправлено');
+    },
+    'update': function () {
+        BMessages.records.fetch({ url : "/messages", success: function () { helper.status('Updated') }, error: function () { helper.status('Error') } });
     }
 });
 
@@ -366,6 +375,8 @@ View.MessagesDot = Backbone.View.extend({
         } });
 
         $.fancybox.close(_this);
+
+        helper.playSend();
         helper.status('Сообщение отправлено');
     },
     'file': helper.singleImageUpload

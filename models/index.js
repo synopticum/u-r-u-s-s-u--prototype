@@ -138,6 +138,11 @@ var MessageSchema = new Schema({
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
+    },
+    date : {
+        type : Date,
+        default : Date.now,
+        required: true
     }
 });
 
@@ -179,6 +184,11 @@ var NewsSchema = new Schema({
     created : {
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),
+        required: true
+    },
+    date : {
+        type : Date,
+        default : Date.now,
         required: true
     }
 });
@@ -227,6 +237,11 @@ var AdsSchema = new Schema({
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
+    },
+    date : {
+        type : Date,
+        default : Date.now,
+        required: true
     }
 });
 
@@ -264,6 +279,11 @@ var AnonymousSchema = new Schema({
     created : {
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),
+        required: true
+    },
+    date : {
+        type : Date,
+        default : Date.now,
         required: true
     }
 });
@@ -307,6 +327,11 @@ var LeadSchema = new Schema({
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),
         required: true
+    },
+    date : {
+        type : Date,
+        default : Date.now,
+        required: true
     }
 });
 
@@ -348,6 +373,11 @@ var ClaimsSchema = new Schema({
     created : {
         type : String,
         default : moment(new Date()).format("DD.MM.YYYY"),
+        required: true
+    },
+    date : {
+        type : Date,
+        default : Date.now,
         required: true
     }
 });

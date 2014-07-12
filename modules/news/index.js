@@ -28,7 +28,7 @@ var add = function (req, res) {
 };
 
 var get = function (req, res) {
-    News.find({ $query: {} }, function (err, result) {
+    News.find({}).sort('-date').exec(function (err, result) {
         if (err) {
             utils.errorHandler(err, 'News Get Error');
             res.send(400, 'Bad Request');

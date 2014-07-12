@@ -4,7 +4,6 @@
     <title>{{title}}</title>
 
     <!-- vendor -->
-    <script src="js/vendor/socket.io-1.0.4.js"></script>
     <script src="js/vendor/jquery.min.js"></script>
     <script src="js/vendor/underscore-min.js"></script>
     <script src="js/vendor/backbone-min.js"></script>
@@ -405,9 +404,7 @@
                             <li>С основными <span class="notice nmain">навигационными блоками</span> вопросов, думаю, не
                                 возникнет. Разделы минимально прокомментированы.</li>
                             <li><span class="notice nanon">Раздел для параноиков</span> сделан так, что можно быть спокойным за свою анонимность.
-                                На сайте
-                                <span class="notice nscheme">не оседает <div class="n-scheme"></div></span>&nbsp;
-                                <span class="notice nuser">ничего <div class="n-user"></div></span>.</li>
+                                С этого раздела на сайте не оседает ничего.</li>
                             <li>Двойной клик на карте позволяет добавить точку. Чтобы точка попала на общую карту, надо постараться. На пользовательские карты и события &mdash; без ограничений.</li>
                             <li>Сообщения на точках обновляются один раз в 5 минут. Для более оперативного общения, вопросов, пожеланий и предложений по сайту
                                 используйте <a href="http://vk.com/" target="_blank" class="nvk">группу
@@ -690,7 +687,7 @@
 
 <!-- mod messages popup template -->
 <script type="text/html" id="messagesmod-popup-template">
-    <h3>Непроверенные сообщения</h3>
+    <h3><span class="messagesmod-update">&uarr;&darr;</span> Непроверенные сообщения</h3>
 
     <div class="dot-messages-wrapper">
         <div class="dot-messages-list">

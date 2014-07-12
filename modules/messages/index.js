@@ -5,8 +5,6 @@ var adminId = '257378450',
     defaultText = 'Автор поленился набрать текст';
 
 var add = function (req, res) {
-    console.log(req.body.image);
-
     var message = {
         messageId    : 'm' + utils.guid(),
         dotId        : utils.textValid(req.body.id),
@@ -30,7 +28,7 @@ var add = function (req, res) {
 };
 
 var get = function (req, res) {
-    Message.find(function (err, result) {
+    Message.find({}).sort('-date').exec(function (err, result) {
         if (err) {
             utils.errorHandler(err, 'Messages Get Error');
             res.send(400, 'Bad Request');

@@ -27,7 +27,7 @@ var add = function (req, res) {
 };
 
 var get = function (req, res) {
-    Claims.find(function (err, result) {
+    Claims.find({}).sort('-date').exec(function (err, result) {
         if (err) {
             utils.errorHandler(err, 'Claims Get Error');
             res.send(400, 'Bad Request');

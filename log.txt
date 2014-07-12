@@ -10,3 +10,6 @@ Sat Jul 12 2014 08:55:14 GMT+0400 (Московское время (зима)): 
 Надевают одеж..." }
 Sat Jul 12 2014 09:00:29 GMT+0400 (Московское время (зима)): News Add Error: MongoError: insertDocument :: caused by :: 17280 Btree::insert: key too large to index, failing mongomapdb.news.$text_1 1029 { : "едложения начинаются с Большой буквы и разделяются п р о б е л а м и.
 Надевают одежд..." }
+Sun Jul 13 2014 03:12:33 GMT+0400 (Московское время (зима)): Dot Remove Error (marker unlink): Error: ENOENT, unlink 'D:\works\node\testmap\public\galleries\o2Oq1.jpg'
+Sun Jul 13 2014 03:12:33 GMT+0400 (Московское время (зима)): Dot Remove Error (marker unlink): Error: ENOENT, unlink 'D:\works\node\testmap\public\galleries\o2Oq1.jpg'
+Sun Jul 13 2014 03:12:33 GMT+0400 (Московское время (зима)): Dot Remove Error (marker unlink): Error: ENOENT, unlink 'D:\works\node\testmap\public\galleries\o2Oq1.jpg'

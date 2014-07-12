@@ -11,11 +11,11 @@ var BDot = Backbone.Model.extend({
             error:   options.error
         });
     },
-    destroy: function(id, options){
+    destroy: function(fd, options){
         return $.ajax({
             url: '/dot',
-            data: id,
-            contentType: 'text/plain',
+            data: fd,
+            contentType: false,
             processData: false,
             type: 'DELETE',
             success: options.success,

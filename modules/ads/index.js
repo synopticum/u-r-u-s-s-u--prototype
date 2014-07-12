@@ -29,7 +29,8 @@ var add = function (req, res) {
 };
 
 var get = function (req, res) {
-    Ads.find(function (err, result) {
+    Ads.find({}).sort('-date').exec(function (err, result) {
+        console.log(result);
         if (err)  {
             utils.errorHandler(err, 'Ads Get Error');
             res.send(400, 'Bad Request');

@@ -1,6 +1,5 @@
 // init
 $.getJSON("/all", function (data) {
-    console.log(JSON.stringify(data));
     BDots      = new BDotsModel(data.dots);
     BMessages  = new BMessagesModel(data.messages);
     BNews      = new BNewsModel(data.news);
@@ -10,11 +9,4 @@ $.getJSON("/all", function (data) {
     BClaims    = new BClaimsModel(data.claims);
 
     View.Map.init();
-});
-
-// socket
-var socket = io('http://localhost');
-socket.on('dotChanges', function (data) {
-    console.log(data);
-    //socket.emit('my other event', { my: 'data' });
 });
