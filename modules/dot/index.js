@@ -79,78 +79,16 @@ var edit = function (req, res) {
             dotValidValues.image = 'marker-images/' + dotValues.image;
         }
 
-        // check files exists
-        if (!utils.isEmpty(req.files)) {
-            console.log('Dot update have files');
+        console.log('Dot update dont have files');
+        delete dotValidValues.gallery;
 
-            // create gallery files
-            var galleryPath = 'public/galleries/' + dotValidValues.id;
-
-            fs.stat(galleryPath, function (err) {
-                if (err) {
-                    utils.mkdir(galleryPath);
-                    console.log('Marker gallery created');
-                }
-
-                for (var galleryImage in req.files) {
-                    var tmpGalleryPath = req.files[galleryImage].ws.path;
-                    var update = { gallery: dotValidValues.gallery };
-                    utils.mkdir('public/tmp');
-
-                    fs.readFile(tmpGalleryPath, function (err, result) {
-                        var imageName = (Math.random() * 31337 | 0) + '.jpg';
-                        var imagePath = 'galleries/' + dotValidValues.id + '/' + imageName;
-
-                        update.gallery.push(imagePath);
-
-                        fs.writeFile('public/galleries/' + dotValidValues.id + '/' + imageName, result, function (err) {
-                            if (err) {
-                                utils.errorHandler(err, 'Dot Edit Error (gallery file write)');
-                            }
-
-                            Dot.findOneAndUpdate({id: dotValidValues.id}, update, function (err, result) {
-                                if (err) {
-                                    utils.errorHandler(err, 'Dot Edit Error (gallery update error)');
-                                    res.send(400, 'Bad Request');
-                                }
-                                console.log('Marker gallery updated');
-                                res.end(JSON.stringify(result));
-                            });
-                        });
-                    });
-
-                    fs.unlink(tmpGalleryPath, function (err) {
-                        if (err) {
-                            utils.errorHandler(err, 'Dot Edit Error (gallery file unlink)');
-                        }
-                        console.log('Temporary gallery image deleted');
-                    })
-                }
-            });
-
-            // save in db
-            Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
-                if (err) {
-                    utils.errorHandler(err, 'Dot Edit Error (with files)');
-                    res.send(400, 'Bad Request');
-                }
-                res.end(JSON.stringify(result));
-            });
-
-            console.log('image updated');
-        }
-        else {
-            console.log('Dot update dont have files');
-            delete dotValidValues.gallery;
-
-            Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
-                if (err) {
-                    utils.errorHandler(err, 'Dot Edit Error (without files)');
-                    res.send(400, 'Bad Request');
-                }
-                res.end(JSON.stringify(result));
-            });
-        }
+        Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
+            if (err) {
+                utils.errorHandler(err, 'Dot Edit Error (without files)');
+                res.send(400, 'Bad Request');
+            }
+            res.end(JSON.stringify(result));
+        });
     }
     else {
         res.send(403, "Access denied");

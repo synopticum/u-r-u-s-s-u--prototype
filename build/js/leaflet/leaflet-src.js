@@ -5652,7 +5652,7 @@ L.PolyUtil.clipPolygon = function (points, bounds) {
 				clippedPoints.push(a);
 
 			// else if b is inside the clip window (a->b enters the screen)
-			} else if (!(b._code & edge)) {
+			} else if (!(b._code && edge)) {
 				p = lu._getEdgeIntersection(b, a, edge, bounds);
 				p._code = lu._getBitCode(p, bounds);
 				clippedPoints.push(p);

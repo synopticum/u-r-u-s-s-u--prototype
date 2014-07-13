@@ -570,32 +570,6 @@ a {
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEYAAAA0CAYAAAA3xE5OAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAaVJREFUeNrsmz1Ow0AQRtdBsSkQ9NBRUSSioOIMFCRgV3CRHCFpKMItICDuAUKipYlEUKTQAQWYwnyr7EbDxqaP5xvpSfvjZp52bRczUWFKIwYdxyHYdmt1iE8wAY/gFtyBfOmpYpkueAaFEmyuJ6EHOVkDfUVCQvrOwZKYUMob6IE2SIry07WKJC6nnssxlPNHTBo8MAJbNZJRhc3xOsg99WJi8CI2bkCkQIoncgfB5z+xTuzGWXB9NhVJ8dicZ8LDecN9kn0MwbvRFzbnCzHvWFtjYWpf4WnxtIWHsb1fX1hPnKl18G10Rixyz60Y+fMbGd2xcNEwjNKgGIqhGIqhGIqhGIqhGIqhGIphUAzFUAzFUAzFUAzFUAzFUAyDYiiGYiiGYiiGYlZPzIeYJ4pdbIhxbsVMxcKeYjG7Yjy1Yp7EwrFiMUdifB+Ws85YzjovZy0rgB6xABrvWreZsWR+QRY2WQwqmixaoFkjGbHLqazJYlDVljNU3JZzWdWW4zlV2MiVhh6if1r/MtAFB2AHNGvyWf4Br+DBzFv/rkxJ69+vAAMAnbXnTqYk5XgAAAAASUVORK5CYII=") no-repeat;
 }
 
-.n-scheme {
-  display: none;
-  position: absolute;
-  margin-left: 25px;
-  left: 100%;
-  top: -300px;
-  width: 478px;
-  height: 513px;
-  z-index: 333;
-  border: 1px solid #ccc;
-  background: url("../images/nscheme.png") no-repeat;
-}
-
-.n-user {
-  display: none;
-  position: absolute;
-  margin-left: 5px;
-  left: 100%;
-  top: -150px;
-  width: 681px;
-  height: 337px;
-  z-index: 333;
-  border: 1px solid #ccc;
-  background: url("../images/nuser.png") no-repeat;
-}
-
 .n-premod {
   display: none;
   position: absolute;
@@ -605,10 +579,26 @@ a {
   width: 350px;
   height: 245px;
   z-index: 333;
+  border-radius: 5px;
+  border: 2px solid #6B9B2A;
   background: url("../images/npremod.jpg") no-repeat;
 }
 
-.nscheme, .nuser, .npremod {
+.n-add {
+  display: none;
+  position: absolute;
+  margin-left: 5px;
+  left: 100%;
+  top: -180px;
+  width: 400px;
+  height: 375px;
+  z-index: 333;
+  border-radius: 5px;
+  border: 2px solid #6B9B2A;
+  background: url("../images/adddot.jpg") no-repeat;
+}
+
+.npremod, .nadd {
   position: relative;
 }
 
@@ -623,6 +613,7 @@ a {
 .n-scheme.active,
 .n-user.active,
 .n-premod.active,
+.n-add.active,
 .n-vk.active {
   display: block;
 }
@@ -657,4 +648,11 @@ a {
 }
 .bus .status, .taxi .status {
   color: #6b9b2a;
+}
+.sun {
+  padding: 10px 0;
+}
+.sun .popup-button {
+  display: block;
+  text-align: center;
 }
