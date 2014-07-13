@@ -146,7 +146,7 @@
   top: 11px;
   width: 14px;
   height: 14px;
-  background: url("../images/edit.png") no-repeat;
+  background: url("../images/sprite.png") no-repeat -14px -48px;
 }
 
 .dot-destroy {
@@ -156,7 +156,7 @@
   top: 11px;
   width: 14px;
   height: 14px;
-  background: url("../images/remove.png") no-repeat;
+  background: url("../images/sprite.png") no-repeat -28px -48px;
 }
 
 .dot-play {
@@ -166,10 +166,10 @@
   top: 11px;
   width: 14px;
   height: 14px;
-  background: url("../images/play.png") no-repeat;
+  background: url("../images/sprite.png") no-repeat 0 -62px;
 }
 .dot-play.active {
-  background-position: 0 -14px;
+  background-position: 0 -76px;
 }
 .user .dot-play {
   right: 30px;
@@ -302,13 +302,13 @@ a {
   color: #fff;
 }
 #startScreen .tabs li .anonymous {
-  background: url("../images/anonymous.png") no-repeat 50% -5px #F9F9F9;
+  background: url("../images/sprite.png") no-repeat -240px -4px #F9F9F9;
 }
 #startScreen .tabs li .anonymous:hover {
-  background: url("../images/anonymous.png") no-repeat 50% -5px #F9F9F9;
+  background: url("../images/sprite.png") no-repeat -240px -4px #F9F9F9;
 }
 #startScreen .tabs li.active .anonymous {
-  background: url("../images/anonymous.png") no-repeat 50% -55px #000;
+  background: url("../images/sprite.png") no-repeat -242px -54px #000;
 }
 #startScreen .tabs li.active .claims {
   background: #9a142e;
@@ -382,15 +382,15 @@ a {
 }
 #messagesmod {
   left: 80px;
-  background: url("../images/messages.png") no-repeat 50% 50%;
+  background: url("../images/sprite.png") no-repeat -144px 0;
 }
 #usersmod {
   left: 140px;
-  background: url("../images/users.png") no-repeat 50% 50%;
+  background: url("../images/sprite.png") no-repeat -192px 0;
 }
 #panel {
   left: 20px;
-  background: url("../images/panel.png") no-repeat;
+  background: url("../images/sprite.png") no-repeat 0 0;
 }
 
 #fileupload {
@@ -430,12 +430,12 @@ a {
 #singleimage .close {
   cursor: pointer;
   position: absolute;
-  right: 30px;
-  top: 0px;
+  right: 15px;
+  top: 15px;
   display: block;
   width: 32px;
   height: 32px;
-  background: url("../images/close2.png") no-repeat 50% 50%;
+  background: url("../images/sprite.png") no-repeat -96px -48px;
 }
 
 #final {
@@ -459,7 +459,7 @@ a {
   display: block;
   width: 20px;
   height: 20px;
-  background: url("../images/refresh.png") no-repeat;
+  background: url("../images/sprite.png") no-repeat -48px -48px;
   opacity: .2;
   transition: .3s;
 }
@@ -628,18 +628,32 @@ a {
 }
 
 .bus {
-  padding: 6px 0 8px 60px;
-  background: url("../images/bus.png") no-repeat;
+  padding: 6px 0 8px 0;
   border-bottom: 1px solid #eee;
   padding-bottom: 22px;
   line-height: 150%;
 }
+.bus .icon {
+  float: left;
+  overflow: hidden;
+  width: 48px;
+  height: 48px;
+  margin: -3px 10px 0 0;
+  background: url("../images/sprite.png") no-repeat -48px 0;
+}
 
 .taxi {
-  padding: 21px 0 20px 60px;
-  background: url("../images/taxi.png") no-repeat 0 15px;
+  padding: 21px 0 20px 0;
   border-bottom: 1px solid #eee;
   line-height: 150%;
+}
+.taxi .icon {
+  float: left;
+  overflow: hidden;
+  width: 48px;
+  height: 48px;
+  margin: -5px 10px 0 0;
+  background: url("../images/sprite.png") no-repeat -96px 0;
 }
 .bus .status, .taxi .status {
   color: #6b9b2a;
