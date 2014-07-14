@@ -723,16 +723,30 @@
 
 <!-- mod users popup template -->
 <script type="text/html" id="usersmod-popup-template">
-    <h3>Пользователи</h3>
+    <h3><span class="messagesmod-update">&uarr;&darr;</span>Пользователи</h3>
 
     <div class="users">
     <table>
+        <col width="40%"/>
+        <col width="20%"/>
+        <col width="10%"/>
+        <col width="30%"/>
         <% if (users) { _.each(users, function (user) { %>
         <tr>
             <td><a href="http://vk.com/<%= user.usernaname %>" target="_blank"><%= user.displayName %></a></td>
             <td class="vkid">id: <%= user.vkontakteId %></td>
             <td class="joined"><%= user.created %></td>
-            <td><%= user.status %></td>
+            <td class="mod">
+                <% if (user.status === 'premod') { %>
+                <div class="usersmod-trust" id="trust<%= user.vkontakteId %>"
+                     onclick="$.ajax({ url: '/users', method: 'put', data : { id: '<%= user.vkontakteId %>', status: 'trusted' }}).done(function () { console.log('done'); $('#trust<%= user.vkontakteId %>').fadeOut() });">set trusted</div>
+                <% } %>
+
+                <% if (user.status === 'trusted') { %>
+                <div class="usersmod-premod" id="premod<%= user.vkontakteId %>"
+                     onclick="$.ajax({ url: '/users', method: 'put', data : { id: '<%= user.vkontakteId %>', status: 'premod' }}).done(function () { console.log('done'); $('#premod<%= user.vkontakteId %>').fadeOut() });">set premod</div>
+                <% } %>
+            </td>
         </tr>
         <% }); } %>
     </table>

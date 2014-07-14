@@ -328,13 +328,17 @@ View.UsersMod = Backbone.View.extend({
         return this.$el.html(this.template(this));
     },
     events: {
-        'click .input-submit': 'submit'
+        'click .input-submit': 'submit',
+        'click .messagesmod-update': 'update'
     },
     'submit': function () {
         var _this = $(this.$el);
 
         $.fancybox.close(_this);
         helper.status('Сообщение отправлено');
+    },
+    'update': function () {
+        BUsers.records.fetch({ url : "/users", success: function () { helper.status('Updated') }, error: function () { helper.status('Error') } });
     }
 });
 

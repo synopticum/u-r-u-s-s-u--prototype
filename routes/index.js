@@ -18,6 +18,7 @@ var auth      = require('../modules/auth'),
 module.exports = function (app) {
     app.get('/all', mmw, send.all);
     app.get('/users', mmw, users.all);
+    app.put('/users', mmw, users.edit);
 
     app.post('/uploads', mmw, upload.singleImage);
     app.post('/uploadmarker', mmw, upload.markerImage);
