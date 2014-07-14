@@ -2,8 +2,7 @@ var utils = require('../../libs/util'),
     fs = require('fs'),
     Dot = require('../../models').Dot;
 
-var adminId = '257378450',
-    defaultText = 'Автор поленился набрать текст',
+var defaultText = 'Автор поленился набрать текст',
     defaultLayer = 'main',
     defaultTitle = 'Это бывший заголовок',
     defaultIcon = 'green';
@@ -56,77 +55,101 @@ var add = function (req, res) {
 };
 
 var edit = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
-        var dotValues = JSON.parse(req.body.json);
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        var dotValidValues = {
-            id: utils.textValid(dotValues.id),
-            layer: utils.textValid(dotValues.layer, 50) || defaultLayer,
-            position: dotValues.position || [0, 0],
-            title: utils.textValid(dotValues.title, 50) || defaultTitle,
-            text: utils.textValid(dotValues.text, 150) || defaultText,
-            icon: utils.textValid(dotValues.icon, 20) || defaultIcon,
-            address: utils.textValid(dotValues.address, 10) || '-',
-            street: utils.textValid(dotValues.street, 40) || '-',
-            house: utils.textValid(dotValues.house, 4) || '-',
-            homePhone: utils.textValid(dotValues.homePhone, 20) || 'Не указан',
-            track: dotValues.track || null,
-            mobilePhone: 'Не указан',
-            gallery: dotValues.gallery
-        };
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                var dotValues = JSON.parse(req.body.json);
 
-        if (dotValues.image) {
-            dotValidValues.image = 'marker-images/' + dotValues.image;
-        }
+                var dotValidValues = {
+                    id: utils.textValid(dotValues.id),
+                    layer: utils.textValid(dotValues.layer, 50) || defaultLayer,
+                    position: dotValues.position || [0, 0],
+                    title: utils.textValid(dotValues.title, 50) || defaultTitle,
+                    text: utils.textValid(dotValues.text, 150) || defaultText,
+                    icon: utils.textValid(dotValues.icon, 20) || defaultIcon,
+                    address: utils.textValid(dotValues.address, 10) || '-',
+                    street: utils.textValid(dotValues.street, 40) || '-',
+                    house: utils.textValid(dotValues.house, 4) || '-',
+                    homePhone: utils.textValid(dotValues.homePhone, 20) || 'Не указан',
+                    track: dotValues.track || null,
+                    mobilePhone: 'Не указан',
+                    gallery: dotValues.gallery
+                };
 
-        console.log('Dot update dont have files');
-        delete dotValidValues.gallery;
+                if (dotValues.image) {
+                    dotValidValues.image = 'marker-images/' + dotValues.image;
+                }
 
-        Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
-            if (err) {
-                utils.errorHandler(err, 'Dot Edit Error (without files)');
-                res.send(400, 'Bad Request');
+                console.log('Dot update dont have files');
+                delete dotValidValues.gallery;
+
+                Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
+                    if (err) {
+                        utils.errorHandler(err, 'Dot Edit Error (without files)');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end(JSON.stringify(result));
+                });
             }
-            res.end(JSON.stringify(result));
-        });
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        // if user
+        else {
+            res.redirect('/join');
+        }
+    });
 
     console.log("Dot updated on server");
 };
 
 var remove = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
-        var dotId = req.body.id;
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        // remove from db
-        Dot.remove({ id: dotId }, function (err) {
-            if (err) {
-                utils.errorHandler(err, 'Dot Remove Error');
-                res.send(400, 'Bad Request');
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                var dotId = req.body.id;
+
+                // remove from db
+                Dot.remove({ id: dotId }, function (err) {
+                    if (err) {
+                        utils.errorHandler(err, 'Dot Remove Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Dot removed from server");
+                });
+
+                // remove gallery files
+                var galleryFiles = req.body.galleryFiles.split(',');
+
+                for (var i = 0; i < galleryFiles.length; i++) {
+                    var filePath = 'public/galleries/' + galleryFiles[i];
+
+                    if (fs.existsSync(filePath)) {
+                        fs.unlink(filePath);
+                    }
+                    else console.log('gallery file not found');
+                }
             }
-            res.end("Dot removed from server");
-        });
-
-        // remove gallery files
-        var galleryFiles = req.body.galleryFiles.split(',');
-
-        for (var i = 0; i < galleryFiles.length; i++) {
-            var filePath = 'public/galleries/' + galleryFiles[i];
-
-            if (fs.existsSync(filePath)) {
-                fs.unlink(filePath);
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
             }
-            else console.log('gallery file not found');
         }
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+        // if user
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 // exports

@@ -1,8 +1,7 @@
 var utils = require('../../libs/util'),
     Claims  = require('../../models').Claims;
 
-var adminId = '257378450',
-    defaultText = 'Автор поленился набрать текст';
+var defaultText = 'Автор поленился набрать текст';
 
 var add = function (req, res) {
     var message = {
@@ -37,40 +36,63 @@ var get = function (req, res) {
 };
 
 var edit = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        Claims.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
-            if (err) {
-                utils.errorHandler(err, 'Claims Edit Error');
-                res.send(400, 'Bad Request');
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                Claims.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+                    if (err) {
+                        utils.errorHandler(err, 'Claims Edit Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Claims approved on server");
+                });
+
+                console.log("Claims approved on server");
             }
-            res.end("Claims approved on server");
-        });
-
-        console.log("Claims approved on server");
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        // if user
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 var remove = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
-        Claims.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) {
-                utils.errorHandler(err, 'Claims Remove Error');
-                res.send(400, 'Bad Request');
-            }
-            res.end("Claims removed from server");
-        });
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        console.log("Claims removed from server");
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                Claims.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
+                    if (err) {
+                        utils.errorHandler(err, 'Claims Remove Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Claims removed from server");
+                });
+
+                console.log("Claims removed from server");
+            }
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        // if user
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 // exports

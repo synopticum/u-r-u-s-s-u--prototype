@@ -1,8 +1,7 @@
 var utils = require('../../libs/util'),
     Anonymous  = require('../../models').Anonymous;
 
-var adminId = '257378450',
-    defaultText = 'Автор поленился набрать текст';
+var defaultText = 'Автор поленился набрать текст';
 
 var add = function (req, res) {
     var message = {
@@ -36,39 +35,63 @@ var get = function (req, res) {
 };
 
 var edit = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
-        Anonymous.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
-            if (err) {
-                utils.errorHandler(err, 'Anonymous Edit Error');
-                res.send(400, 'Bad Request');
-            }
-            res.end("Anonymous approved on server");
-        });
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        console.log("Anonymous approved on server");
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                Anonymous.update({ messageId: utils.textValid(req.body.id) }, { approved: true, text: utils.textValid(req.body.text) || defaultText }, function (err) {
+                    if (err) {
+                        utils.errorHandler(err, 'Anonymous Edit Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Anonymous approved on server");
+                });
+
+                console.log("Anonymous approved on server");
+            }
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        // if user
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 var remove = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
-        Anonymous.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err) {
-                utils.errorHandler(err, 'Anonymous Remove Error');
-                res.send(400, 'Bad Request');
-            }
-            res.end("Anonymous removed from server");
-        });
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        console.log("Anonymous removed from server");
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                Anonymous.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
+                    if (err) {
+                        utils.errorHandler(err, 'Anonymous Remove Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Anonymous removed from server");
+                });
+
+                console.log("Anonymous removed from server");
+            }
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        // if user
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 // exports

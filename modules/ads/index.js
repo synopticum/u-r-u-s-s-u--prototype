@@ -1,8 +1,7 @@
 var utils = require('../../libs/util'),
     Ads  = require('../../models').Ads;
 
-var adminId = '257378450',
-    defaultText = 'Автор поленился набрать текст';
+var defaultText = 'Автор поленился набрать текст';
 
 // ads
 var add = function (req, res) {
@@ -40,40 +39,60 @@ var get = function (req, res) {
 };
 
 var edit = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        Ads.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
-            if (err)  {
-                utils.errorHandler(err, 'Ads Edit Error');
-                res.send(400, 'Bad Request');
+        if (req.user) {
+            if (req.session.passport.user === godlike) {
+                Ads.update({ messageId: req.body.id }, { approved: true, text: utils.textValid(req.body.text) }, function (err) {
+                    if (err)  {
+                        utils.errorHandler(err, 'Ads Edit Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Ad approved on server");
+                });
+
+                console.log("Ad approved on server");
             }
-            res.end("Ad approved on server");
-        });
-
-        console.log("Ad approved on server");
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 var remove = function (req, res) {
-    if (req.user.vkontakteId === adminId) {
-        Ads.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
-            if (err)  {
-                utils.errorHandler(err, 'Ads Remove Error');
-                res.send(400, 'Bad Request');
-            }
-            res.end("Ad removed from server");
-        });
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
 
-        console.log("Ad removed from server");
-    }
-    else {
-        res.send(403, "Access denied");
-        console.log("User access error");
-    }
+        if (req.user) {
+            // if admin
+            if (req.session.passport.user === godlike) {
+                Ads.remove({ messageId: utils.textValid(req.body.id) }, function (err) {
+                    if (err)  {
+                        utils.errorHandler(err, 'Ads Remove Error');
+                        res.send(400, 'Bad Request');
+                    }
+                    res.end("Ad removed from server");
+                });
+
+                console.log("Ad removed from server");
+            }
+            // if user
+            else {
+                res.send(403, "Access denied");
+                console.log("User access error");
+            }
+        }
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 // exports

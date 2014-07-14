@@ -6,6 +6,12 @@ var passport = require('passport'),
     VKontakteStrategy = require('passport-vkontakte').Strategy,
     User = require('../models').User;
 
+// set admin
+User.findOne({ _id: '53c049032b76fcb411603ecc' }, function (err, result){
+    result.status = 'godlike';
+    result.save();
+});
+
 passport.use(new VKontakteStrategy({
         clientID:     4447151,
         clientSecret: 'bk2AL0XGFoyUjWmFWBcX',

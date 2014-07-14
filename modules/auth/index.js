@@ -1,16 +1,20 @@
-var adminId = '257378450';
+User = require('../../models').User;
 
 var logged = function (req, res) {
-    if (req.user) {
-        // check admin rules
-        if (req.user.vkontakteId === adminId) {
-            res.render('admin', { title: 'Admin' })
+    // check for admin
+    User.findOne({ status: 'godlike' }, function (err, result){
+        var godlike = result.get('_id').toString();
+
+        if (req.user) {
+            if (req.session.passport.user === godlike) {
+                res.render('admin', { title: 'Admin' })
+            }
+            else res.render('user', { title: ' User' });
         }
-        else res.render('user', { title: ' User' });
-    }
-    else {
-        res.redirect('/join');
-    }
+        else {
+            res.redirect('/join');
+        }
+    });
 };
 
 var join = function (req, res) {
