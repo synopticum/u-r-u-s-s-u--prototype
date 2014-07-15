@@ -235,7 +235,7 @@
         </tr>
         <tr>
             <td colspan="2"><input type="text" class="input-home-phone popup-textbox" maxlength="50" placeholder="Телефон"/></td>
-            <td><input type="text" class="input-track popup-textbox" placeholder="Трек"/></td>
+            <td><input type="text" class="input-track popup-textbox" value="<%= track %>" placeholder="Трек"/></td>
         </tr>
         <tr>
             <td>
@@ -478,6 +478,10 @@
     </div>
 
     <div class="dot-messages-send">
+        <div class="you">
+            <img src="<%= user.avatar %>" alt=""/>
+            <div class="you-status <%= user.status %>" title="<% if (user.status === 'premod') { %>Сообщение появится после премодерации<% } %><% if (user.status === 'trusted') { %>Сообщение появится сразу<% } %><% if (user.status === 'godlike') { %>Сообщение появится<% } %>"></div>
+        </div>
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст новости"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
@@ -531,6 +535,10 @@
     </div>
 
     <div class="dot-messages-send">
+        <div class="you">
+            <img src="<%= user.avatar %>" alt=""/>
+            <div class="you-status <%= user.status %>" title="<% if (user.status === 'premod') { %>Сообщение появится после премодерации<% } %><% if (user.status === 'trusted') { %>Сообщение появится сразу<% } %><% if (user.status === 'godlike') { %>Сообщение появится<% } %>"></div>
+        </div>
         <textarea name="" id="" cols="" rows="" maxlength="999" class="ads-textarea popup-textarea"
                   placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
@@ -577,7 +585,7 @@
     </div>
 
     <div class="dot-messages-send">
-        <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
+        <textarea name="" id="" cols="" rows="" maxlength="999" class="anonymous-textarea popup-textarea"
                   placeholder="Введи сюда текст послания"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
         <input type="file" name="" class="input-file"/>
@@ -627,6 +635,10 @@
     </div>
 
     <div class="dot-messages-send">
+        <div class="you">
+            <img src="<%= user.avatar %>" alt=""/>
+            <div class="you-status <%= user.status %>" title="<% if (user.status === 'premod') { %>Сообщение появится после премодерации<% } %><% if (user.status === 'trusted') { %>Сообщение появится сразу<% } %><% if (user.status === 'godlike') { %>Сообщение появится<% } %>"></div>
+        </div>
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>
@@ -677,6 +689,10 @@
     </div>
 
     <div class="dot-messages-send">
+        <div class="you">
+            <img src="<%= user.avatar %>" alt=""/>
+            <div class="you-status <%= user.status %>" title="<% if (user.status === 'premod') { %>Сообщение появится после премодерации<% } %><% if (user.status === 'trusted') { %>Сообщение появится сразу<% } %><% if (user.status === 'godlike') { %>Сообщение появится<% } %>"></div>
+        </div>
         <textarea name="" id="" cols="" rows="" maxlength="999" class="news-textarea popup-textarea"
                   placeholder="Введите сюда текст объявления"></textarea>
         <button type="submit" class="input-submit popup-button">Отправить</button>

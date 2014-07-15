@@ -42,6 +42,14 @@ var all = function (req, res) {
                             Message.find({}).sort('-date').exec(function (err, result) {
                                 if (err) utils.errorHandler(err, 'Messages Get Error');
                                 data.messages = result;
+
+                                var user = {
+                                    name:   req.user.displayName,
+                                    avatar: req.user.avatar,
+                                    status: req.user.status
+                                };
+                                data.user = user;
+
                                 res.send(200, data);
                             });
                         });

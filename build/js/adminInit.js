@@ -388,10 +388,15 @@ View.MessagesDot = Backbone.View.extend({
 
 View.NewsScreen = Backbone.View.extend({
     messages: {},
+    user: {},
     initialize: function () {
         var newsFound = BNews.records;
         newsFound = JSON.stringify(newsFound);
         this.messages = JSON.parse(newsFound);
+
+        this.user.name = BYou.get('name');
+        this.user.avatar = BYou.get('avatar');
+        this.user.status = BYou.get('status');
     },
     id: 'news-screen',
     template: _.template($('#news-template').html()),
@@ -439,10 +444,15 @@ View.NewsScreen = Backbone.View.extend({
 
 View.AdsScreen = Backbone.View.extend({
     messages: {},
+    user: {},
     initialize: function () {
         var adsFound = BAds.records;
         adsFound = JSON.stringify(adsFound);
         this.messages = JSON.parse(adsFound);
+
+        this.user.name = BYou.get('name');
+        this.user.avatar = BYou.get('avatar');
+        this.user.status = BYou.get('status');
     },
     id: 'ads-screen',
     template: _.template($('#ads-template').html()),
@@ -546,10 +556,15 @@ View.AnonymousScreen = Backbone.View.extend({
 
 View.LeadScreen = Backbone.View.extend({
     messages: {},
+    user: {},
     initialize: function () {
         var leadFound = BLead.records;
         leadFound = JSON.stringify(leadFound);
         this.messages = JSON.parse(leadFound);
+
+        this.user.name = BYou.get('name');
+        this.user.avatar = BYou.get('avatar');
+        this.user.status = BYou.get('status');
     },
     id: 'lead-screen',
     template: _.template($('#lead-template').html()),
@@ -599,10 +614,15 @@ View.LeadScreen = Backbone.View.extend({
 
 View.ClaimsScreen = Backbone.View.extend({
     messages: {},
+    user: {},
     initialize: function () {
         var claimsFound = BClaims.records;
         claimsFound = JSON.stringify(claimsFound);
         this.messages = JSON.parse(claimsFound);
+
+        this.user.name = BYou.get('name');
+        this.user.avatar = BYou.get('avatar');
+        this.user.status = BYou.get('status');
     },
     id: 'claims-screen',
     template: _.template($('#claims-template').html()),
@@ -651,6 +671,7 @@ View.ClaimsScreen = Backbone.View.extend({
 });
 
 $.getJSON("/all", function (data) {
+    BYou       = new BYouModel(data.user);
     BDots      = new BDotsModel(data.dots);
     BMessages  = new BMessagesModel(data.messages);
     BNews      = new BNewsModel(data.news);

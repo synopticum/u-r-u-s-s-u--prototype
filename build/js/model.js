@@ -88,6 +88,7 @@ var BAnonymous;
 var BLead;
 var BClaims;
 var BUsers;
+var BYou;
 
 var BDotsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
@@ -240,3 +241,5 @@ var BUsersModel = Backbone.Model.extend({
         }
     }
 });
+
+var BYouModel = Backbone.Model;

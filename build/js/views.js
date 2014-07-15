@@ -296,10 +296,15 @@ var View = {
 
     NewsScreen: Backbone.View.extend({
         messages: {},
+        user: {},
         initialize: function () {
             var newsFound = BNews.records.where({ approved: true });
             newsFound = JSON.stringify(newsFound);
             this.messages = JSON.parse(newsFound);
+
+            this.user.name = BYou.get('name');
+            this.user.avatar = BYou.get('avatar');
+            this.user.status = BYou.get('status');
         },
         id: 'news-screen',
         template: _.template($('#news-template').html()),
@@ -346,10 +351,15 @@ var View = {
 
     AdsScreen: Backbone.View.extend({
         messages: {},
+        user: {},
         initialize: function () {
             var adsFound = BAds.records.where({ approved: true });
             adsFound = JSON.stringify(adsFound);
             this.messages = JSON.parse(adsFound);
+
+            this.user.name = BYou.get('name');
+            this.user.avatar = BYou.get('avatar');
+            this.user.status = BYou.get('status');
         },
         id: 'ads-screen',
         template: _.template($('#ads-template').html()),
@@ -451,10 +461,15 @@ var View = {
 
     LeadScreen: Backbone.View.extend({
         messages: {},
+        user: {},
         initialize: function () {
             var leadFound = BLead.records.where({ approved: true });
             leadFound = JSON.stringify(leadFound);
             this.messages = JSON.parse(leadFound);
+
+            this.user.name = BYou.get('name');
+            this.user.avatar = BYou.get('avatar');
+            this.user.status = BYou.get('status');
         },
         id: 'lead-screen',
         template: _.template($('#lead-template').html()),
@@ -503,10 +518,15 @@ var View = {
 
     ClaimsScreen: Backbone.View.extend({
         messages: {},
+        user: {},
         initialize: function () {
             var claimsFound = BClaims.records.where({ approved: true });
             claimsFound = JSON.stringify(claimsFound);
             this.messages = JSON.parse(claimsFound);
+
+            this.user.name = BYou.get('name');
+            this.user.avatar = BYou.get('avatar');
+            this.user.status = BYou.get('status');
         },
         id: 'claims-screen',
         template: _.template($('#claims-template').html()),
