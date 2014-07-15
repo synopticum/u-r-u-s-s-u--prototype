@@ -11,18 +11,23 @@ var add = function (req, res) {
         link         : utils.textValid(req.user.username),
         text         : utils.textValid(req.body.text) || defaultText,
         avatar       : utils.textValid(req.user.avatar),
-        image        : req.body.image,
-        approved     : false
+        image        : req.body.image
     };
 
-    var messageValid = new Message(message);
 
-    messageValid.save(function (err) {
-        if (err) {
-            utils.errorHandler(err, 'Messages Add Error');
-            res.send(400, 'Bad Request');
-        }
-        res.send('saved');
+    // check for premod
+    User.findOne({ username: message.link }, function (err, result) {
+        (result.status === 'premod') ? message.approved = false : message.approved = true;
+
+        var messageValid = new Message(message);
+
+        messageValid.save(function (err) {
+            if (err) {
+                utils.errorHandler(err, 'Messages Add Error');
+                res.send(400, 'Bad Request');
+            }
+            res.send('saved');
+        });
     });
 };
 

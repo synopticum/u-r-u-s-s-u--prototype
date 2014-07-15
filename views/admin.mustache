@@ -98,7 +98,7 @@
             <td colspan="2">
                 <select class="input-layer selectbox">
                     <option value="main">Общая карта</option>
-                    <option value="user">Места</option>
+                    <option value="places">Места</option>
                     <option value="events">События</option>
                     <option value="old">Старые виды</option>
                     <option value="usermain">User: Главная карта</option>
@@ -209,11 +209,11 @@
             <td colspan="2">
                 <select class="input-layer selectbox">
                     <option value="main">Общая карта</option>
-                    <option value="user">Места</option>
+                    <option value="places">Места</option>
                     <option value="events">События</option>
                     <option value="old">Старые виды</option>
-                    <option value="usermain">User: Главная карта</option>
-                    <option value="userplaces">User: Карта жителей</option>
+                    <option value="usermain">User: Общая карта</option>
+                    <option value="userplaces">User: Места</option>
                     <option value="userevents">User: События</option>
                 </select>
             </td>
@@ -252,6 +252,7 @@
             <td><span class="input-marker">Цвет маркера</span></td>
             <td colspan="2">
                 <button type="button" class="popup-button input-submit">Изменить метку</button>
+                <%= layer %>
             </td>
         </tr>
     </table>
