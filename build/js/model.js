@@ -96,34 +96,40 @@ var BDotsModel = Backbone.Model.extend({
     initialize: function (data) {
         /* create dots records */
         for (var jsonItem in data) {
-            var model = new BDot(data[jsonItem]);
-            var view = new View.ShowDot();
+            if (data.hasOwnProperty(jsonItem)) {
+                var model = new BDot(data[jsonItem]);
+                var view = new View.ShowDot();
 
-            model.attributes.marker = L.marker(model.attributes.position, { icon: model.getIcon() })
-                .bindPopup(view.template(model.attributes));
+                model.attributes.marker = L.marker(model.attributes.position, { icon: model.getIcon() })
+                    .bindPopup(view.template(model.attributes));
 
-            delete model.attributes._id;
-            delete model.attributes.__v;
+                delete model.attributes._id;
+                delete model.attributes.__v;
 
-            this.records.add(model);
+                this.records.add(model);
 
-            L.marker(model.attributes.position, { icon: model.getIcon() })
-                .bindPopup(view.template(model.attributes))
+                L.marker(model.attributes.position, { icon: model.getIcon() })
+                    .bindPopup(view.template(model.attributes))
+            }
         }
 
         var records = this.records.models;
 
         // set markers
         for (var record in records) {
-            L.marker(records[record].attributes.position)
-                .bindPopup(view.template(model.attributes));
+            if (records.hasOwnProperty(record)) {
+                L.marker(records[record].attributes.position)
+                    .bindPopup(view.template(model.attributes));
+            }
         }
 
         /* get map layers */
         var layers = [];
 
         for (record in records) {
-            layers.push(records[record].attributes.layer);
+            if (records.hasOwnProperty(record)) {
+                layers.push(records[record].attributes.layer);
+            }
         }
         // remove duplicates
         layers = layers.filter(function (elem, pos) {
@@ -135,11 +141,13 @@ var BDotsModel = Backbone.Model.extend({
         }
         // fill BDots.layers
         for (record in records) {
-            var layerName = records[record].attributes.layer;
+            if (records.hasOwnProperty(record)) {
+                var layerName = records[record].attributes.layer;
 
-            if (layerName in this.layers) {
-                var marker = records[record].attributes.marker;
-                this.layers[layerName].push(marker);
+                if (layerName in this.layers) {
+                    var marker = records[record].attributes.marker;
+                    this.layers[layerName].push(marker);
+                }
             }
         }
 
@@ -155,11 +163,13 @@ var BMessagesModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });
@@ -168,11 +178,13 @@ var BNewsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });
@@ -181,11 +193,13 @@ var BAdsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });
@@ -194,11 +208,13 @@ var BAnonymousModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });
@@ -207,11 +223,13 @@ var BLeadModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });
@@ -220,11 +238,13 @@ var BClaimsModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });
@@ -233,11 +253,13 @@ var BUsersModel = Backbone.Model.extend({
     records: new Backbone.Collection(),
     initialize: function (data) {
         for (var jsonItem in data) {
-            var message = data[jsonItem];
-            delete message._id;
-            delete message.__v;
+            if (data.hasOwnProperty(jsonItem)) {
+                var message = data[jsonItem];
+                delete message._id;
+                delete message.__v;
 
-            this.records.add(message);
+                this.records.add(message);
+            }
         }
     }
 });

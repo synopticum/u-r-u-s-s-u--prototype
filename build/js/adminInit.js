@@ -504,7 +504,7 @@ View.AdsScreen = Backbone.View.extend({
 
 View.AnonymousScreen = Backbone.View.extend({
     messages: {},
-    randomWelcome: helper.anonymousRandom(),
+    random: helper.anonymousRandom(),
     initialize: function () {
         var anonymousFound = BAnonymous.records;
         anonymousFound = JSON.stringify(anonymousFound);
@@ -557,6 +557,7 @@ View.AnonymousScreen = Backbone.View.extend({
 View.LeadScreen = Backbone.View.extend({
     messages: {},
     user: {},
+    random: helper.leadRandom(),
     initialize: function () {
         var leadFound = BLead.records;
         leadFound = JSON.stringify(leadFound);

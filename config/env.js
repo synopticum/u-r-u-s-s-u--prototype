@@ -8,6 +8,7 @@ var passport = require('passport'),
 
 // set admin
 User.findOne({ _id: '53c049032b76fcb411603ecc' }, function (err, result){
+    if (err) throw err;
     result.status = 'godlike';
     result.save();
 });

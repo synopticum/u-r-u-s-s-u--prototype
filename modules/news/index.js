@@ -56,12 +56,9 @@ var edit = function (req, res) {
                     }
                     res.end("Message updated on server");
                 });
-
-                console.log("Message updated on server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user
@@ -86,12 +83,9 @@ var remove = function (req, res) {
                     }
                     res.end("Message removed from server");
                 });
-
-                console.log("Message removed from server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user

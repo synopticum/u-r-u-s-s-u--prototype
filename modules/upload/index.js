@@ -4,7 +4,6 @@ var utils = require('../../libs/util'),
 
 var singleImage = function (req, res) {
     if (!utils.isEmpty(req.files)) {
-        console.log(req.files);
         if (req.files.image) {
             if (req.files.image.type === 'image/jpeg') {
                 var tmpFilePath = req.files.image.ws.path;
@@ -18,7 +17,6 @@ var singleImage = function (req, res) {
                         if (err) {
                             utils.errorHandler(err, 'Upload Error (write single image)');
                         }
-                        console.log('marker image converted');
                         res.end(fileName);
                     });
             }
@@ -45,7 +43,6 @@ var markerImage = function (req, res) {
                             utils.errorHandler(err, 'Upload Error (write marker image)');
                             res.send(400, 'Bad Request');
                         }
-                        console.log('marker image converted');
                         res.end(fileName);
                     });
             }
@@ -65,7 +62,6 @@ var galleryImages = function (req, res) {
                 var tmpFilePath = req.files.galleryImages.ws.path;
                 var fileName = utils.makeFileName() + '.jpg';
                 var results = [];
-                console.log(req.files.galleryImages.ws.path);
 
                 gm(tmpFilePath)
                     .options({imageMagick: true})
@@ -76,7 +72,6 @@ var galleryImages = function (req, res) {
                             utils.errorHandler(err, 'Upload Error (write marker image)');
                             res.send(400, 'Bad Request');
                         }
-                        console.log('marker image converted');
                         results.push(fileName);
                         res.end(JSON.stringify(results));
                     });
@@ -85,7 +80,7 @@ var galleryImages = function (req, res) {
             else {
                 var files = req.files.galleryImages;
 
-                var results = [];
+                results = [];
                 var keys = Object.keys(req.files.galleryImages);
                 (function next(index) {
                     if (index === keys.length) { // No items left
@@ -106,7 +101,6 @@ var galleryImages = function (req, res) {
                                 utils.errorHandler(err, 'Upload Error (write marker image)');
                                 res.send(400, 'Bad Request');
                             }
-                            console.log('marker image converted');
                         });
 
                     results.push(fileName);

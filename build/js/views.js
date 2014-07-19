@@ -120,24 +120,13 @@ var View = {
     },
 
     ShowDot: Backbone.View.extend({
-        initialize: function () {
-        },
-        template: _.template($('#dot-popup-template').html()),
-        events: {
-            'click .dot-title': 'open'
-        },
-        open: function () {
-            console.log('clicked');
-        }
+        template: _.template($('#dot-popup-template').html())
     }),
 
     AddDot: Backbone.View.extend({
         id: 'adddot-popup',
         className: 'popup',
         position: [],
-        initialize: function () {
-//            console.log('init')
-        },
         template: _.template($('#adddot-popup-template').html()),
         render: function (position) {
             this.position = [position.latlng.lat + 0.21, position.latlng.lng];
@@ -184,8 +173,6 @@ var View = {
             _this.track = $(".input-track", _this).val();
             _this.gallery = this.gallery;
 
-            console.log(this.image);
-
             if (BDots.records) {
                 var dot = new BDot({
                     template: null,
@@ -228,10 +215,7 @@ var View = {
 
                         BDots.records.add(dotValid);
 
-                        var view = new View.ShowDot(response);
                         L.marker(response.position, { icon: dot.getIcon() }).addTo(map);
-
-                        console.log('Dot created on server');
                     },
                     error: function (model, response) {
                         console.log('Dot creation server error!');
@@ -280,11 +264,9 @@ var View = {
                 image: this.image
             };
 
-            $.post('/messages', message, { success: function () {
-                console.log('message added')
-            }, error: function (res) {
+            $.post('/messages', message, { error: function (res) {
                 console.log(res)
-            } });
+            }});
 
             $.fancybox.close(_this);
 
@@ -324,11 +306,9 @@ var View = {
                 image: this.image
             };
 
-            $.post('/news', newsItem, { success: function () {
-                console.log('news item added')
-            }, error: function (res) {
+            $.post('/news', newsItem, { error: function (res) {
                 console.log(res)
-            } });
+            }});
 
             helper.disableInputs();
             helper.playSend();
@@ -381,12 +361,9 @@ var View = {
                 phone: $('.input-ads-phone', _this).val()
             };
 
-            console.log('all ok');
-            $.post('/ads', adsItem, { success: function () {
-                console.log('news item added')
-            }, error: function (res) {
+            $.post('/ads', adsItem, { error: function (res) {
                 console.log(res)
-            } });
+            }});
 
             helper.disableInputs();
             helper.playSend();
@@ -410,7 +387,7 @@ var View = {
 
     AnonymousScreen: Backbone.View.extend({
         messages: {},
-        randomWelcome: helper.anonymousRandom(),
+        random: helper.anonymousRandom(),
         initialize: function () {
             var anonymousFound = BAnonymous.records.where({ approved: true });
             anonymousFound = JSON.stringify(anonymousFound);
@@ -434,11 +411,9 @@ var View = {
                 image: this.image
             };
 
-            $.post('/anonymous', anonymousItem, { success: function () {
-                console.log('news item added')
-            }, error: function (res) {
+            $.post('/anonymous', anonymousItem, { error: function (res) {
                 console.log(res)
-            } });
+            }});
 
             helper.disableInputs();
             helper.playSend();
@@ -462,6 +437,7 @@ var View = {
     LeadScreen: Backbone.View.extend({
         messages: {},
         user: {},
+        random: helper.leadRandom(),
         initialize: function () {
             var leadFound = BLead.records.where({ approved: true });
             leadFound = JSON.stringify(leadFound);
@@ -490,12 +466,9 @@ var View = {
                 image: this.image
             };
 
-            console.log('all ok');
-            $.post('/lead', leadItem, { success: function () {
-                console.log('news item added')
-            }, error: function (res) {
+            $.post('/lead', leadItem, { error: function (res) {
                 console.log(res)
-            } });
+            }});
 
             helper.disableInputs();
             helper.playSend();
@@ -547,12 +520,9 @@ var View = {
                 image: this.image
             };
 
-            console.log('all ok');
-            $.post('/claims', claimsItem, { success: function () {
-                console.log('news item added')
-            }, error: function (res) {
+            $.post('/claims', claimsItem, { error: function (res) {
                 console.log(res)
-            } });
+            }});
 
             helper.disableInputs();
             helper.playSend();
@@ -611,8 +581,6 @@ var View = {
             $('#tab-news').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
-
-            helper.playClick();
         },
         'showAds': function () {
             var view = new View.AdsScreen();
@@ -624,8 +592,6 @@ var View = {
 
             $('.dot-messages-image a').click(helper.singleImage);
             $(".input-ads-phone").inputmask("+7 (999) 999-99-99");
-
-            helper.playClick();
         },
         'showAnonymous': function () {
             var view = new View.AnonymousScreen();
@@ -636,7 +602,6 @@ var View = {
             $('#tab-anonymous').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
-            helper.playClick();
         },
         'showLead': function () {
             var view = new View.LeadScreen();
@@ -647,8 +612,6 @@ var View = {
             $('#tab-lead').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
-
-            helper.playClick();
         },
         'showClaims': function () {
             var view = new View.ClaimsScreen();
@@ -659,8 +622,6 @@ var View = {
             $('#tab-claims').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
-
-            helper.playClick();
         }
     })
 };

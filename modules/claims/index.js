@@ -55,12 +55,9 @@ var edit = function (req, res) {
                     }
                     res.end("Claims approved on server");
                 });
-
-                console.log("Claims approved on server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user
@@ -85,12 +82,9 @@ var remove = function (req, res) {
                     }
                     res.end("Claims removed from server");
                 });
-
-                console.log("Claims removed from server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user

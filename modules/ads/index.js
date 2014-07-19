@@ -34,7 +34,6 @@ var add = function (req, res) {
 
 var get = function (req, res) {
     Ads.find({}).sort('-date').exec(function (err, result) {
-        console.log(result);
         if (err)  {
             utils.errorHandler(err, 'Ads Get Error');
             res.send(400, 'Bad Request');
@@ -57,12 +56,9 @@ var edit = function (req, res) {
                     }
                     res.end("Ad approved on server");
                 });
-
-                console.log("Ad approved on server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         else {
@@ -85,13 +81,10 @@ var remove = function (req, res) {
                     }
                     res.end("Ad removed from server");
                 });
-
-                console.log("Ad removed from server");
             }
             // if user
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         else {

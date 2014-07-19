@@ -56,12 +56,9 @@ var edit = function (req, res) {
                     }
                     res.end("Lead approved on server");
                 });
-
-                console.log("Lead approved on server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user
@@ -86,12 +83,9 @@ var remove = function (req, res) {
                     }
                     res.end("Lead removed from server");
                 });
-
-                console.log("Lead removed from server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user

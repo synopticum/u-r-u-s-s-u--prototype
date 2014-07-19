@@ -50,8 +50,6 @@ var add = function (req, res) {
         }
         res.end(JSON.stringify(dot));
     });
-
-    console.log("Dot added on server");
 };
 
 var edit = function (req, res) {
@@ -84,7 +82,6 @@ var edit = function (req, res) {
                     dotValidValues.image = 'marker-images/' + dotValues.image;
                 }
 
-                console.log('Dot update dont have files');
                 delete dotValidValues.gallery;
 
                 Dot.findOneAndUpdate({id: dotValidValues.id}, dotValidValues, function (err, result) {
@@ -97,7 +94,6 @@ var edit = function (req, res) {
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user
@@ -105,8 +101,6 @@ var edit = function (req, res) {
             res.redirect('/join');
         }
     });
-
-    console.log("Dot updated on server");
 };
 
 var remove = function (req, res) {
@@ -137,12 +131,10 @@ var remove = function (req, res) {
                     if (fs.existsSync(filePath)) {
                         fs.unlink(filePath);
                     }
-                    else console.log('gallery file not found');
                 }
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user

@@ -49,12 +49,9 @@ var edit = function (req, res) {
                     }
                     res.end("Anonymous approved on server");
                 });
-
-                console.log("Anonymous approved on server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user
@@ -79,12 +76,9 @@ var remove = function (req, res) {
                     }
                     res.end("Anonymous removed from server");
                 });
-
-                console.log("Anonymous removed from server");
             }
             else {
                 res.send(403, "Access denied");
-                console.log("User access error");
             }
         }
         // if user

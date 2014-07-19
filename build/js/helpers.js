@@ -8,8 +8,9 @@ var helper = {
         }).toUpperCase();
     },
     status: function (text) {
-        $('#status span').text(text);
-        $('#status').fadeIn('slow').fadeOut('slow');
+        var status = $('#status');
+        status.find('span').text(text);
+        status.fadeIn('slow').fadeOut('slow');
     },
     anonymousRandom: function () {
         var items = [
@@ -23,6 +24,17 @@ var helper = {
             'В июне 2013 года Эдвард Сноуден раскрыл факт всеобъемлющего слежения в 60 странах\<br\> за более чем миллиардом человек, правительствами 35 стран.',
             'Тестирование популярных моделей шапочек из фольги показало, что они вовсе не экранируют сигнал, а могут даже его усиливать.',
             'Мы идём, летим, плывём, наше имя &mdash; Легион.'
+        ];
+        return items[Math.floor(Math.random()*items.length)];
+    },
+    leadRandom: function () {
+        var items = [
+            'Можно ли это реализовать?',
+            'Сопоставим ли бюджет поселка с моими желаниями?',
+            'Нужно ли это кому-то, не считая полутора местных фриков?',
+            'Могу ли я сделать это сам?',
+            'Станет ли от этого лучше кому-то, кроме меня?',
+            'Тварь ли я дрожащая, или право имею?'
         ];
         return items[Math.floor(Math.random()*items.length)];
     },
@@ -121,9 +133,10 @@ var helper = {
     },
     singleImage: function (e) {
         var image = $(this).attr('href');
-        $('#singleimage').addClass('active').append('<img src="' + image + '"/>').append('<span class="close"/>');
+        var singleimage = $('#singleimage');
+        singleimage.addClass('active').append('<img src="' + image + '"/>').append('<span class="close"/>');
 
-        $('#singleimage .close').click(function () {
+        singleimage.find('.close').click(function () {
             $('#singleimage img, #singleimage .close').remove();
             $('#singleimage').removeClass('active');
         });
@@ -133,11 +146,6 @@ var helper = {
     playSend: function () {
         var click = document.createElement('audio');
         $(click).attr('src', '/sounds/send.mp3');
-        click.play();
-    },
-    playClick: function () {
-        var click = document.createElement('audio');
-        $(click).attr('src', '/sounds/click.mp3');
         click.play();
     },
     disableInputs: function () {
