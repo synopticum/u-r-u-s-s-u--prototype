@@ -8,10 +8,21 @@
     "less-middleware": "1.0.*",
     "optimist": ">= 0.0.1",
     "passport": ">= 0.2.0",
-    "passport-vkontakte": ">= 1.0.0",
+    "passport-vkontakte": ">= 0.2.1",
     "mongoose": ">= 3.8.12",
     "socket.io": ">= 1.0.5",
     "connect-multiparty": ">= 1.0.5",
-    "moment": "^2.7.0"
+    "moment": "^2.7.0",
+    "gm": ">=1.16.0",
+    "underscore": ">=1.6.0",
+    "grunt": "latest",
+    "grunt-contrib-concat": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-cssmin": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-remove-logging": "latest"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
   }
 }

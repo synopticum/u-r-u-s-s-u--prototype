@@ -25,55 +25,55 @@ var BDot = Backbone.Model.extend({
     getIcon: function () {
         switch (this.attributes.icon) {
             case "pink" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-pink.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-pink.png'});
                 break;
             case "blue" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-blue.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-blue.png'});
                 break;
             case "green" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-green.png'});
                 break;
             case "graypink" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-g-pink.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-g-pink.png'});
                 break;
             case "grayblue" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-g-blue.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-g-blue.png'});
                 break;
             case "graygreen" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-g-green.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-g-green.png'});
                 break;
             case "vertical-pink" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-pink.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-a-pink.png'});
                 break;
             case "vertical-blue" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-blue.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-a-blue.png'});
                 break;
             case "vertical-green" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-a-green.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-a-green.png'});
                 break;
             case "message-green" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-green.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-m-green.png'});
                 break;
             case "message-pink" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-pink.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-m-pink.png'});
                 break;
             case "message-blue" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-m-blue.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-m-blue.png'});
                 break;
             case "flag-green" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-green.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-f-green.png'});
                 break;
             case "flag-pink" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-pink.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-f-pink.png'});
                 break;
             case "flag-blue" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-f-blue.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-f-blue.png'});
                 break;
             case "gold" :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-gold.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-gold.png'});
                 break;
             default :
-                return new LeafIcon({iconUrl: 'js/leaflet/images/markers/marker-icon-green.png'});
+                return new LeafIcon({iconUrl: 'markers/marker-icon-green.png'});
                 break;
         }
     }
