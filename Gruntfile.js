@@ -1,9 +1,8 @@
 module.exports = function (grunt) {
-    //описываем конфигурацию
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'), //подгружаем package.json, чтобы использовать его данные
+        pkg: grunt.file.readJSON('package.json'),
 
-        concat: {  //описываем работу плагина конкатенации
+        concat: {
             dist: {
                 src: [
                     'libs/vendor/jquery.min.js',
@@ -14,27 +13,27 @@ module.exports = function (grunt) {
                     'libs/fancybox/jquery.fancybox.js',
                     'libs/selectbox/jquery.selectbox-0.2.min.js',
                     'libs/inputmask/jquery.inputmask.js'
-                ],  // какие файлы конкатенировать
-                dest: 'build/js/plugins.js'  // куда класть файл, который получиться после процесса конкатенации
+                ],
+                dest: 'build/js/plugins.js'
             }
         },
 
-        uglify: {  //описываем работу плагина минификации js - uglify.
+        uglify: {
             options: {
                 stripBanners: true,
-                banner: '/* <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n' //комментарий который будет в минифицированном файле.
+                banner: '/* <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
 
             build: {
-                src: 'build/js/plugins.js',  // какой файл минифицировать
-                dest: 'build/js/plugins.min.js' // куда класть файл, который получиться после процесса минификации
+                src: 'build/js/plugins.js',
+                dest: 'build/js/plugins.min.js'
             }
         },
 
-        cssmin: { //описываем работу плагина минификации и конкатенации css.
+        cssmin: {
             with_banner: {
                 options: {
-                    banner: '/* minified css*/'  //комментарий который будет в output файле.
+                    banner: '/* minified css*/'
                 },
 
                 files: {
@@ -43,31 +42,30 @@ module.exports = function (grunt) {
                         'libs/leaflet/leaflet.css',
                         'libs/fancybox/jquery.fancybox.css',
                         'libs/selectbox/jquery.selectbox.css'
-                    ]   // первая строка - output файл. массив из строк, какие файлы конкатенировать и минифицировать.
+                    ]
                 }
             }
         },
 
-        watch: { //описываем работу плагина слежки за файлами.
+        watch: {
             scripts: {
-                files: ['libs/*.js'],  //следить за всеми js файлами в папке src
-                tasks: ['concat', 'uglify', 'removelogging']  //при их изменении запускать следующие задачи
+                files: ['libs/*.js'],
+                tasks: ['concat', 'uglify', 'removelogging']
             },
             css: {
-                files: ['libs/*.css'], //следить за всеми css файлами в папке src
-                tasks: ['cssmin'] //при их изменении запускать следующую задачу
+                files: ['libs/*.css'],
+                tasks: ['cssmin']
             }
         },
 
-        removelogging: { //описываем работу плагина удаления логов
+        removelogging: {
             dist: {
-                src: "build/build.min.js", // файл который надо отчистить от console.log
-                dest: "build/build.clean.js" // выходной файл, который получим после очистки
+                src: "build/build.min.js",
+                dest: "build/build.clean.js"
             }
         }
     });
 
-    //подгружаем необходимые плагины
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -75,7 +73,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-remove-logging');
 
-    //регистрируем задачу
-    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'removelogging', 'watch']); //задача по умолчанию, просто grunt
-    grunt.registerTask('test', ['']); //пока пусто, но кто знает, возможно в следующих уроках мы этим воспользуемся <img src="http://loftblog.ru/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley">
+    grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'removelogging', 'watch']);
+    grunt.registerTask('test', ['']);
 };

@@ -5,7 +5,7 @@ View.Map = {
 
         var mainLayer = L.layerGroup(BDots.layers.main);
         var oldLayer = L.layerGroup(BDots.layers.old);
-        var placesLayer = L.layerGroup(BDots.layers.user);
+        var placesLayer = L.layerGroup(BDots.layers.places);
         var eventsLayer = L.layerGroup(BDots.layers.events);
 
         var userApprovedLayer = L.layerGroup(BDots.layers.usermain);

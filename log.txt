@@ -1,1 +1,2 @@
-﻿
+﻿Sun Jul 20 2014 20:31:20 GMT+0400 (Московское время (зима)): Upload Error (write marker image): Error: Command failed: convert.exe: unable to open image `public/marker-images/kB1f5.jpg': No such file or directory @ error/blob.c/OpenBlob/2658.
+

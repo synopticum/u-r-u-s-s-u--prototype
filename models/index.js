@@ -82,7 +82,7 @@ var UserSchema = new Schema({
     },
     avatar : {
         type: String,
-        unique: true
+        unique: false
     },
     created : {
         type : String,
