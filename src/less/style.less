@@ -252,7 +252,7 @@ a {
   overflow: hidden;
 }
 #startScreen .tabs-wrapper {
-  height: 525px;
+  height: 510px;
 }
 #startScreen .tabs {
   background: #eee;
@@ -652,12 +652,46 @@ a {
 .bus .status, .taxi .status {
   color: #6b9b2a;
 }
+.warn {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
 .sun {
   padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 .sun .popup-button {
   display: block;
   text-align: center;
+}
+.welcome .fullinfo {
+  padding: 10px 0;
+  margin: 0;
+  list-style: inside;
+}
+.fullinfo li {
+  margin: 10px 0;
+}
+.fullinfo span {
+  cursor: pointer;
+  color: #6B9B2A;
+  border-bottom: 1px dotted #6B9B2A;
+  transition: .3s;
+}
+.fullinfo span:hover {
+  color: #e60000;
+  border-color: #e60000;
+}
+
+.info {
+//  -moz-column-count: 3;
+//  -webkit-column-count: 3;
+//  column-count: 3;
+  font-size: 13px;
+}
+.info p {
+  text-indent: 0;
 }
 
 .usersmod-trust, .usersmod-premod {

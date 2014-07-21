@@ -276,6 +276,42 @@ var View = {
         'file': helper.singleImageUpload
     }),
 
+    InfoScreen: Backbone.View.extend({
+        messages: {},
+        user: {},
+        initialize: function () {
+        },
+        id: 'info-screen',
+        template: _.template($('#info-template').html()),
+        render: function () {
+            return this.$el.html(this.template(this));
+        },
+        events: {
+            'click .back': function () {
+                var view = new View.StartScreen();
+                $.fancybox.open(view.render());
+            }
+        }
+    }),
+
+    LastMessagesScreen: Backbone.View.extend({
+        messages: {},
+        user: {},
+        initialize: function () {
+        },
+        id: 'lastmessages-screen',
+        template: _.template($('#lastmessages-template').html()),
+        render: function () {
+            return this.$el.html(this.template(this));
+        },
+        events: {
+            'click .back': function () {
+                var view = new View.StartScreen();
+                $.fancybox.open(view.render());
+            }
+        }
+    }),
+
     NewsScreen: Backbone.View.extend({
         messages: {},
         user: {},
@@ -559,6 +595,8 @@ var View = {
             'click #tab-lead span': 'showLead',
             'click #tab-claims span': 'showClaims',
             'click #update': 'updateModel',
+            'click .rules': 'showInfo',
+            'click .lastmessages': 'showLastMessages',
             'mouseover .nrefresh': function () { $('.n-refresh, #update').addClass('active'); },
             'mouseout .nrefresh': function () { $('.n-refresh, #update').removeClass('active'); },
             'mouseover .nmain': function () { $('.n-main').addClass('active'); },
@@ -622,6 +660,14 @@ var View = {
             $('#tab-claims').addClass('active');
 
             $('.dot-messages-image a').click(helper.singleImage);
+        },
+        'showInfo': function () {
+            var view = new View.InfoScreen();
+            $('.tabs-wrapper').html(view.render());
+        },
+        'showLastMessages': function () {
+            var view = new View.LastMessagesScreen();
+            $('.tabs-wrapper').html(view.render());
         }
     })
 };
