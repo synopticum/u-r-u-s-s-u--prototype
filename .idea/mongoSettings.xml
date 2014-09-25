@@ -5,8 +5,6 @@
       <list>
         <ServerConfiguration>
           <option name="label" value="mongomap" />
-          <option name="serverName" value="localhost" />
-          <option name="serverPort" value="27017" />
           <option name="shellArgumentsLine" value="--dbpath /mongo/db" />
           <option name="shellWorkingDir" value="C:\mongo\db" />
           <option name="userDatabase" value="mongomapdb" />
