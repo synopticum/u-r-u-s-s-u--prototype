@@ -7,7 +7,7 @@ var passport = require('passport'),
     User = require('../models').User;
 
 // set admin
-User.findOne({ _id: '53c049032b76fcb411603ecc' }, function (err, result){
+User.findOne({ _id: '5424418b6bb75a4411e9a8e0' }, function (err, result){
     if (err) throw err;
     result.status = 'godlike';
     result.save();

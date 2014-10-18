@@ -6,6 +6,9 @@ var logged = function (req, res) {
         var godlike = result.get('_id').toString();
 
         if (req.user) {
+            console.log(req.session.passport.user);
+            console.log(godlike);
+
             if (req.session.passport.user === godlike) {
                 res.render('admin', { title: 'Admin' })
             }

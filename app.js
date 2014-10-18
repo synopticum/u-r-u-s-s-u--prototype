@@ -1,11 +1,11 @@
-var domain = require('domain');
-var serverDomain = domain.create();
+//var domain = require('domain');
+//var serverDomain = domain.create();
 
-serverDomain.on('error', function (err) {
-    console.log('Server Domain: %s', err)
-});
+//serverDomain.on('error', function (err) {
+//    console.log('Server Domain: %s', err)
+//});
 
-serverDomain.run(function () {
+//serverDomain.run(function () {
     var express = require('express'),
         app = express(),
         server = require('http').Server(app),
@@ -22,6 +22,4 @@ serverDomain.run(function () {
     server.listen(opts.port, function () {
         console.log("Express server listening on port %d in %s mode", opts.port, app.settings.env);
     });
-});
-
-// olololo
+//});
