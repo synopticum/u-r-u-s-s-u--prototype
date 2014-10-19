@@ -1,6 +1,15 @@
 NodeMap Prototype
 =======
 
+Description
+=======
+
+NodeMap is a Web Application/CMS based on node.js/express/mongodb on serverside, and leafletjs/backbonejs/fancybox on client. More info and screens(in russian): http://habrahabr.ru/post/240807/
+
+
+Installation
+=======
+
 1. Install last stable node.js and mongodb
 2. Install imagemagick module (% npm i -g imagemagick)
 3. % git clone https://github.com/Synopticum/nodemap.git
