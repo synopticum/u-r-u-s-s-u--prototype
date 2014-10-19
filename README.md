@@ -3,7 +3,8 @@ NodeMap Prototype
 
 It is simple a Web Application/CMS based on node.js/express/mongodb on serverside, and leafletjs/backbonejs/fancybox on client. More info and screens(in russian): http://habrahabr.ru/post/240807/
 
-You can:
+Screenshots
+=======
 
 Login from Vkontakte: http://hsto.org/files/eb7/4c3/222/eb74c3222e844929a10e273920a9319c.png
 
@@ -19,15 +20,18 @@ Switching between Map Layers: http://hsto.org/files/93b/ecd/c86/93becdc86b47441e
 
 Add Dots: http://hsto.org/files/86e/b8c/3b8/86eb8c3b89d04fdebe4c0dee86c39135.png
 
-Admin Can:
-
 Moderate messages: http://hsto.org/files/98b/76c/539/98b76c539b3a4fb496009e298c6699e0.png
+
 Enable/disable moderation: http://hsto.org/files/689/cf3/956/689cf39569fd4c8da783a651e548687d.png
 
 News: http://hsto.org/files/f9e/575/e66/f9e575e66a8745788bfa57f5e6e28c2d.png
+
 Ads: http://hsto.org/files/9a0/655/5ec/9a06555ec88c4ebfb21f896bfcbf1317.png
+
 Initiatives: http://hsto.org/files/1a6/fe9/0cd/1a6fe90cd37e42beb85752831a395bee.png
+
 Complaints: http://hsto.org/files/898/bfd/67a/898bfd67aa4e434ca47eb6b52ac0ef3b.png
+
 Anonymous: http://hsto.org/files/b50/36a/66e/b5036a66ef27422fb148c790ffb897ed.png
 
 More: http://hsto.org/files/823/bbc/4c7/823bbc4c78ec41b981d0bc35aa9b7a41.jpg
