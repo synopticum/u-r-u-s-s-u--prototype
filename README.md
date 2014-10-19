@@ -5,12 +5,18 @@ It is simple a Web Application/CMS based on node.js/express/mongodb on serversid
 
 You can:
 
-Login from Vkontakte: http://hsto.org/files/973/758/1af/9737581afdd64948aff235b6eb5dcc4a.png , http://hsto.org/files/eb7/4c3/222/eb74c3222e844929a10e273920a9319c.png
+Login from Vkontakte: http://hsto.org/files/eb7/4c3/222/eb74c3222e844929a10e273920a9319c.png
+
 See Dots on Map: http://hsto.org/files/bbe/21d/a21/bbe21da215e0406384e132b5e1e18869.png
+
 Add Image Gallery for the Dots: http://hsto.org/files/19b/a3c/2eb/19ba3c2ebf5b4fdcaecb46b486b695e9.png
+
 Add Music for the Dots: http://hsto.org/files/d63/f3e/38d/d63f3e38d7d3464db6d0686171aca5d3.png
+
 Comment Dots: http://hsto.org/files/8f9/0f3/974/8f90f3974a584014a8cdc5eddc186d82.png
+
 Switching between Map Layers: http://hsto.org/files/93b/ecd/c86/93becdc86b47441e97c107a987fdd3c4.png
+
 Add Dots: http://hsto.org/files/86e/b8c/3b8/86eb8c3b89d04fdebe4c0dee86c39135.png
 
 Admin Can:
